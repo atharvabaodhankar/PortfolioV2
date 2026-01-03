@@ -1,26 +1,25 @@
-import React, { useRef } from 'react';
+import React, { useEffect, useLayoutEffect, useRef } from 'react';
 import gsap from 'gsap';
-import { useGSAP } from '@gsap/react';
-// import Shery from 'sheryjs'; // TODO: Fix Shery imports
+import Shery from 'sheryjs';
 import { useLoader } from '../context/LoaderContext';
-
-gsap.registerPlugin(useGSAP);
 
 const Hero = () => {
   const { isLoaded } = useLoader();
   const heroRef = useRef(null);
   const heroImgRef = useRef(null);
 
-  useGSAP(() => {
+  useLayoutEffect(() => {
     if (!isLoaded) return;
 
-    // Magnet effect (TODO: Re-enable when Shery is properly imported)
-    // if (window.matchMedia('(min-width: 768px)').matches) {
-    //   Shery.makeMagnet('.hero-img, .logo', {
-    //     ease: 'cubic-bezier(0.23, 1, 0.320, 1)',
-    //     duration: 1,
-    //   });
-    // }
+    // Magnet effect
+    if (window.matchMedia('(min-width: 768px)').matches) {
+      Shery.makeMagnet('.hero-img, .logo', {
+        ease: 'cubic-bezier(0.23, 1, 0.320, 1)',
+        duration: 1,
+      });
+    }
+
+    const ctx = gsap.context(() => {
       const tl = gsap.timeline();
 
       tl.from('.hero-img', {
@@ -46,21 +45,24 @@ const Hero = () => {
         y: 20,
         opacity: 0,
       });
-  }, { scope: heroRef, dependencies: [isLoaded] });
+    }, heroRef);
+
+    return () => ctx.revert();
+  }, [isLoaded]);
 
   return (
-    <section id="hero" ref={heroRef} className="h-screen flex items-center justify-center relative bg-white">
+    <section id="hero" ref={heroRef} className="h-screen flex items-center justify-center relative">
       <div className="hero flex items-center justify-center flex-col">
-        <h1 className="hero-hover text-[13vw] md:text-[7vw] font-light -mb-8 md:-mb-20 z-[2] select-none font-arsenica">
+        <h1 className="hero-hover text-[7vw] font-light -mb-10 z-[2] select-none font-[ArsenicaDemibold]">
           ATHARVA
         </h1>
-        <div className="hero-img non-hover w-[60vw] h-[40vw] md:w-[23vw] md:h-[16vw] object-cover -rotate-[5deg]" ref={heroImgRef}>
-          <img src="/src/assets/imgs/hero-img.png" alt="hero" className="w-full h-full object-cover object-center" />
+        <div className="hero-img non-hover w-[23vw] h-[16vw] object-cover -rotate-[5deg]" ref={heroImgRef}>
+          <img src="/src/assets/imgs/hero-img.jpg" alt="hero" className="w-full h-full object-cover object-center" />
         </div>
-        <h2 className="hero-hover text-[13vw] md:text-[7vw] font-light -mt-8 md:-mt-20 z-[2] select-none font-arsenica">
+        <h2 className="hero-hover text-[7vw] font-light -mt-10 z-[2] select-none font-[ArsenicaDemibold]">
           BAODHANKAR
         </h2>
-        <p className="text-xl md:text-[3rem] mt-8 md:mt-16 font-light text-center px-4 md:px-0">MERN • Systems • Blockchain • AI Tooling</p>
+        <p className="text-[3rem] mt-16">Web Designer and Video Editor</p>
       </div>
     </section>
   );
