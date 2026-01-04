@@ -1,239 +1,111 @@
-import { useRef } from 'react';
+import React, { useEffect, useLayoutEffect, useRef } from 'react';
 import gsap from 'gsap';
-import { useGSAP } from '@gsap/react';
 import ScrollTrigger from 'gsap/ScrollTrigger';
+import Shery from 'sheryjs';
 
-gsap.registerPlugin(ScrollTrigger, useGSAP);
+gsap.registerPlugin(ScrollTrigger);
 
 const Skills = () => {
-  const containerRef = useRef(null);
-  
- const skillGroups = [
-  {
-    title: "01 / Web Engineering",
-    description:
-      "Designing and engineering modern web applications with a strong focus on performance, maintainability, and real-world usability.",
-    skills: [
-      "JavaScript (ES6+)",
-      "React",
-      "Node.js",
-      "Express.js",
-      "REST APIs",
-      "MERN Stack"
-    ]
-  },
-  {
-    title: "02 / Blockchain & Web3 Systems",
-    description:
-      "Building decentralized applications and smart contract systems that prioritize security, clarity, and long-term protocol design.",
-    skills: [
-      "Solidity",
-      "Smart Contracts",
-      "ERC-4337 (Account Abstraction)",
-      "Ethers.js",
-      "Polygon & Testnets",
-      "Proof-of-Existence Systems"
-    ]
-  },
-  {
-    title: "03 / Backend & Distributed Systems",
-    description:
-      "Engineering backend and distributed systems with an emphasis on scalability, data flow, and real-time communication.",
-    skills: [
-      "ScyllaDB",
-      "Distributed Systems",
-      "WebRTC",
-      "WebSockets",
-      "Socket.io",
-      "Backend Architecture"
-    ]
-  },
-  {
-    title: "04 / System Design & Architecture",
-    description:
-      "Approaching problems with a system-first mindset — focusing on structure, data flow, and long-term scalability.",
-    skills: [
-      "Application Architecture",
-      "Database Design",
-      "Auth & Role-Based Systems",
-      "API Structuring",
-      "Performance Thinking"
-    ]
-  },
-  {
-    title: "05 / Motion & Interaction",
-    description:
-      "Using motion as a functional layer — guiding attention, improving clarity, and enhancing the feel of the interface.",
-    skills: [
-      "GSAP",
-      "ScrollTrigger",
-      "Micro-interactions",
-      "Interaction Design"
-    ]
-  },
-  {
-    title: "06 / Tooling & Infrastructure",
-    description:
-      "The tools and infrastructure that support modern, scalable, and developer-friendly systems.",
-    skills: [
-      "Docker",
-      "Supabase",
-      "Firebase",
-      "MongoDB",
-      "SQL / MySQL",
-      "Git & GitHub"
-    ]
-  }
-];
+  const skillsRef = useRef(null);
 
-
-  useGSAP(() => {
-    // 1. Initial reveal for Left Column
-    const leftTl = gsap.timeline({
-      scrollTrigger: {
-        trigger: containerRef.current,
-        start: 'top 70%',
-        end: 'top 50%',
-        toggleActions: 'play none none reverse',
-        invalidateOnRefresh: true
-      }
-    });
-
-    leftTl.from('.left-inv', {
-      y: 30,
-      opacity: 0,
-      duration: 1.2,
-      stagger: 0.15,
-      ease: 'power3.out'
-    });
-
-    // 5. Left Column Parallax (Subtle)
-    gsap.to('.left-column-content', {
-      y: -20, // Tiny parallax drift
-      ease: 'none',
-      scrollTrigger: {
-        trigger: containerRef.current,
-        start: 'top top',
-        end: 'bottom bottom',
-        scrub: true,
-        invalidateOnRefresh: true
-      }
-    });
-
-    // Animate each right-column section with rhythm
-    const sections = gsap.utils.toArray('.skill-section');
-    
-    sections.forEach((section, index) => {
-      const border = section.querySelector('.section-border');
-      const header = section.querySelector('.section-header');
-      const list = section.querySelector('.skills-list');
-
-      const tl = gsap.timeline({
+  useLayoutEffect(() => {
+    const ctx = gsap.context(() => {
+      const skillsTl = gsap.timeline({
         scrollTrigger: {
-          trigger: section,
-          start: 'top 85%',
-          toggleActions: 'play none none reverse',
-          invalidateOnRefresh: true
-        }
+          trigger: '#skills',
+          start: '40% 50%',
+          end: '50% 50%',
+          scrub: 2,
+        },
       });
 
-      // 3. Divider Line Animation (Premium ScaleX)
-      tl.fromTo(border, 
-        { scaleX: 0, transformOrigin: 'left center' },
-        { scaleX: 1, duration: 0.8, ease: 'power3.out' }
-      )
-      // 1. Section Reveal (Staggered Content)
-      .from(header, {
-        y: 16,
-        opacity: 0,
-        duration: 0.8,
-        ease: 'power3.out'
-      }, '-=0.4')
-      .from(list, {
-        y: 16,
-        opacity: 0,
-        duration: 0.8,
-        ease: 'power3.out'
-      }, '-=0.6');
-    });
+      // Animate each skill appearing
+      const skillIds = ['#js', '#react', '#tw', '#mysql', '#bs', '#gs', '#solidity', '#node', '#express', '#python', '#jquery', '#supabase', '#firebase', '#php'];
+      
+      skillIds.forEach(id => {
+        skillsTl.to(id, {
+          filter: 'blur(0px)',
+          opacity: 1,
+        });
+      });
 
-  }, { scope: containerRef });
+      // Skills heading animation
+      gsap.from('.skills-left h1', {
+        opacity: 0,
+        yPercent: -100,
+        duration: 2,
+        ease: 'easeIn',
+        scrollTrigger: {
+          trigger: '#skills',
+          start: '40% 50%',
+          end: '55% 50%',
+          scrub: 2,
+        },
+      });
+
+      //Skills image animation
+      gsap.from('.skills-img', {
+        scale: 0.5,
+        duration: 1.5,
+        opacity: 0,
+        ease: 'easeIn',
+        scrollTrigger: {
+          trigger: '#skills',
+          start: '0 50%',
+          end: '50% 50%',
+          scrub: 2,
+        },
+      });
+    }, skillsRef);
+
+    // Shery effect for desktop
+    if (window.matchMedia('(min-width: 768px)').matches) {
+      Shery.imageEffect('.skills-img', {
+        style: 3,
+        // preset: './presets/wigglewobble.json', // Missing file, using default
+      });
+    }
+
+    return () => ctx.revert();
+  }, []);
+
+  const skills = [
+    { id: 'js', name: 'JAVASCRIPT' },
+    { id: 'bs', name: 'BOOTSTRAP' },
+    { id: 'tw', name: 'TAILWIND' },
+    { id: 'gs', name: 'GSAP' },
+    { id: 'mysql', name: 'MY SQL' },
+    { id: 'solidity', name: 'SOLIDITY' },
+    { id: 'react', name: 'REACT' },
+    { id: 'node', name: 'NODE.JS' },
+    { id: 'express', name: 'EXPRESS.JS' },
+    { id: 'python', name: 'PYTHON' },
+    { id: 'jquery', name: 'JQUERY' },
+    { id: 'php', name: 'PHP' },
+    { id: 'firebase', name: 'FIREBASE' },
+    { id: 'supabase', name: 'SUPABASE' },
+  ];
 
   return (
-    <section 
-      ref={containerRef} 
-      className="w-full min-h-screen bg-white text-black px-6 md:px-12 lg:px-24 py-20 relative z-10 font-sans"
-    >
-      <div className="max-w-[1600px] mx-auto flex flex-col lg:flex-row gap-16 lg:gap-32">
-        
-        {/* LEFT COLUMN - STICKY */}
-        <div className="lg:w-1/3 flex flex-col justify-between lg:h-[calc(100vh-160px)] lg:sticky lg:top-32 left-column-content">
-          <div className="left-inv">
-            <h1 
-              className="text-6xl md:text-7xl lg:text-8xl font-bold tracking-tighter leading-[0.9] mb-8 font-arsenica hover-h1"
-              
-            >
-              Areas<br/>of Craft
-            </h1>
-            <div className="h-1 w-24 bg-black mb-8"></div>
-            <p 
-              className="text-lg text-gray-500 font-normal leading-relaxed max-w-sm"
-              style={{ fontFamily: "'Inter', sans-serif" }}
-            >
-              A focused overview of how I build modern web systems — blending engineering fundamentals, decentralized technology, and thoughtful interaction design.
-            </p>
-          </div>
-          
-          <div className="left-inv hidden lg:flex items-center gap-3 opacity-60 mt-auto">
-            <span className="animate-spin-slow text-2xl">✳</span>
-            <span className="text-xs font-mono uppercase tracking-widest">System Status: Online</span>
-          </div>
+    <section id="skills" ref={skillsRef} className="flex items-center justify-center py-56">
+      <div className="skills-left mr-16 w-fit">
+        <h1 className="text-[5vw] z-[2] font-normal leading-[5vw] relative text-center uppercase">
+          Skills & <br /> Expertise
+        </h1>
+        <div className="skills-img non-hover w-[500px] h-[250px] -mt-[35px]">
+          <img src="/src/assets/imgs/skills.png" alt="" className="w-full h-full object-cover" />
         </div>
-
-        {/* RIGHT COLUMN - SCROLLABLE */}
-        <div className="lg:w-2/3 flex flex-col gap-20 pt-10 lg:pt-0">
-          {skillGroups.map((group) => (
-            <div key={group.title} className="skill-section pt-8 relative">
-               {/* 3. Independent Border for Animation */}
-              <div className="section-border absolute top-0 left-0 w-full h-[1px] bg-gray-200"></div>
-              
-              {/* Header Row */}
-              <div className="section-header flex flex-col md:flex-row md:items-baseline justify-between mb-8 gap-4">
-                <h3 
-                  className="text-2xl md:text-3xl font-medium tracking-tight"
-                  style={{ fontFamily: "'Inter', sans-serif" }}
-                >
-                  {group.title}
-                </h3>
-                <p 
-                  className="text-sm md:text-base text-gray-400 max-w-md text-left md:text-right leading-relaxed font-normal"
-                  style={{ fontFamily: "'Inter', sans-serif" }}
-                >
-                  {group.description}
-                </p>
-              </div>
-
-              {/* Skills List */}
-              <div className="skills-list flex flex-wrap gap-x-6 gap-y-3 text-xl md:text-2xl lg:text-3xl leading-snug">
-                {group.skills.map((skill, i) => (
-                  <div key={skill} className="flex items-center gap-6">
-                    <span 
-                      className="relative cursor-default font-normal transition-all duration-500 hover:tracking-tight hover:-translate-y-[2px] inline-block group"
-                      style={{ fontFamily: "'Inter', sans-serif" }}
-                    >
-                      {skill}
-                      <span className="absolute bottom-0 left-0 w-full h-[1px] bg-primary scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left ease-expo-out"></span>
-                    </span>
-                    {i !== group.skills.length - 1 && (
-                      <span className="text-gray-200 font-light">/</span>
-                    )}
-                  </div>
-                ))}
-              </div>
-            </div>
-          ))}
-        </div>
-
+      </div>
+      <div className="skills-right flex items-center justify-center self-end flex-wrap w-[40%]">
+        {skills.map((skill) => (
+          <span
+            key={skill.id}
+            id={skill.id}
+            className="block m-4 text-black text-[3rem] py-4 px-8 rounded-[3rem] border-2 border-black relative z-[2] cursor-pointer overflow-hidden transition-all duration-300 blur-[10px] select-none opacity-0"
+          >
+            {skill.name}
+          </span>
+        ))}
       </div>
     </section>
   );
