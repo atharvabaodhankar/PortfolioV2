@@ -1,187 +1,96 @@
-import { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { useLoader } from '../context/LoaderContext';
 
-const Preloader = ({ progress = 0 }) => {
+const Preloader = () => {
   const { isLoaded } = useLoader();
-  const containerRef = useRef(null);
-  const progressRef = useRef(null);
-  const counterRef = useRef(null);
-  const [isVisible, setIsVisible] = useState(true);
+  const loaderRef = useRef(null);
+  const loadingRef = useRef(null);
 
-  useLayoutEffect(() => {
-    const ctx = gsap.context(() => {
-      // Set initial states
-      gsap.set(containerRef.current, { opacity: 1, yPercent: 0 });
-      gsap.set(".preloader-text", { opacity: 1 });
-      gsap.set(".char-animate", { y: 100, opacity: 0 });
-      gsap.set(".preloader-subtitle", { y: 50, opacity: 0 });
-      gsap.set(".progress-line", { scaleX: 0, transformOrigin: "left" });
-      gsap.set(".counter", { opacity: 0 });
+  useEffect(() => {
+    if (isLoaded &amp;&amp; loaderRef.current &amp;&amp; loadingRef.current) {
+      // Exit animation
+      const tl = gsap.timeline({
+        onComplete: () => {
+          if (loadingRef.current) {
+            loadingRef.current.remove();
+          }
+          if (loaderRef.current) {
+            loaderRef.current.remove();
+          }
+        }
+      });
 
-      // Entrance animation - clean and simple
-      const tl = gsap.timeline();
+      tl.to(loadingRef.current, {
+        yPercent: -100,
+        duration: 1.25,
+        ease: 'power4.inOut',
+      });
 
-      tl.to(".char-animate", {
-        y: 0,
-        opacity: 1,
-        duration: 0.6,
-        ease: "power2.out",
-        stagger: 0.03
-      })
-      .to(".preloader-subtitle", {
-        y: 0,
-        opacity: 1,
-        duration: 0.4,
-        ease: "power2.out"
-      }, "-=0.3")
-      .to(".counter", {
-        opacity: 1,
-        duration: 0.3,
-        ease: "power2.out"
-      }, "-=0.2");
+      tl.to(loaderRef.current, {
+        yPercent: -100,
+        backgroundColor: '#EDECE7',
+        duration: 1.5,
+        ease: 'power4.inOut',
+      }, '-=0.5');
+    }
+  }, [isLoaded]);
 
-      // NO continuous animations - keep text static and clean
+  useEffect(() => {
+    // Entrance animation
+    const tl = gsap.timeline();
+    
+    tl.from(loadingRef.current, {
+      yPercent: 100,
+      ease: 'power3.inOut',
+      duration: 1,
+    });
 
-    }, containerRef);
+    tl.from('.loading-text h1 span', {
+      duration: 0.6,
+      delay: -0.3,
+      y: 130,
+      skewY: 10,
+      stagger: 0.4,
+      ease: 'Power3.easeOut',
+    }, 'loader-same');
 
-    return () => ctx.revert();
+    tl.from('.loader-box', {
+      rotate: -360,
+      scale: 4,
+      duration: 2,
+      ease: 'ease',
+    }, 'loader-same');
   }, []);
 
-  // Enhanced progress updates with smooth animations
-  useEffect(() => {
-    if (counterRef.current && progressRef.current) {
-      const currentProgress = Math.min(progress, 100);
-      
-      // Smooth counter animation
-      gsap.to(counterRef.current, {
-        innerHTML: currentProgress,
-        duration: 0.6,
-        ease: "power2.out",
-        snap: { innerHTML: 1 }
-      });
-
-      // Smooth progress line animation
-      gsap.to(".progress-line", {
-        scaleX: currentProgress / 100,
-        duration: 0.6,
-        ease: "power2.out"
-      });
-    }
-  }, [progress]);
-
-  useEffect(() => {
-    if (isLoaded && containerRef.current && isVisible) {
-      const ctx = gsap.context(() => {
-        const tl = gsap.timeline({
-          onComplete: () => {
-            setIsVisible(false);
-          }
-        });
-
-        // Clean exit animation - consistent upward movement
-        tl.to(".counter", {
-          y: -20,
-          opacity: 0,
-          duration: 0.3,
-          ease: "power2.in"
-        })
-        .to(".progress-line", {
-          scaleX: 1,
-          duration: 0.2,
-          ease: "power2.out"
-        }, "-=0.2")
-        .to(".preloader-subtitle", {
-          y: -40,
-          opacity: 0,
-          duration: 0.4,
-          ease: "power2.in"
-        }, "-=0.1")
-        .to(".char-animate", {
-          y: -80,
-          opacity: 0,
-          duration: 0.5,
-          ease: "power2.in",
-          stagger: 0.02
-        }, "-=0.2")
-        .to(containerRef.current, {
-          yPercent: -100,
-          duration: 0.8,
-          ease: "power3.inOut"
-        }, "-=0.3");
-
-      }, containerRef);
-
-      return () => ctx.revert();
-    }
-  }, [isLoaded, isVisible]);
-
-  if (!isVisible) {
-    return null;
-  }
-
   return (
-    <div 
-      ref={containerRef} 
-      className="preloader-bg fixed inset-0 w-full h-full z-[99999] bg-[#0a0a0a] flex items-center justify-center"
-      style={{ pointerEvents: 'all' }}
-    >
-      <div className="relative flex flex-col items-center justify-center text-center px-8">
-        
-        {/* Main Typography */}
-        <div className="mb-4 md:mb-8 overflow-hidden">
-          <h1 className="preloader-text text-[12vw] sm:text-[10vw] md:text-[8vw] lg:text-[6rem] xl:text-[8rem] font-black text-white leading-[0.8] tracking-[-0.05em]" style={{ fontFamily: "'Impact', 'Arial Black', sans-serif" }}>
-            {"CRAFTING".split("").map((char, i) => (
-              <span key={i} className="inline-block char-animate" style={{animationDelay: `${i * 0.1}s`}}>
-                {char}
-              </span>
-            ))}
-          </h1>
-        </div>
-        
-        <div className="mb-8 md:mb-16 overflow-hidden">
-          <h2 className="preloader-text text-[12vw] sm:text-[10vw] md:text-[8vw] lg:text-[6rem] xl:text-[8rem] font-thin text-white leading-[0.8] tracking-[0.1em] italic" style={{ fontFamily: "'Playfair Display', serif" }}>
-            {"EXPERIENCE".split("").map((char, i) => (
-              <span key={i} className="inline-block char-animate" style={{animationDelay: `${(i + 8) * 0.1}s`}}>
-                {char}
-              </span>
-            ))}
-          </h2>
-        </div>
-
-        {/* Subtitle */}
-        <div className="mb-12 md:mb-20 overflow-hidden">
-          <p className="preloader-subtitle text-white/60 text-sm md:text-lg lg:text-xl font-light tracking-[0.1em] uppercase">
-            Loading Portfolio
-          </p>
-        </div>
-
-        {/* Progress Section */}
-        <div className="w-full max-w-md">
-          {/* Progress Line */}
-          <div className="relative w-full h-[1px] bg-white/10 mb-6">
-            <div 
-              ref={progressRef}
-              className="progress-line absolute top-0 left-0 w-full h-full bg-white"
-            ></div>
+    <>
+      <section id="loader" ref={loaderRef} className="fixed w-full h-full bg-white overflow-hidden z-[7]"></section>
+      <div ref={loadingRef} className="loading fixed w-full h-full bg-black overflow-hidden z-[100] flex items-center justify-center">
+        <div className="loading-main flex items-center justify-center flex-col">
+          <div className="loader-box absolute top-1/2 left-1/2 w-20 h-20 -translate-x-1/2 -translate-y-1/2 rotate-45">
+            <span className="absolute block w-10 h-10 bg-[#747474] top-0 left-0 animate-loaderBlock"></span>
+            <span className="absolute block w-10 h-10 bg-[#747474] top-0 right-0 animate-loaderBlockInverse"></span>
+            <span className="absolute block w-10 h-10 bg-[#747474] bottom-0 left-0 animate-loaderBlockInverse"></span>
+            <span className="absolute block w-10 h-10 bg-[#747474] bottom-0 right-0 animate-loaderBlock"></span>
           </div>
-
-          {/* Counter */}
-          <div className="flex justify-center">
-            <span 
-              ref={counterRef}
-              className="counter text-white/80 text-sm font-mono tracking-[0.2em]"
-            >
-              0
-            </span>
-            <span className="counter text-white/40 text-sm font-mono tracking-[0.2em] ml-1">
-              %
-            </span>
+          <div className="loading-text text-[4rem] text-white z-[2]">
+            <h1 className="inline-block overflow-hidden">
+              <span className="inline-block font-[FontStyleNew]">Building &nbsp;</span>
+            </h1>
+            <h1 className="inline-block overflow-hidden">
+              <span className="inline-block font-[FontStyleNew]">your &nbsp;</span>
+            </h1>
+            <h1 className="inline-block overflow-hidden">
+              <span className="inline-block font-[FontStyleNew]">experience </span>
+            </h1>
+            <h1 className="inline-block overflow-hidden">
+              <span className="inline-block font-[FontStyleNew]">...</span>
+            </h1>
           </div>
         </div>
-
       </div>
-    </div>
+    </>
   );
 };
 
