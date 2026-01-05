@@ -15,8 +15,8 @@ import Footer from './components/Footer';
 import Lenis from 'lenis';
 import gsap from 'gsap';
 import ScrollTrigger from 'gsap/ScrollTrigger';
-import MouseFollower from 'mouse-follower';
-import Shery from 'sheryjs';
+// import MouseFollower from 'mouse-follower'; // TODO: Check proper import method
+// import Shery from 'sheryjs'; // TODO: Check proper import method
 
 gsap.registerPlugin(ScrollTrigger);
 

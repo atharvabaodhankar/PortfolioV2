@@ -1,7 +1,7 @@
 import React, { useEffect, useLayoutEffect, useRef } from 'react';
 import gsap from 'gsap';
 import ScrollTrigger from 'gsap/ScrollTrigger';
-import Shery from 'sheryjs';
+// import Shery from 'sheryjs'; // TODO: Fix Sh ery imports
 
 gsap.registerPlugin(ScrollTrigger);
 
