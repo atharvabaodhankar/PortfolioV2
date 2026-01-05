@@ -1,120 +1,97 @@
-import React, { useRef } from 'react';
-import { Link } from 'react-router-dom';
-import TransitionLink from './TransitionLink';
+import React, { useEffect, useLayoutEffect, useRef } from 'react';
 import gsap from 'gsap';
-import { useGSAP } from '@gsap/react';
 import ScrollTrigger from 'gsap/ScrollTrigger';
-import Magnetic from './Magnetic';
 
 gsap.registerPlugin(ScrollTrigger);
 
 const Footer = () => {
-  const containerRef = useRef(null);
   const footerRef = useRef(null);
 
-  useGSAP(() => {
-    // Setting initial state
-    gsap.set(containerRef.current, { yPercent: -50 });
+  useLayoutEffect(() => {
+    const ctx = gsap.context(() => {
+      gsap.from('.footer-left, .footer-right', {
+        yPercent: -100,
+        opacity: 0.7,
+        scrollTrigger: {
+          scroller: 'body',
+          trigger: '#footer',
+          scrub: 3,
+          start: 'top 80%',
+          end: '40% 80%',
+        },
+      });
 
-    const uncover = gsap.timeline({
-      scrollTrigger: {
-        trigger: footerRef.current,
-        start: "top bottom",
-        end: "bottom bottom",
-        scrub: true,
-      }
-    });
+      gsap.from('.footer-text h2', {
+        y: -100,
+        opacity: 0,
+        skewY: 10,
+        ease: 'ease',
+        scrollTrigger: {
+          scroller: 'body',
+          trigger: '.footer',
+          scrub: 3,
+          start: '40% 80%',
+          end: '60% 80%',
+        },
+      });
+    }, footerRef);
 
-    uncover.to(containerRef.current, {
-      yPercent: 0,
-      ease: "none"
-    });
-
-    // Responsive animations
-    const isMobile = window.matchMedia('(max-width: 768px)').matches;
-    
-    gsap.from(".footer-row", {
-      opacity: 0,
-      y: isMobile ? 20 : 30,
-      stagger: 0.1,
-      duration: 1,
-      ease: "power2.out",
-      scrollTrigger: {
-        trigger: footerRef.current,
-        start: "top 75%",
-      }
-    });
-
-  }, { scope: footerRef });
+    return () => ctx.revert();
+  }, []);
 
   return (
-    <footer 
-      ref={footerRef} 
-      className="footer relative bg-[#0b0b0b] text-[#f5f5f5] overflow-hidden w-full z-10"
-      style={{ minHeight: '100vh' }}
-    >
-        <div ref={containerRef} className="footer-container min-h-screen w-full flex flex-col justify-between px-4 py-8 sm:px-6 sm:py-12 md:px-[5vw] md:py-[8vw]">
-            
-            {/* Row 1: Identity + Philosophy */}
-            <div className="footer-row footer-top flex flex-col gap-4 sm:gap-6 md:gap-8">
-                <div>
-                    <h2 className="footer-h1 font-arsenica text-[2.5rem] xs:text-[3rem] sm:text-[3.5rem] md:text-[clamp(2.5rem,5vw,5rem)] leading-none md:leading-tight font-light bg-gradient-to-b from-white to-white/60 bg-clip-text text-transparent">
-                        Atharva Baodhankar
-                    </h2>
-                    <p className="text-white/60 text-base sm:text-lg md:text-xl font-light tracking-wide mt-2 sm:mt-3 md:mt-2">
-                        Web • Systems • Blockchain
-                    </p>
-                </div>
-                
-                {/* Philosophy Line */}
-                <p className="text-white/40 text-sm sm:text-base md:text-xl font-light tracking-wider mt-3 sm:mt-4 max-w-md leading-relaxed">
-                    Designing systems that feel simple.
-                </p>
-            </div>
-
-            {/* Row 2: Navigation / Links - Mobile Optimized */}
-            <div className="footer-row footer-center my-8 sm:my-12 md:my-0 flex-1 flex flex-col justify-center items-start md:items-end text-left md:text-right">
-                <nav className="footer-links flex flex-col gap-3 sm:gap-4 md:gap-2 w-full md:w-auto">
-                    {['Projects', 'About', 'Contact'].map((item) => {
-                        const isProjects = item === 'Projects';
-                        const Component = isProjects ? TransitionLink : 'a';
-                        const linkProps = isProjects ? { to: '/projects' } : { href: `#${item.toLowerCase()}` };
-
-                        return (
-                            <Magnetic key={item} strength={0.2}>
-                                <Component 
-                                    {...linkProps}
-                                    className="group block text-[12vw] xs:text-[11vw] sm:text-[9vw] md:text-[8vw] leading-[0.85] opacity-80 hover:opacity-100 transition-opacity duration-500 cursor-pointer w-full md:w-auto my-2 sm:my-4 md:my-6"
-                                >
-                                    <span className="hidden md:inline text-white/40 font-light mr-2 font-sans">/</span>&nbsp;
-                                     <div className="relative inline-block overflow-hidden align-bottom">
-                                        <span className="block bg-gradient-to-b from-white via-white/80 to-white/40 bg-clip-text text-transparent transition-transform duration-500 ease-[0.76,0,0.24,1] group-hover:-translate-y-full font-arsenica">
-                                            {item}
-                                        </span>
-                                        <span className="block absolute top-0 left-0 w-full bg-gradient-to-b from-white via-white/80 to-white/40 bg-clip-text text-transparent transition-transform duration-500 ease-[0.76,0,0.24,1] translate-y-full group-hover:translate-y-0 font-arsenica">
-                                            {item}
-                                        </span>
-                                     </div>
-                                </Component>
-                            </Magnetic>
-                        );
-                    })}
-                </nav>
-            </div>
-
-            {/* Row 3: Closing - Mobile Optimized */}
-            <div className="footer-row footer-bottom flex flex-col sm:flex-row justify-between items-start sm:items-end border-t border-white/5 pt-6 sm:pt-8 mt-6 sm:mt-8 md:mt-12 gap-4 sm:gap-6 md:gap-0">
-                <span className="text-[0.7rem] xs:text-xs sm:text-xs md:text-[0.9rem] text-white/30 tracking-widest font-light uppercase">
-                    Based in India — Building globally
-                </span>
-                <span className="text-[0.7rem] xs:text-xs sm:text-xs md:text-[0.9rem] text-white/30 tracking-widest font-light uppercase">
-                    © 2026
-                </span>
-            </div>
+    <section id="footer" ref={footerRef} className="non-hover flex items-center justify-center flex-col py-20 pt-0">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320" className="-mb-2">
+        <path
+          fill="#000"
+          fillOpacity="1"
+          d="M0,96L48,80C96,64,192,32,288,58.7C384,85,480,171,576,224C672,277,768,299,864,277.3C960,256,1056,192,1152,165.3C1248,139,1344,149,1392,154.7L1440,160L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"
+        ></path>
+      </svg>
+      <div className="footer w-full bg-black px-20 pb-40 flex items-start justify-between">
+        <div className="footer-left text-white w-[500px]">
+          <h1 className="font-[FontStyleNew] text-[8rem]">Get in touch.</h1>
+          <p className="text-[1.9rem] my-8">Crafting beautiful & engaging websites. Let's collaborate!</p>
+          <a href="#work" className="capsule-btn">
+            <span>Explore Now</span>
+            <span>Explore Now</span>
+          </a>
         </div>
-    </footer>
+        <div className="footer-right w-auto">
+          <ul className="list-none">
+            <li className="my-4">
+              <a href="#" className="nav-btn text-white text-[3rem]">
+                Home
+              </a>
+            </li>
+            <li className="my-4">
+              <a href="#" className="nav-btn text-white text-[3rem]">
+                AboutMe
+              </a>
+            </li>
+            <li className="my-4">
+              <a href="#" className="nav-btn text-white text-[3rem]">
+                Projects
+              </a>
+            </li>
+            <li className="my-4">
+              <a href="#" className="nav-btn text-white text-[3rem]">
+                ContactMe
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div className="footer-logo h-[30vw] w-full overflow-hidden bg-black select-none">
+        <div className="footer-text w-full h-full relative">
+          <h2 className="absolute text-white text-[21vw] text-transparent [-webkit-text-stroke:2px_#faf6f6]">
+            ATHARVA
+          </h2>
+          <h2 className="absolute text-white text-[21vw] animate-footerWave">ATHARVA</h2>
+        </div>
+      </div>
+    </section>
   );
 };
 
 export default Footer;
-
