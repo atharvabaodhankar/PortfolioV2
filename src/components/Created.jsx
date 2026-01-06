@@ -67,18 +67,18 @@ const Created = () => {
       }
     }, createdRef);
 
-    // Shery effects
-    if (window.matchMedia('(min-width: 768px)').matches) {
-      Shery.makeMagnet('.aboutme-img', {
-        ease: 'cubic-bezier(0.23, 1, 0.320, 1)',
-        duration: 1,
-      });
+    // Shery effects (TODO: Re-enable when Shery is properly imported)
+    // if (window.matchMedia('(min-width: 768px)').matches) {
+    //   Shery.makeMagnet('.aboutme-img', {
+    //     ease: 'cubic-bezier(0.23, 1, 0.320, 1)',
+    //     duration: 1,
+    //   });
 
-      Shery.imageEffect('.created-img', {
-        style: 6,
-        // preset: './presets/wigglewobble.json', // Missing file
-      });
-    }
+    //   Shery.imageEffect('.created-img', {
+    //     style: 6,
+    //     // preset: './presets/wigglewobble.json', // Missing file
+    //   });
+    // }
 
     return () => ctx.revert();
   }, []);
