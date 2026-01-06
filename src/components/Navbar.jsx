@@ -1,6 +1,6 @@
 import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
-import Shery from 'sheryjs';
+// import Shery from 'sheryjs'; // TODO: Fix Shery imports
 import { useLoader } from '../context/LoaderContext';
 
 const Navbar = () => {
