@@ -8,7 +8,7 @@ const Preloader = () => {
   const loadingRef = useRef(null);
 
   useEffect(() => {
-    if (isLoaded &amp;&amp; loaderRef.current &amp;&amp; loadingRef.current) {
+    if (isLoaded && loaderRef.current && loadingRef.current) {
       // Exit animation
       const tl = gsap.timeline({
         onComplete: () => {
