@@ -11,13 +11,13 @@ const Hero = () => {
   useLayoutEffect(() => {
     if (!isLoaded) return;
 
-    // Magnet effect
-    if (window.matchMedia('(min-width: 768px)').matches) {
-      Shery.makeMagnet('.hero-img, .logo', {
-        ease: 'cubic-bezier(0.23, 1, 0.320, 1)',
-        duration: 1,
-      });
-    }
+    // Magnet effect (TODO: Re-enable when Shery is properly imported)
+    // if (window.matchMedia('(min-width: 768px)').matches) {
+    //   Shery.makeMagnet('.hero-img, .logo', {
+    //     ease: 'cubic-bezier(0.23, 1, 0.320, 1)',
+    //     duration: 1,
+    //   });
+    // }
 
     const ctx = gsap.context(() => {
       const tl = gsap.timeline();
