@@ -1,15 +1,15 @@
-import React, { useEffect, useLayoutEffect, useRef } from 'react';
+import React, { useRef } from 'react';
 import gsap from 'gsap';
+import { useGSAP } from '@gsap/react';
 import ScrollTrigger from 'gsap/ScrollTrigger';
 // import Shery from 'sheryjs'; // TODO: Fix Shery imports
 
-gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(ScrollTrigger, useGSAP);
 
 const Skills = () => {
   const skillsRef = useRef(null);
 
-  useLayoutEffect(() => {
-    const ctx = gsap.context(() => {
+  useGSAP(() => {
       const skillsTl = gsap.timeline({
         scrollTrigger: {
           trigger: '#skills',
@@ -66,8 +66,7 @@ const Skills = () => {
     //   });
     // }
 
-    return () => ctx.revert();
-  }, []);
+  }, { scope: skillsRef });
 
   const skills = [
     { id: 'js', name: 'JAVASCRIPT' },

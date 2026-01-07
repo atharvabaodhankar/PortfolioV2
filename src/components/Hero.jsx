@@ -1,14 +1,17 @@
-import React, { useEffect, useLayoutEffect, useRef } from 'react';
+import React, { useRef } from 'react';
 import gsap from 'gsap';
+import { useGSAP } from '@gsap/react';
 // import Shery from 'sheryjs'; // TODO: Fix Shery imports
 import { useLoader } from '../context/LoaderContext';
+
+gsap.registerPlugin(useGSAP);
 
 const Hero = () => {
   const { isLoaded } = useLoader();
   const heroRef = useRef(null);
   const heroImgRef = useRef(null);
 
-  useLayoutEffect(() => {
+  useGSAP(() => {
     if (!isLoaded) return;
 
     // Magnet effect (TODO: Re-enable when Shery is properly imported)
@@ -18,8 +21,6 @@ const Hero = () => {
     //     duration: 1,
     //   });
     // }
-
-    const ctx = gsap.context(() => {
       const tl = gsap.timeline();
 
       tl.from('.hero-img', {
@@ -45,10 +46,7 @@ const Hero = () => {
         y: 20,
         opacity: 0,
       });
-    }, heroRef);
-
-    return () => ctx.revert();
-  }, [isLoaded]);
+  }, { scope: heroRef, dependencies: [isLoaded] });
 
   return (
     <section id="hero" ref={heroRef} className="h-screen flex items-center justify-center relative">

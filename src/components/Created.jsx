@@ -1,15 +1,15 @@
-import React, { useEffect, useLayoutEffect, useRef } from 'react';
+import React, { useRef } from 'react';
 import gsap from 'gsap';
+import { useGSAP } from '@gsap/react';
 import ScrollTrigger from 'gsap/ScrollTrigger';
 // import Shery from 'sheryjs'; // TODO: Fix Sh ery imports
 
-gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(ScrollTrigger, useGSAP);
 
 const Created = () => {
   const createdRef = useRef(null);
 
-  useLayoutEffect(() => {
-    const ctx = gsap.context(() => {
+  useGSAP(() => {
       if (window.matchMedia('(min-width: 768px)').matches) {
         gsap.from('.created-img', {
           opacity: 0,
@@ -80,8 +80,7 @@ const Created = () => {
     //   });
     // }
 
-    return () => ctx.revert();
-  }, []);
+  }, { scope: createdRef });
 
   return (
     <section id="created" ref={createdRef} className="flex items-center justify-center min-h-[80vh] py-24 pb-0">

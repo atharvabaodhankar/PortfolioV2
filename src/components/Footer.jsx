@@ -1,43 +1,41 @@
-import React, { useEffect, useLayoutEffect, useRef } from 'react';
+import React, { useRef } from 'react';
 import gsap from 'gsap';
+import { useGSAP } from '@gsap/react';
 import ScrollTrigger from 'gsap/ScrollTrigger';
 
-gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(ScrollTrigger, useGSAP);
 
 const Footer = () => {
   const footerRef = useRef(null);
 
-  useLayoutEffect(() => {
-    const ctx = gsap.context(() => {
-      gsap.from('.footer-left, .footer-right', {
-        yPercent: -100,
-        opacity: 0.7,
-        scrollTrigger: {
-          scroller: 'body',
-          trigger: '#footer',
-          scrub: 3,
-          start: 'top 80%',
-          end: '40% 80%',
-        },
-      });
+  useGSAP(() => {
+    gsap.from('.footer-h1', {
+      opacity: 0,
+      y: 450,
+      duration: 1.5,
+      ease: 'none',
+      scrollTrigger: {
+        trigger: '.footer',
+        scrub: 2,
+        start: 'top 90%',
+        end: 'top 30%',
+      },
+    });
 
-      gsap.from('.footer-text h2', {
-        y: -100,
-        opacity: 0,
-        skewY: 10,
-        ease: 'ease',
-        scrollTrigger: {
-          scroller: 'body',
-          trigger: '.footer',
-          scrub: 3,
-          start: '40% 80%',
-          end: '60% 80%',
-        },
-      });
-    }, footerRef);
-
-    return () => ctx.revert();
-  }, []);
+    gsap.from('.footer-img', {
+      opacity: 0,
+      rotate: 30,
+      scale: 0,
+      duration: 1,
+      ease: 'none',
+      scrollTrigger: {
+        trigger: '.footer',
+        scrub: 2,
+        start: 'top 85%',
+        end: 'top 30%',
+      },
+    });
+  }, { scope: footerRef });
 
   return (
     <section id="footer" ref={footerRef} className="non-hover flex items-center justify-center flex-col py-20 pt-0">

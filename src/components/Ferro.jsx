@@ -1,30 +1,26 @@
-import React, { useEffect, useLayoutEffect, useRef } from 'react';
+import React, { useRef } from 'react';
 import gsap from 'gsap';
+import { useGSAP } from '@gsap/react';
 import ScrollTrigger from 'gsap/ScrollTrigger';
 
-gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(ScrollTrigger, useGSAP);
 
 const Ferro = () => {
   const ferroRef = useRef(null);
 
-  useLayoutEffect(() => {
-    const ctx = gsap.context(() => {
-      gsap.to('.ferro-c1', {
-        xPercent: -200,
-        ease: 'none',
-        scrollTrigger: {
-          scroller: 'body',
-          trigger: '#ferro',
-          scrub: true,
-          start: 'top top',
-          end: '+300% top',
-          pin: true,
-        },
-      });
-    }, ferroRef);
-
-    return () => ctx.revert();
-  }, []);
+  useGSAP(() => {
+    gsap.to('.ferro-c1', {
+      xPercent: -200,
+      ease: 'none',
+      scrollTrigger: {
+        trigger: '#ferro',
+        scrub: true,
+        start: 'top top',
+        end: '+300% top',
+        pin: true,
+      },
+    });
+  }, { scope: ferroRef });
 
   return (
     <section id="ferro" ref={ferroRef} className="overflow-hidden flex items-center justify-center flex-col w-full py-24 pt-0">

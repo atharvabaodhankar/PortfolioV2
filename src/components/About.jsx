@@ -1,46 +1,43 @@
-import React, { useEffect, useLayoutEffect, useRef } from 'react';
+import React, { useRef } from 'react';
 import gsap from 'gsap';
+import { useGSAP } from '@gsap/react';
 import ScrollTrigger from 'gsap/ScrollTrigger';
 
-gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(ScrollTrigger, useGSAP);
 
 const About = () => {
   const aboutRef = useRef(null);
 
-  useLayoutEffect(() => {
-    const ctx = gsap.context(() => {
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: '#aboutme',
-          start: '10% 50%',
-          end: '50% 50%',
-          scrub: 2,
-        },
-      });
+  useGSAP(() => {
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: '#aboutme',
+        start: '10% 50%',
+        end: '50% 50%',
+        scrub: 2,
+      },
+    });
 
-      tl.from('.aboutmeimg-outer', {
-        opacity: 0,
-        y: 100,
-        ease: 'ease',
-      });
+    tl.from('.aboutmeimg-outer', {
+      opacity: 0,
+      y: 100,
+      ease: 'ease',
+    });
 
-      tl.from('.aboutme-right h1', {
-        opacity: 0,
-        x: -100,
-        ease: 'ease',
-      });
+    tl.from('.aboutme-right h1', {
+      opacity: 0,
+      x: -100,
+      ease: 'ease',
+    });
 
-      tl.from('.aboutme-left-text-h1, .aboutme-left-text-p span', {
-        opacity: 0,
-        x: 100,
-        stagger: 0.2,
-        skewX: 40,
-        ease: 'ease',
-      });
-    }, aboutRef);
-
-    return () => ctx.revert();
-  }, []);
+    tl.from('.aboutme-left-text-h1, .aboutme-left-text-p span', {
+      opacity: 0,
+      x: 100,
+      stagger: 0.2,
+      skewX: 40,
+      ease: 'ease',
+    });
+  }, { scope: aboutRef });
 
   return (
     <section id="aboutme" ref={aboutRef} className="flex items-start justify-center min-h-[90vh] py-28">
