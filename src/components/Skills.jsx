@@ -58,13 +58,13 @@ const Skills = () => {
       });
     }, skillsRef);
 
-    // Shery effect for desktop
-    if (window.matchMedia('(min-width: 768px)').matches) {
-      Shery.imageEffect('.skills-img', {
-        style: 3,
-        // preset: './presets/wigglewobble.json', // Missing file, using default
-      });
-    }
+    // Shery effect for desktop (TODO: Re-enable when Shery is properly imported)
+    // if (window.matchMedia('(min-width: 768px)').matches) {
+    //   Shery.imageEffect('.skills-img', {
+    //     style: 3,
+    //     // preset: './presets/wigglewobble.json', // Missing file, using default
+    //   });
+    // }
 
     return () => ctx.revert();
   }, []);
