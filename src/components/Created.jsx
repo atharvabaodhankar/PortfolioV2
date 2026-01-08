@@ -65,7 +65,6 @@ const Created = () => {
           },
         });
       }
-    }, createdRef);
 
     // Shery effects (TODO: Re-enable when Shery is properly imported)
     // if (window.matchMedia('(min-width: 768px)').matches) {

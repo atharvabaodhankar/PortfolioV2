@@ -56,7 +56,6 @@ const Skills = () => {
           scrub: 2,
         },
       });
-    }, skillsRef);
 
     // Shery effect for desktop (TODO: Re-enable when Shery is properly imported)
     // if (window.matchMedia('(min-width: 768px)').matches) {
