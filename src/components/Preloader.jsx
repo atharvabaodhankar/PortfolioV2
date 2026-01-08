@@ -76,17 +76,17 @@ const Preloader = () => {
           </div>
           <div className="loading-text text-[4rem] text-white z-[2]">
             <h1 className="inline-block overflow-hidden">
-              <span className="inline-block font-[FontStyleNew]">Building &nbsp;</span>
+              <span className="inline-block font-fontstyle">Building &nbsp;</span>
             </h1>
-            <h1 className="inline-block overflow-hidden">
-              <span className="inline-block font-[FontStyleNew]">your &nbsp;</span>
-            </h1>
-            <h1 className="inline-block overflow-hidden">
-              <span className="inline-block font-[FontStyleNew]">experience </span>
-            </h1>
-            <h1 className="inline-block overflow-hidden">
-              <span className="inline-block font-[FontStyleNew]">...</span>
-            </h1>
+            <div className="loader-txt-inner2 flex">
+              <span className="inline-block font-fontstyle">your &nbsp;</span>
+            </div>
+            <div className="loader-txt-inner3 flex">
+              <span className="inline-block font-fontstyle">experience </span>
+            </div>
+            <div className="loader-txt-inner4 flex">
+              <span className="inline-block font-fontstyle">...</span>
+            </div>
           </div>
         </div>
       </div>

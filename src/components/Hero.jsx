@@ -51,13 +51,13 @@ const Hero = () => {
   return (
     <section id="hero" ref={heroRef} className="h-screen flex items-center justify-center relative">
       <div className="hero flex items-center justify-center flex-col">
-        <h1 className="hero-hover text-[7vw] font-light -mb-10 z-[2] select-none font-[ArsenicaDemibold]">
+        <h1 className="hero-hover text-[7vw] font-light -mb-10 z-[2] select-none font-arsenica">
           ATHARVA
         </h1>
         <div className="hero-img non-hover w-[23vw] h-[16vw] object-cover -rotate-[5deg]" ref={heroImgRef}>
           <img src="/src/assets/imgs/hero-img.jpg" alt="hero" className="w-full h-full object-cover object-center" />
         </div>
-        <h2 className="hero-hover text-[7vw] font-light -mt-10 z-[2] select-none font-[ArsenicaDemibold]">
+        <h2 className="hero-hover text-[7vw] font-light -mt-10 z-[2] select-none font-arsenica">
           BAODHANKAR
         </h2>
         <p className="text-[3rem] mt-16">Web Designer and Video Editor</p>

@@ -85,7 +85,7 @@ const Created = () => {
     <section id="created" ref={createdRef} className="flex items-center justify-center min-h-[80vh] py-24 pb-0">
       <div className="created flex items-center justify-center text-center select-none">
         <h1 className="text-[6vw] font-normal">
-          I WAS <br /> <span className="font-[ArsenicaDemibold]">CODED</span>
+          I WAS <br /> <span className="font-arsenica">CODED</span>
           <div className="created-img-1 created-img w-[250px] h-[100px] inline-block">
             <img src="/src/assets/imgs/created-img-1.jpg" alt="" className="w-full h-full object-cover" />
           </div>
@@ -93,7 +93,7 @@ const Created = () => {
           <div className="created-img-2 created-img w-[250px] h-[100px] inline-block">
             <img src="/src/assets/imgs/created-img-2.png" alt="" className="w-full h-full object-cover" />
           </div>
-          TO <span className="font-[ArsenicaDemibold]">DESIGN</span>
+          TO <span className="font-arsenica">DESIGN</span>
         </h1>
       </div>
     </section>

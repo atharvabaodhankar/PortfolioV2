@@ -30,7 +30,7 @@ const Ferro = () => {
       <div className="ferro-container w-screen h-[600px] flex overflow-x-hidden">
         <div className="ferro-c1 ferro-section-1 w-screen h-full flex-shrink-0 py-12 px-16 flex items-center justify-center">
           <div className="ferro-section-1-text flex items-start justify-center flex-col gap-8">
-            <h1 className="ferro-h1 text-[9vw] font-[FontStyleNew] tracking-wider">What is Ferro.Js?</h1>
+            <h1 className="ferro-h1 text-[9vw] font-fontstyle tracking-wider">What is Ferro.Js?</h1>
             <h2 className="ferro-h2 text-[3rem]">A Dynamic JavaScript Animation Library</h2>
           </div>
         </div>
@@ -54,11 +54,11 @@ const Ferro = () => {
         </div>
         <div className="ferro-c1 ferro-section-3 w-screen h-full flex-shrink-0 py-12 px-16 flex items-center justify-center">
           <div className="ferro-section-1-text py-16 text-center flex items-center justify-center flex-col gap-8">
-            <h1 className="ferro-h1 text-[7vw] !important font-[FontStyleNew]">Elevate Your Web Experience with Interactive Animations</h1>
-            <a href="https://www.npmjs.com/package/ferro-js" className="ferro-btn text-[3em] font-[FontStyleNew] text-black border-b-2 border-black">
+            <h1 className="ferro-h1 text-[7vw] !important font-fontstyle">Elevate Your Web Experience with Interactive Animations</h1>
+            <a href="https://www.npmjs.com/package/ferro-js" className="ferro-btn text-[3em] font-fontstyle text-black border-b-2 border-black">
               Visit NPM
             </a>
-            <a href="https://github.com/atharvabaodhankar/ferro.js" className="ferro-btn text-[3em] font-[FontStyleNew] text-black border-b-2 border-black">
+            <a href="https://github.com/atharvabaodhankar/ferro.js" className="ferro-btn text-[3em] font-fontstyle text-black border-b-2 border-black">
               Visit GITHUB
             </a>
           </div>

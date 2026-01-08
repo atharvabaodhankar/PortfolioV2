@@ -48,7 +48,7 @@ const Footer = () => {
       </svg>
       <div className="footer w-full bg-black px-20 pb-40 flex items-start justify-between">
         <div className="footer-left text-white w-[500px]">
-          <h1 className="font-[FontStyleNew] text-[8rem]">Get in touch.</h1>
+          <h1 className="font-fontstyle text-[8rem]">Get in touch.</h1>
           <p className="text-[1.9rem] my-8">Crafting beautiful & engaging websites. Let's collaborate!</p>
           <a href="#work" className="capsule-btn">
             <span>Explore Now</span>

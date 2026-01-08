@@ -13,6 +13,11 @@
     src: url(/src/assets/fonts/e9849a0be596192c822daa1765c81db9.woff2);
 }
 
+/* Tailwind v4 Custom Theme */
+@theme {
+    --font-family-arsenica: ArsenicaDemibold, serif;
+    --font-family-fontstyle: FontStyleNew, sans-serif;
+}
 * {
     font-family: "Arimo", sans-serif;
 }

@@ -204,7 +204,7 @@ const Projects = () => {
                     data-swiper-parallax-duration="2000"
                     className="w-full h-auto mb-6 rounded-[5px]"
                   />
-                  <h2 className="title text-[2.2rem] leading-[110%] my-0 mb-2 font-[FontStyleNew] font-normal tracking-wider text-white" data-swiper-parallax="80" data-swiper-parallax-duration="1000">
+                  <h2 className="title text-[2.2rem] leading-[110%] my-0 mb-2 font-fontstyle font-normal tracking-wider text-white" data-swiper-parallax="80" data-swiper-parallax-duration="1000">
                     {project.title}
                   </h2>
                   <h4 className="subtitle text-[110%] leading-[120%] font-bold my-0 mb-3 text-[#bbb] italic" data-swiper-parallax="80" data-swiper-parallax-duration="1500">
