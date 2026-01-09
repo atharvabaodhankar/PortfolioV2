@@ -15,10 +15,12 @@ import Footer from './components/Footer';
 import Lenis from 'lenis';
 import gsap from 'gsap';
 import ScrollTrigger from 'gsap/ScrollTrigger';
-// import MouseFollower from 'mouse-follower'; // TODO: Check proper import method
+import MouseFollower from 'mouse-follower';
+import 'mouse-follower/dist/mouse-follower.min.css';
 // import Shery from 'sheryjs'; // TODO: Check proper import method
 
 gsap.registerPlugin(ScrollTrigger);
+MouseFollower.registerGSAP(gsap);
 
 // Import tilt.js if needed
 // import './assets/scripts/tilt.js';
@@ -62,8 +64,15 @@ function AppContent() {
 
     // Initialize Mouse Follower after loading (desktop only)
     if (window.matchMedia('(min-width: 768px)').matches) {
-      // Initialize custom mouse follower logic if needed
-      // This can be done via Ferro or other custom solution
+      const cursor = new MouseFollower({
+        container: document.body,
+        speed: 0.3,
+      });
+      
+      // Cleanup
+      return () => {
+        cursor.destroy();
+      };
     }
 
     // ScrollTrigger refresh on window resize
