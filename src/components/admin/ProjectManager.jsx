@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { supabase } from '../../lib/supabaseClient';
 import { uploadFile, deleteFile } from '../../lib/storageUtils';
-import { Plus, Edit2, Trash2, Save, X, Upload, ExternalLink, FolderKanban } from 'lucide-react';
+import { Plus, Edit2, Trash2, Save, X, Upload, ExternalLink } from 'lucide-react';
 
 export default function ProjectManager() {
   const [projects, setProjects] = useState([]);
