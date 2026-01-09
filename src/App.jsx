@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { LoaderProvider, useLoader } from './context/LoaderContext';
 import { usePreloader } from './hooks/usePreloader';
 import Preloader from './components/Preloader';
@@ -12,20 +13,26 @@ import Ferro from './components/Ferro';
 import Projects from './components/Projects';
 import Work from './components/Work';
 import Footer from './components/Footer';
+
+// Admin components
+import Login from './components/admin/Login';
+import AdminLayout from './components/admin/AdminLayout';
+import Dashboard from './components/admin/Dashboard';
+import ProjectManager from './components/admin/ProjectManager';
+import SkillsManager from './components/admin/SkillsManager';
+import WorkManager from './components/admin/WorkManager';
+import ProtectedRoute from './components/admin/ProtectedRoute';
+
 import Lenis from 'lenis';
 import gsap from 'gsap';
 import ScrollTrigger from 'gsap/ScrollTrigger';
 import MouseFollower from 'mouse-follower';
 import 'mouse-follower/dist/mouse-follower.min.css';
-// import Shery from 'sheryjs'; // TODO: Check proper import method
 
 gsap.registerPlugin(ScrollTrigger);
 MouseFollower.registerGSAP(gsap);
 
-// Import tilt.js if needed
-// import './assets/scripts/tilt.js';
-
-function AppContent() {
+function PortfolioPage() {
   const { isLoaded, markAsLoaded } = useLoader();
   const [heroImages, setHeroImages] = useState([]);
 
@@ -105,6 +112,35 @@ function AppContent() {
         </section>
       )}
     </>
+  );
+}
+
+function AppContent() {
+  return (
+    <Router>
+      <Routes>
+        {/* Main Portfolio Route */}
+        <Route path="/" element={<PortfolioPage />} />
+        
+        {/* Admin Login */}
+        <Route path="/admin/login" element={<Login />} />
+        
+        {/* Protected Admin Routes */}
+        <Route
+          path="/admin/*"
+          element={
+            <ProtectedRoute>
+              <AdminLayout />
+            </ProtectedRoute>
+          }
+        >
+          <Route path="dashboard" element={<Dashboard />} />
+          <Route path="projects" element={<ProjectManager />} />
+          <Route path="skills" element={<SkillsManager />} />
+          <Route path="work" element={<WorkManager />} />
+        </Route>
+      </Routes>
+    </Router>
   );
 }
 
