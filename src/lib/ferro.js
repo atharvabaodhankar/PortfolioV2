@@ -48,7 +48,6 @@ const Ferro = {
     gsap.set(FerroMouseBall, {
         xPercent: -50,
         yPercent: -50,
-        mixBlendMode: blendMode ? "difference" : "normal",
         scale: 1
     });
 
