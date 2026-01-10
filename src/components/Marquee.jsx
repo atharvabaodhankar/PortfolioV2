@@ -17,7 +17,7 @@ const Marquee = () => {
       const tween = gsap.to('.marquee_part', {
         xPercent: -100,
         repeat: -1,
-        duration: 5,
+        duration: 50,
         ease: 'linear',
       }).totalProgress(0.5);
 
@@ -42,7 +42,8 @@ const Marquee = () => {
         gsap.to('.arrow', {
           rotate: isScrollingDown ? 180 : 0,
           duration: 0.6,
-          overwrite: true
+          overwrite: true,
+          ease: 'power2.out',
         });
 
         currentScroll = newScroll;
@@ -58,19 +59,34 @@ const Marquee = () => {
     return () => ctx.revert();
   }, []);
 
+  const quotes = [
+    "Decentralizing the Future",
+    "Design is Intelligence Made Visible",
+    "Scalable Systems Architecture",
+    "Trust in Code",
+    "Crafting Digital Experiences",
+    "Web 3 Revolution",
+    "Simplicity is the Ultimate Sophistication",
+    "Building Unstoppable Applications"
+  ];
+
   return (
     <section 
       id="marquee" 
       ref={marqueeRef} 
-      className="relative bg-[#0f0f0f] text-[#eee] py-12 font-semibold text-[4rem] uppercase overflow-hidden select-none"
+      className="relative bg-white text-black py-12 font-semibold text-[4rem] uppercase overflow-hidden select-none"
     >
       <div className="marquee_inner flex w-fit whitespace-nowrap">
-        {[...Array(6)].map((_, i) => (
-          <div key={i} className="marquee_part flex items-center flex-shrink-0 px-6">
-            <span className="font-arsenica">modern web designs</span>
-            <div className="arrow w-24 h-16 ml-8 transition-transform">
-              <img src={arrowImg} alt="-> " className="w-full h-full object-contain invert" />
-            </div>
+        {[0, 1].map((partKey) => (
+          <div key={partKey} className="marquee_part flex items-center flex-shrink-0">
+            {quotes.map((quote, i) => (
+              <div key={i} className="flex items-center">
+                <span className="font-arsenica px-9">{quote}</span>
+                <div className="arrow w-24 h-24 ml-2 mr-6 transition-transform">
+                  <img src={arrowImg} alt="-> " className="w-full h-full object-contain invert" />
+                </div>
+              </div>
+            ))}
           </div>
         ))}
       </div>
