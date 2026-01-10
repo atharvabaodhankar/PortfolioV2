@@ -6,7 +6,7 @@ export const usePreloader = (onComplete, criticalImages = []) => {
   const [imagesReady, setImagesReady] = useState(false);
 
   useEffect(() => {
-    const minPreloaderTime = 2000;
+    const minPreloaderTime = 3500;
     const startTime = Date.now();
     
     // Get all images or use critical images list

@@ -1,96 +1,104 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useLayoutEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { useLoader } from '../context/LoaderContext';
 
 const Preloader = () => {
   const { isLoaded } = useLoader();
-  const loaderRef = useRef(null);
-  const loadingRef = useRef(null);
+  const containerRef = useRef(null);
+  const overlayRef = useRef(null);
+  const loadingTextRef = useRef(null);
+
+  useLayoutEffect(() => {
+    const ctx = gsap.context(() => {
+        // Entrance Animation
+        const tl = gsap.timeline();
+
+        tl.from(overlayRef.current, {
+            yPercent: 100,
+            duration: 1,
+            ease: "power3.inOut"
+        });
+
+        tl.from(".loading-text span", {
+            y: 100,
+            opacity: 0,
+            duration: 1,
+            stagger: 0.1,
+            ease: "power4.out",
+            delay: 0.2
+        });
+
+        tl.to(".loader-box", {
+            rotate: 360,
+            duration: 2,
+            repeat: -1,
+            ease: "linear"
+        }, "<");
+
+    }, containerRef);
+
+    return () => ctx.revert();
+  }, []);
 
   useEffect(() => {
-    if (isLoaded && loaderRef.current && loadingRef.current) {
-      // Exit animation
-      const tl = gsap.timeline({
-        onComplete: () => {
-          if (loadingRef.current) {
-            loadingRef.current.remove();
-          }
-          if (loaderRef.current) {
-            loaderRef.current.remove();
-          }
-        }
-      });
+    if (isLoaded && containerRef.current) {
+        // Exit Animation
+        const ctx = gsap.context(() => {
+            const tl = gsap.timeline({
+                onComplete: () => {
+                   if (containerRef.current) containerRef.current.style.display = 'none';
+                }
+            });
 
-      tl.to(loadingRef.current, {
-        yPercent: -100,
-        duration: 1.25,
-        ease: 'power4.inOut',
-      });
+            // Text flies up
+            tl.to(".loading-text span", {
+                y: -100,
+                opacity: 0,
+                duration: 0.8,
+                stagger: 0.05,
+                ease: "power3.in"
+            });
 
-      tl.to(loaderRef.current, {
-        yPercent: -100,
-        backgroundColor: '#EDECE7',
-        duration: 1.5,
-        ease: 'power4.inOut',
-      }, '-=0.5');
+            // Black overlay slides up
+            tl.to(overlayRef.current, {
+                yPercent: -100,
+                duration: 1.2,
+                ease: "power4.inOut"
+            }, "-=0.4");
+            
+            // White background (container) cleanup
+            tl.to(containerRef.current, {
+                opacity: 0,
+                duration: 0.5,
+                delay: 0.5
+            }, "<");
+
+        }, containerRef);
+
+        return () => ctx.revert();
     }
   }, [isLoaded]);
 
-  useEffect(() => {
-    // Entrance animation
-    const tl = gsap.timeline();
-    
-    tl.from(loadingRef.current, {
-      yPercent: 100,
-      ease: 'power3.inOut',
-      duration: 1,
-    });
-
-    tl.from('.loading-text h1 span', {
-      duration: 0.6,
-      delay: -0.3,
-      y: 130,
-      skewY: 10,
-      stagger: 0.4,
-      ease: 'Power3.easeOut',
-    }, 'loader-same');
-
-    tl.from('.loader-box', {
-      rotate: -360,
-      scale: 4,
-      duration: 2,
-      ease: 'ease',
-    }, 'loader-same');
-  }, []);
-
   return (
-    <>
-      <section id="loader" ref={loaderRef} className="fixed w-full h-full bg-white overflow-hidden z-[7]"></section>
-      <div ref={loadingRef} className="loading fixed w-full h-full bg-black overflow-hidden z-[100] flex items-center justify-center">
-        <div className="loading-main flex items-center justify-center flex-col">
-          <div className="loader-box absolute top-1/2 left-1/2 w-20 h-20 -translate-x-1/2 -translate-y-1/2 rotate-45">
-            <span className="absolute block w-10 h-10 bg-[#747474] top-0 left-0 animate-loaderBlock"></span>
-            <span className="absolute block w-10 h-10 bg-[#747474] top-0 right-0 animate-loaderBlockInverse"></span>
-            <span className="absolute block w-10 h-10 bg-[#747474] bottom-0 left-0 animate-loaderBlockInverse"></span>
-            <span className="absolute block w-10 h-10 bg-[#747474] bottom-0 right-0 animate-loaderBlock"></span>
-          </div>
-          <div className="loading-text text-[4rem] text-white z-[2]">
-            <h1 className="inline-block overflow-hidden">
-              <span className="inline-block font-fontstyle">Building &nbsp;</span>
-            </h1>
-            <div className="loader-txt-inner2 flex">
-              <span className="inline-block font-fontstyle">your &nbsp;</span>
-            </div>
-            <div className="loader-txt-inner3 flex">
-              <span className="inline-block font-fontstyle">experience </span>
-            </div>
-            <div className="loader-txt-inner4 flex">
-              <span className="inline-block font-fontstyle">...</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </>
+    <div ref={containerRef} className="fixed inset-0 w-full h-full z-[9999] pointer-events-none">
+       {/* Background (white) implied or added if needed, handled by overlay */}
+       
+       <div ref={overlayRef} className="absolute inset-0 w-full h-full bg-[#1a1a1a] flex items-center justify-center z-[10000]">
+           <div className="relative flex flex-col items-center justify-center overflow-hidden">
+               {/* Loader Box */}
+               <div className="loader-box w-16 h-16 border-2 border-white/20 mb-8 relative rotate-45">
+                   <div className="absolute inset-0 border-2 border-white animate-pulse"></div>
+               </div>
+
+               {/* Text */}
+               <div ref={loadingTextRef} className="loading-text text-white text-4xl md:text-7xl font-arsenica uppercase tracking-wider text-center leading-tight mix-blend-difference">
+                   <div className="overflow-hidden"><span className="inline-block">Building</span></div>
+                   <div className="overflow-hidden"><span className="inline-block">Your</span></div>
+                   <div className="overflow-hidden"><span className="inline-block">Experience</span></div>
+               </div>
+           </div>
+       </div>
+    </div>
   );
 };
 

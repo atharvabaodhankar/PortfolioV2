@@ -65,7 +65,7 @@ const Work = () => {
   return (
     <section id="work" ref={workRef} className="flex items-center justify-center py-28">
       <div className="work-left flex items-start justify-start flex-col mx-16 mr-40 overflow-hidden">
-        <h2 className="text-[2.5rem] font-fontstyle font-normal">Atharva Baodhankar</h2>
+        <h2 className="text-[2.5rem] font-arsenica font-normal">Atharva Baodhankar</h2>
         <h1 className="text-[5vw] font-normal my-8">
           WORK <br /> WITH ME
         </h1>
@@ -94,9 +94,9 @@ const Work = () => {
         </div>
 
         <ul className="list-none text-[3rem] mt-20">
-          <li className="font-fontstyle my-4">Solapur, Maharashtra</li>
-          <li className="font-fontstyle my-4">+91 9373924727</li>
-          <li className="font-fontstyle my-4">baodhankaratharva@.gmail.com</li>
+          <li className="font-arsenica my-4">Solapur, Maharashtra</li>
+          <li className="font-arsenica my-4">+91 9373924727</li>
+          <li className="font-arsenica my-4">baodhankaratharva@.gmail.com</li>
         </ul>
       </div>
       <div className="work-img non-hover w-[400px] h-[500px] rotate-[8deg] ml-20 relative overflow-hidden">
