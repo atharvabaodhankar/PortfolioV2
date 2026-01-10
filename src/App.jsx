@@ -26,11 +26,9 @@ import ProtectedRoute from './components/admin/ProtectedRoute';
 import Lenis from 'lenis';
 import gsap from 'gsap';
 import ScrollTrigger from 'gsap/ScrollTrigger';
-import MouseFollower from 'mouse-follower';
-import 'mouse-follower/dist/mouse-follower.min.css';
+import FerroLib from './lib/ferro';
 
 gsap.registerPlugin(ScrollTrigger);
-MouseFollower.registerGSAP(gsap);
 
 function PortfolioPage() {
   const { isLoaded, markAsLoaded } = useLoader();
@@ -71,14 +69,12 @@ function PortfolioPage() {
 
     // Initialize Mouse Follower after loading (desktop only)
     if (window.matchMedia('(min-width: 768px)').matches) {
-      const cursor = new MouseFollower({
-        container: document.body,
-        speed: 0.3,
-      });
+      // Ferro.mouseFollower(speed, size, blendMode, selectors, scaleEnhancer)
+      const cursor = FerroLib.mouseFollower(1, "12px", true, ["h1", ".nav-btn" , ".hero-hover" , ".ferro-c1 p",".ferro-btn"], 3);
       
       // Cleanup
       return () => {
-        cursor.destroy();
+        if (cursor) cursor.destroy();
       };
     }
 
