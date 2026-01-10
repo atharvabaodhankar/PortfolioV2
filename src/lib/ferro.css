@@ -6,12 +6,10 @@
     position: fixed;
     top: 0;
     left: 0;
-
+    background-color: #fff;
     border-radius: 50%;
-    z-index: 2147483647 !important;
+    mix-blend-mode: difference;
+    z-index: 100;
     pointer-events: none;
-    background-color: transparent !important;
-    backdrop-filter: invert(1) !important;
-    -webkit-backdrop-filter: invert(1) !important;
 }
 /* Ferro Mouse Follower End */

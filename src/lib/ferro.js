@@ -12,6 +12,11 @@ const Ferro = {
    * @param {number} se - Scale enhancer level (0-5)
    */
   mouseFollower: function(sp = 0, size = "15px", blendMode = true, selectors = [], se = 0) {
+    // Only run on desktop
+    if (!window.matchMedia('(min-width: 768px)').matches) {
+      return { destroy: () => {} };
+    }
+
     // Clean up any existing instance to prevent duplicates
     const existingBall = document.querySelector('.ferro-mouse-follower-ball');
     if (existingBall) {
@@ -20,11 +25,24 @@ const Ferro = {
 
     const FerroMouseBall = document.createElement("div");
     FerroMouseBall.className = "ferro-mouse-follower-ball";
+    
+    // Add inline styles to ensure it works even if CSS doesn't load
+    FerroMouseBall.style.cssText = `
+      width: ${size};
+      height: ${size};
+      position: fixed;
+      top: 0;
+      left: 0;
+      background-color: #fff;
+      border-radius: 50%;
+      mix-blend-mode: difference;
+      z-index: 9999;
+      pointer-events: none;
+      transform: translate(-50%, -50%);
+    `;
+    
     document.body.appendChild(FerroMouseBall);
     
-    // Set initial size variable
-    FerroMouseBall.style.setProperty("--f-m-ball-size", size);
-
     const speedMap = {
       0: 0.08,
       1: 0.1,
@@ -43,7 +61,7 @@ const Ferro = {
         5: 120,
     };
 
-    const speed = speedMap[sp] || 0.05;
+    const speed = speedMap[sp] || 0.1;
 
     gsap.set(FerroMouseBall, {
         xPercent: -50,
@@ -88,17 +106,17 @@ const Ferro = {
                         fontSize = parseFloat(window.getComputedStyle(element).fontSize);
                     } catch(e) {}
                     
-                    const enhancer = ScaleEnchancer[se] !== undefined ? ScaleEnchancer[se] : 20;
+                    const enhancer = ScaleEnchancer[se] !== undefined ? ScaleEnchancer[se] : 80;
                     const targetSize = fontSize + enhancer;
                     const currentSizeVal = parseFloat(size) || 15;
                     // Safety check for div by zero
-                    const scale = currentSizeVal > 0 ? targetSize / currentSizeVal : 1;
+                    const scale = currentSizeVal > 0 ? targetSize / currentSizeVal : 3;
 
-                    gsap.to(FerroMouseBall, { scale: scale, duration: 0.3 });
+                    gsap.to(FerroMouseBall, { scale: scale, duration: 0.3, ease: "power2.out" });
                 };
 
                 const leaveHandler = () => {
-                    gsap.to(FerroMouseBall, { scale: 1, duration: 0.3 });
+                    gsap.to(FerroMouseBall, { scale: 1, duration: 0.3, ease: "power2.out" });
                 };
 
                 element.addEventListener('mouseenter', enterHandler);
@@ -109,6 +127,8 @@ const Ferro = {
             });
         });
     }
+
+    console.log('Ferro Mouse Follower initialized with selectors:', selectors);
 
     // Return an object with destroy method
     return {

@@ -69,12 +69,22 @@ function PortfolioPage() {
 
     // Initialize Mouse Follower after loading (desktop only)
     if (window.matchMedia('(min-width: 768px)').matches) {
-      // Ferro.mouseFollower(speed, size, blendMode, selectors, scaleEnhancer)
-      const cursor = FerroLib.mouseFollower(1, "12px", true, ["h1", ".nav-btn" , ".hero-hover" , ".ferro-c1 p",".ferro-btn"], 3);
+      // Small delay to ensure all DOM elements are rendered
+      const timer = setTimeout(() => {
+        // Ferro.mouseFollower(speed, size, blendMode, selectors, scaleEnhancer)
+        const cursor = FerroLib.mouseFollower(1, "15px", true, ["h1", ".nav-btn" , ".hero-hover" , ".ferro-c1 p",".ferro-btn"], 3);
+        
+        // Store cursor instance for cleanup
+        window.ferroCursor = cursor;
+      }, 100);
       
       // Cleanup
       return () => {
-        if (cursor) cursor.destroy();
+        clearTimeout(timer);
+        if (window.ferroCursor) {
+          window.ferroCursor.destroy();
+          window.ferroCursor = null;
+        }
       };
     }
 
