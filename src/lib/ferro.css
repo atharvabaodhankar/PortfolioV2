@@ -1,6 +1,6 @@
-/* Ultra Sharp Ferro Mouse Follower with Smooth Trailing */
+/* Ferro Mouse Follower */
 .ferro-mouse-follower-ball {
-    --f-m-ball-size: 50px;
+    --f-m-ball-size : 15px;
     width: var(--f-m-ball-size);
     height: var(--f-m-ball-size);
     position: fixed;
@@ -9,29 +9,7 @@
     background-color: #ffffff;
     border-radius: 50%;
     mix-blend-mode: difference;
-    z-index: 99999;
+    z-index: 9999;
     pointer-events: none;
-    transform-origin: center center;
-    image-rendering: -webkit-optimize-contrast;
-    image-rendering: crisp-edges;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-}
-
-/* Ensure mix-blend-mode works properly by creating stacking context */
-body {
-    isolation: isolate;
-}
-
-/* Fix for elements that might interfere with mix-blend-mode */
-#app-content,
-#main,
-.navbar,
-.hero,
-.about,
-.skills,
-.work,
-.footer {
-    position: relative;
 }
 /* Ferro Mouse Follower End */

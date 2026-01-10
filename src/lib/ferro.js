@@ -1,10 +1,6 @@
 
 import gsap from 'gsap';
-import MouseFollower from 'mouse-follower';
-import 'mouse-follower/dist/mouse-follower.min.css';
-
-// Register GSAP with MouseFollower if not already done
-MouseFollower.registerGSAP(gsap);
+import './ferro.css';
 
 const Ferro = {
   /**
@@ -16,10 +12,18 @@ const Ferro = {
    * @param {number} se - Scale enhancer level (0-5)
    */
   mouseFollower: function(sp = 0, size = "15px", blendMode = true, selectors = [], se = 0) {
-    // Clean up any existing instance to prevent duplicates if called multiple times (e.g. strict mode)
-    if (window.ferroCursor) {
-      window.ferroCursor.destroy();
+    // Clean up any existing instance to prevent duplicates
+    const existingBall = document.querySelector('.ferro-mouse-follower-ball');
+    if (existingBall) {
+      existingBall.remove();
     }
+
+    const FerroMouseBall = document.createElement("div");
+    FerroMouseBall.className = "ferro-mouse-follower-ball";
+    document.body.appendChild(FerroMouseBall);
+    
+    // Set initial size variable
+    FerroMouseBall.style.setProperty("--f-m-ball-size", size);
 
     const speedMap = {
       0: 0.08,
@@ -29,92 +33,98 @@ const Ferro = {
       4: 0.4,
       5: 0.5,
     };
-
+    
     const ScaleEnchancer = {
-      0: 20,
-      1: 40,
-      2: 60,
-      3: 80,
-      4: 100,
-      5: 120,
+        0: 20,
+        1: 40,
+        2: 60,
+        3: 80,
+        4: 100,
+        5: 120,
     };
 
     const speed = speedMap[sp] || 0.05;
 
-    // Initialize MouseFollower
-    const cursor = new MouseFollower({
-      container: document.body,
-      speed: speed,
-      stateDetection: {
-        '-pointer': 'a,button',
-        '-hidden': 'iframe',
-      },
+    gsap.set(FerroMouseBall, {
+        xPercent: -50,
+        yPercent: -50,
+        mixBlendMode: blendMode ? "difference" : "normal",
+        scale: 1
     });
 
-    // Store instance globally for cleanup
-    window.ferroCursor = cursor;
+    const pos = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
+    const mouse = { x: pos.x, y: pos.y };
 
-    // Apply custom styles
-    if (cursor.el) {
-       // Size
-       cursor.el.style.setProperty('--cursor-size', size);
-       // We might need to override the library's default size logic or use their API
-       // The library usually uses css variables or width/height. 
-       // Let's force it via style to be sure it matches 'size' param.
-       // Actually, the library uses --cursor-size in its css? 
-       // Checking standard mouse-follower css, it uses width/height.
-       // Let's set the variable AND direct style to be safe.
-       cursor.el.style.width = size;
-       cursor.el.style.height = size;
-       
-       // Blend Mode
-       if (blendMode) {
-         cursor.el.style.mixBlendMode = 'difference';
-       } else {
-         cursor.el.style.mixBlendMode = 'normal';
-       }
-    }
+    const xSet = gsap.quickSetter(FerroMouseBall, "x", "px");
+    const ySet = gsap.quickSetter(FerroMouseBall, "y", "px");
 
-    // Handle Custom Selectors
+    const mouseMoveHandler = (e) => {
+        mouse.x = e.clientX;
+        mouse.y = e.clientY;
+    };
+    
+    window.addEventListener("mousemove", mouseMoveHandler);
+
+    const tickerFunc = () => {
+        const dt = 1.0 - Math.pow(1.0 - speed, gsap.ticker.deltaRatio());
+        pos.x += (mouse.x - pos.x) * dt;
+        pos.y += (mouse.y - pos.y) * dt;
+        xSet(pos.x);
+        ySet(pos.y);
+    };
+
+    gsap.ticker.add(tickerFunc);
+
+    // Store listeners to remove them later
+    const cleanupListeners = [];
+
     if (selectors && selectors.length > 0) {
         selectors.forEach(selector => {
             const elements = document.querySelectorAll(selector);
             elements.forEach(element => {
-                element.addEventListener('mouseenter', () => {
-                    // Logic from old code:
-                    // const fontSize = parseFloat(window.getComputedStyle(element).fontSize) + ScaleEnchancer[se] || 20;
-                    // const currentSize = parseFloat(size); // "15px" -> 15
-                    // const newScale = fontSize / currentSize;
-                    // cursor.addState('-inverse'); // or just scale?
-                    // The old code used gsap to scale the ball manually.
-                    // MouseFollower has a setScale method or state system.
-                    // Let's try to stick to the library's way if possible, or manual if needed.
-                    // Old code: gsap.to(FerroMouseBall, { scale: newScale, duration: 0.3 });
+                const enterHandler = () => {
+                    // Calculate new scale based on element font size + enhancer
+                    let fontSize = 20;
+                    try {
+                        fontSize = parseFloat(window.getComputedStyle(element).fontSize);
+                    } catch(e) {}
                     
-                    const fontSize = parseFloat(window.getComputedStyle(element).fontSize);
                     const enhancer = ScaleEnchancer[se] !== undefined ? ScaleEnchancer[se] : 20;
                     const targetSize = fontSize + enhancer;
                     const currentSizeVal = parseFloat(size) || 15;
-                    const scale = targetSize / currentSizeVal;
+                    // Safety check for div by zero
+                    const scale = currentSizeVal > 0 ? targetSize / currentSizeVal : 1;
 
-                    if (cursor.el) {
-                        gsap.to(cursor.el, { scale: scale, duration: 0.3 });
-                    }
-                    // Also maybe add 'pointer' state?
-                    cursor.addState('-pointer');
-                });
-                
-                element.addEventListener('mouseleave', () => {
-                   if (cursor.el) {
-                       gsap.to(cursor.el, { scale: 1, duration: 0.3 });
-                   }
-                   cursor.removeState('-pointer');
-                });
+                    gsap.to(FerroMouseBall, { scale: scale, duration: 0.3 });
+                };
+
+                const leaveHandler = () => {
+                    gsap.to(FerroMouseBall, { scale: 1, duration: 0.3 });
+                };
+
+                element.addEventListener('mouseenter', enterHandler);
+                element.addEventListener('mouseleave', leaveHandler);
+
+                cleanupListeners.push({ element, type: 'mouseenter', handler: enterHandler });
+                cleanupListeners.push({ element, type: 'mouseleave', handler: leaveHandler });
             });
         });
     }
 
-    return cursor;
+    // Return an object with destroy method
+    return {
+        destroy: () => {
+            window.removeEventListener("mousemove", mouseMoveHandler);
+            gsap.ticker.remove(tickerFunc);
+            cleanupListeners.forEach(({ element, type, handler }) => {
+                element.removeEventListener(type, handler);
+            });
+            if (FerroMouseBall && FerroMouseBall.parentNode) {
+                FerroMouseBall.parentNode.removeChild(FerroMouseBall);
+            }
+        },
+        el: FerroMouseBall
+    };
   }
 };
 
