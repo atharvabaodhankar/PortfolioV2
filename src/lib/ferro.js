@@ -33,7 +33,7 @@ const Ferro = {
       position: fixed;
       top: 0;
       left: 0;
-      background-color: #fff;
+      background-color: #000;
       border-radius: 50%;
       mix-blend-mode: difference;
       z-index: 9999;
