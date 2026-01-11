@@ -98,14 +98,14 @@ const About = () => {
         </div>
 
         {/* Image */}
-        <div className="lg:col-span-5 lg:col-start-2 lg:mt-32 relative reveal-text image-container">
+        <div className="lg:col-span-4 lg:col-start-2 lg:mt-32 relative reveal-text image-container">
           <div className="relative tilt-card group cursor-none" style={{ perspective: '1000px', transformStyle: 'preserve-3d' }}>
             {/* Shadow/background card */}
             <div className="absolute inset-0 bg-gray-200 rounded-lg transform translate-x-3 translate-y-3 -rotate-2 transition-transform duration-700 ease-expo-out group-hover:translate-x-8 group-hover:translate-y-6 group-hover:-rotate-6 z-0"></div>
             
             {/* Main image card */}
             <div className="relative overflow-hidden rounded-sm shadow-2xl bg-white p-1.5 transform rotate-2 transition-transform duration-700 ease-expo-out group-hover:rotate-0 z-10">
-              <div className="aspect-[3/4.2] overflow-hidden rounded-sm relative">
+              <div className="aspect-[3/4] overflow-hidden rounded-sm relative">
                 <img 
                   alt="Portrait of Atharva Baodhankar" 
                   className="w-full h-full object-cover filter grayscale contrast-[1.05] brightness-105 group-hover:grayscale-0 group-hover:scale-105 transition-all duration-1000 ease-expo-out"
