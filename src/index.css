@@ -2,6 +2,7 @@
 
 /* Font imports - moved to top */
 @import url('https://fonts.googleapis.com/css2?family=Arimo:ital,wght@0,400..700;1,400..700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&family=Inter:wght@300;400;500;600&display=swap');
 @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css');
 
 /* Font Faces */
@@ -25,7 +26,7 @@
 }
 
 * {
-    font-family: "Arimo", sans-serif;
+    font-family: "Inter", sans-serif;
 }
 
 html {
@@ -85,6 +86,92 @@ p {
 }
 
 /* About section specific animations */
+.reveal-text {
+    animation: reveal 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    opacity: 0;
+    transform: translateY(40px);
+}
+
+.image-container {
+    perspective: 1000px;
+}
+
+.tilt-card {
+    transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    transform-style: preserve-3d;
+}
+
+.image-container:hover .tilt-card {
+    transform: rotateY(-5deg) rotateX(2deg);
+}
+
+/* Expo-out easing */
+.ease-expo-out {
+    transition-timing-function: cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+@keyframes reveal {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.underline-anim {
+    position: relative;
+    display: inline-block;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.underline-anim::after {
+    content: "";
+    position: absolute;
+    width: 100%;
+    transform: scaleX(0);
+    height: 1px;
+    bottom: 2px;
+    left: 0;
+    background-color: currentColor;
+    transform-origin: bottom right;
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.underline-anim:hover::after {
+    transform: scaleX(1);
+    transform-origin: bottom left;
+}
+
+/* Font family overrides - ensure proper loading */
+.font-display {
+    font-family: 'Bodoni Moda', serif !important;
+}
+
+.font-sans {
+    font-family: 'Inter', sans-serif !important;
+}
+
+/* Specific About section font fixes */
+#aboutme h1 {
+    font-family: 'Bodoni Moda', serif !important;
+}
+
+#aboutme h2 {
+    font-family: 'Inter', sans-serif !important;
+}
+
+#aboutme p {
+    font-family: 'Inter', sans-serif !important;
+}
+
+#aboutme .skill-pill {
+    font-family: 'Inter', sans-serif !important;
+}
+
+#aboutme span {
+    font-family: 'Inter', sans-serif !important;
+}
+
 .about-title {
     will-change: transform, opacity;
 }
@@ -105,6 +192,10 @@ p {
 .skill-tag:hover {
     transform: translateY(-2px);
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.skill-pill {
+    will-change: transform, opacity;
 }
 
 .floating-element {
