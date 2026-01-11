@@ -60,7 +60,7 @@ const Hero = () => {
         <h2 className="hero-hover text-[7vw] font-light -mt-10 z-[2] select-none font-arsenica">
           BAODHANKAR
         </h2>
-        <p className="text-[3rem] mt-16">Web Designer and Video Editor</p>
+        <p className="text-[3rem] mt-16">MERN • Systems • Blockchain • AI Tooling</p>
       </div>
     </section>
   );
