@@ -6,12 +6,12 @@ const Ferro = {
   /**
    * Ferro Mouse Follower
    * @param {number} sp - Speed/smoothness (0-5)
-   * @param {string} size - Size of the cursor (e.g., "15px")
+   * @param {string} size - Size of the cursor (e.g., "50px")
    * @param {boolean} blendMode - Enable mix-blend-mode difference
    * @param {string[]} selectors - Array of selectors to trigger hover scaling
    * @param {number} se - Scale enhancer level (0-5)
    */
-  mouseFollower: function(sp = 0, size = "15px", blendMode = true, selectors = [], se = 0) {
+  mouseFollower: function(sp = 0, size = "50px", blendMode = true, selectors = [], se = 0) {
     // Only run on desktop
     if (!window.matchMedia('(min-width: 768px)').matches) {
       return { destroy: () => {} };
@@ -26,7 +26,7 @@ const Ferro = {
     const FerroMouseBall = document.createElement("div");
     FerroMouseBall.className = "ferro-mouse-follower-ball";
     
-    // Add inline styles to ensure it works even if CSS doesn't load
+    // Start with black cursor
     FerroMouseBall.style.cssText = `
       width: ${size};
       height: ${size};
@@ -35,13 +35,52 @@ const Ferro = {
       left: 0;
       background-color: #000;
       border-radius: 50%;
-      mix-blend-mode: difference;
       z-index: 9999;
       pointer-events: none;
       transform: translate(-50%, -50%);
+      transition: background-color 0.3s ease;
     `;
     
     document.body.appendChild(FerroMouseBall);
+    
+    // Function to detect background and change cursor color
+    const updateCursorColor = (x, y) => {
+      // Temporarily hide cursor to get element below
+      FerroMouseBall.style.visibility = 'hidden';
+      const elementBelow = document.elementFromPoint(x, y);
+      FerroMouseBall.style.visibility = 'visible';
+      
+      if (elementBelow) {
+        // Check for dark sections by ID or class
+        const isDarkSection = 
+          elementBelow.closest('#footer') || 
+          elementBelow.closest('#work') ||
+          elementBelow.closest('.footer') ||
+          elementBelow.closest('.bg-black') ||
+          elementBelow.closest('[style*="background-color: #000"]') ||
+          elementBelow.closest('[style*="background-color: black"]');
+        
+        // Also check computed styles
+        let hasBlackBackground = false;
+        let currentElement = elementBelow;
+        
+        // Check up to 5 parent elements for black background
+        for (let i = 0; i < 5 && currentElement; i++) {
+          const computedStyle = window.getComputedStyle(currentElement);
+          const bgColor = computedStyle.backgroundColor;
+          
+          if (bgColor === 'rgb(0, 0, 0)' || bgColor === '#000' || bgColor === 'black') {
+            hasBlackBackground = true;
+            break;
+          }
+          currentElement = currentElement.parentElement;
+        }
+        
+        // Set cursor color: white on dark backgrounds, black on light backgrounds
+        const shouldBeWhite = isDarkSection || hasBlackBackground;
+        FerroMouseBall.style.backgroundColor = shouldBeWhite ? '#fff' : '#000';
+      }
+    };
     
     const speedMap = {
       0: 0.08,
@@ -78,6 +117,12 @@ const Ferro = {
     const mouseMoveHandler = (e) => {
         mouse.x = e.clientX;
         mouse.y = e.clientY;
+        
+        // Update cursor color based on background (throttled)
+        if (!mouseMoveHandler.lastUpdate || Date.now() - mouseMoveHandler.lastUpdate > 100) {
+          updateCursorColor(e.clientX, e.clientY);
+          mouseMoveHandler.lastUpdate = Date.now();
+        }
     };
     
     window.addEventListener("mousemove", mouseMoveHandler);
@@ -108,7 +153,7 @@ const Ferro = {
                     
                     const enhancer = ScaleEnchancer[se] !== undefined ? ScaleEnchancer[se] : 80;
                     const targetSize = fontSize + enhancer;
-                    const currentSizeVal = parseFloat(size) || 15;
+                    const currentSizeVal = parseFloat(size) || 50;
                     // Safety check for div by zero
                     const scale = currentSizeVal > 0 ? targetSize / currentSizeVal : 3;
 
@@ -128,7 +173,10 @@ const Ferro = {
         });
     }
 
-    console.log('Ferro Mouse Follower initialized with selectors:', selectors);
+    // Initial color update
+    setTimeout(() => {
+      updateCursorColor(window.innerWidth / 2, window.innerHeight / 2);
+    }, 100);
 
     // Return an object with destroy method
     return {
