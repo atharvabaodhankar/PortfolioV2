@@ -84,6 +84,33 @@ p {
     transform: translateY(-1px);
 }
 
+/* About section specific animations */
+.about-title {
+    will-change: transform, opacity;
+}
+
+.about-image {
+    will-change: transform, opacity;
+}
+
+.text-line {
+    will-change: transform, opacity;
+}
+
+.skill-tag {
+    will-change: transform, opacity;
+    transition: all 0.3s cubic-bezier(0.23, 1, 0.320, 1);
+}
+
+.skill-tag:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.floating-element {
+    will-change: transform, opacity;
+}
+
 /* Custom animations */
 @keyframes float {
     0%, 100% { transform: translateY(0px); }
