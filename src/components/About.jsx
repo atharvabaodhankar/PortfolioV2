@@ -109,7 +109,7 @@ const About = () => {
                 <img 
                   alt="Portrait of Atharva Baodhankar" 
                   className="w-full h-full object-cover filter grayscale contrast-[1.05] brightness-105 group-hover:grayscale-0 group-hover:scale-105 transition-all duration-1000 ease-expo-out"
-                  src="/src/assets/imgs/aboutme-img.jpeg"
+                  src="/src/assets/imgs/me.png"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
               </div>
@@ -126,51 +126,67 @@ const About = () => {
             >
               I'm Atharva Baodhankar — a{' '}
               <span className="font-normal relative inline-block">
-                Web Engineer
+                Web & Blockchain Engineer
                 <svg className="absolute w-full h-3 -bottom-1 left-0 text-gray-200 -z-10" preserveAspectRatio="none" viewBox="0 0 100 20">
                   <path d="M0 15 Q 50 25 100 15" fill="none" stroke="currentColor" strokeWidth="8"></path>
                 </svg>
               </span>{' '}
-              focused on crafting high-performance, animation-rich, and system-driven web applications.
+              focused on building scalable, performance-driven, and animation-rich digital systems.
             </h2>
             
             <div className="space-y-6 text-lg md:text-xl text-gray-500 font-light leading-relaxed max-w-2xl" style={{ fontFamily: "'Inter', sans-serif" }}>
               <p>
                 From{' '}
-                <span className="text-black font-normal underline-anim">interactive frontend experiences</span>{' '}
-                to blockchain-backed systems and{' '}
-                <span className="text-black font-normal underline-anim">AI-powered tools</span>, 
-                I build products that feel modern, fast, and intentional.
+                <span className="text-black font-normal underline-anim">modern MERN-based web platforms</span>{' '}
+                to{' '}
+                <span className="text-black font-normal underline-anim">Web3 & blockchain-backed applications</span>,{' '}
+                I design and engineer products that feel fast, intuitive, and intentionally crafted.
               </p>
+
               <p>
-                I enjoy working{' '}
-                <span className="italic font-display font-medium text-xl text-black" style={{ fontFamily: "'Bodoni Moda', serif" }}>close to the metal</span>{' '}
-                — understanding how things work, optimizing flows, and shipping{' '}
-                <span className="text-black font-normal underline-anim">production-grade systems</span>.
+                I work{' '}
+                <span className="italic font-display font-medium text-xl text-black" style={{ fontFamily: "'Bodoni Moda', serif" }}>
+                  close to the system
+                </span>{' '}
+                — thinking in terms of architecture, data flow, and long-term scalability — while still obsessing over
+                <span className="text-black font-normal underline-anim"> motion, performance, and user experience</span>.
+              </p>
+
+              <p>
+                Currently exploring{' '}
+                <span className="text-black font-normal underline-anim">blockchain infrastructure, account abstraction,</span>{' '}
+                and{' '}
+                <span className="text-black font-normal underline-anim">AI-assisted developer workflows</span>{' '}
+                to build smarter, future-ready products.
               </p>
             </div>
           </div>
 
           {/* Skill tags */}
           <div className="flex flex-wrap gap-3" style={{ fontFamily: "'Inter', sans-serif" }}>
-            <span className="group px-6 py-3 rounded-full bg-black text-white text-sm font-medium tracking-wide border border-transparent hover:scale-105 transition-transform duration-500 cursor-default shadow-lg shadow-black/10">
-              Frontend Engineering
+            <span className="px-6 py-3 rounded-full bg-gray-100 text-gray-600 hover:bg-white border border-transparent hover:border-gray-300 text-sm font-medium tracking-wide transition-all duration-300 cursor-default">
+              MERN Stack Engineering
             </span>
-            <span className="px-6 py-3 rounded-full bg-gray-100 text-gray-600 border border-transparent hover:border-gray-300 text-sm font-medium tracking-wide transition-all duration-300 cursor-default hover:bg-white">
-              System Architecture
+            <span className="px-6 py-3 rounded-full bg-gray-100 text-gray-600 hover:bg-white border border-transparent hover:border-gray-300 text-sm font-medium tracking-wide transition-all duration-300 cursor-default">
+              Web3 & Blockchain Systems
             </span>
-            <span className="px-6 py-3 rounded-full bg-gray-100 text-gray-600 border border-transparent hover:border-gray-300 text-sm font-medium tracking-wide transition-all duration-300 cursor-default hover:bg-white">
-              Performance Optimization
+            <span className="px-6 py-3 rounded-full bg-gray-100 text-gray-600 hover:bg-white border border-transparent hover:border-gray-300 text-sm font-medium tracking-wide transition-all duration-300 cursor-default">
+              System Design & Architecture
             </span>
-            <span className="px-6 py-3 rounded-full bg-gray-100 text-gray-600 border border-transparent hover:border-gray-300 text-sm font-medium tracking-wide transition-all duration-300 cursor-default hover:bg-white">
-              WebGL & Animations
+            <span className="px-6 py-3 rounded-full bg-gray-100 text-gray-600 hover:bg-white border border-transparent hover:border-gray-300 text-sm font-medium tracking-wide transition-all duration-300 cursor-default">
+              High-Performance UI & Animations
+            </span>
+            <span className="px-6 py-3 rounded-full bg-gray-100 text-gray-600 hover:bg-white border border-transparent hover:border-gray-300 text-sm font-medium tracking-wide transition-all duration-300 cursor-default">
+              Continuous Learning & Experimentation
             </span>
           </div>
 
           {/* Location info */}
           <div className="pt-8 opacity-40 flex items-center gap-4" style={{ fontFamily: "'Inter', sans-serif" }}>
             <div className="h-px w-16 bg-current"></div>
-            <p className="text-xs uppercase tracking-[0.2em] font-medium">Based in India • Available Worldwide</p>
+            <p className="text-xs uppercase tracking-[0.2em] font-medium">
+              Based in India • Building for the Web, Globally
+            </p>
           </div>
         </div>
       </div>
