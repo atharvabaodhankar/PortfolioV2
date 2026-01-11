@@ -58,6 +58,51 @@ p {
     line-height: 2.5rem;
 }
 
+/* Premium About Section Enhancements */
+.highlight {
+    position: relative;
+    display: inline-block;
+    transition: all 0.4s cubic-bezier(0.23, 1, 0.320, 1);
+}
+
+.highlight::before {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: linear-gradient(90deg, #1f2937, #374151);
+    transition: width 0.6s cubic-bezier(0.23, 1, 0.320, 1);
+}
+
+.highlight:hover::before {
+    width: 100%;
+}
+
+.highlight:hover {
+    transform: translateY(-1px);
+}
+
+/* Custom animations */
+@keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+}
+
+@keyframes pulse-glow {
+    0%, 100% { box-shadow: 0 0 20px rgba(0, 0, 0, 0.1); }
+    50% { box-shadow: 0 0 40px rgba(0, 0, 0, 0.2); }
+}
+
+.animate-float {
+    animation: float 6s ease-in-out infinite;
+}
+
+.animate-pulse-glow {
+    animation: pulse-glow 4s ease-in-out infinite;
+}
+
 /* Loader Animations */
 @keyframes loader {
     0%, 10%, 100% {

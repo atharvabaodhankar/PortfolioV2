@@ -1,15 +1,15 @@
 /* Ferro Mouse Follower */
 .ferro-mouse-follower-ball {
-    --f-m-ball-size : 15px;
+    --f-m-ball-size: 50px;
     width: var(--f-m-ball-size);
     height: var(--f-m-ball-size);
     position: fixed;
     top: 0;
     left: 0;
-    background-color: #000;
+    background-color: #fff;
     border-radius: 50%;
     mix-blend-mode: difference;
-    z-index: 100;
+    z-index: 9999;
     pointer-events: none;
 }
 /* Ferro Mouse Follower End */
