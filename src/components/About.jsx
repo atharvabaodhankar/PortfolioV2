@@ -191,24 +191,7 @@ const About = () => {
         </div>
       </div>
 
-      {/* Skills section */}
-      <div className="mt-32 lg:mt-48 pt-10 border-t border-gray-100 reveal-text">
-        <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-4">
-          <h3 className="text-3xl font-display italic text-primary" style={{ fontFamily: "'Bodoni Moda', serif" }}>Skills & Expertise</h3>
-          <p className="text-sm text-gray-400 font-medium tracking-wide uppercase" style={{ fontFamily: "'Inter', sans-serif" }}>Curated tech stack for modern web</p>
-        </div>
-        
-        <div className="flex flex-wrap gap-3" style={{ fontFamily: "'Inter', sans-serif" }}>
-          {['Javascript', 'React', 'Next.js', 'Node.js', 'GSAP', 'Three.js', 'PostgreSQL', 'Solidity', 'Python'].map((skill) => (
-            <div 
-              key={skill}
-              className="skill-pill group px-5 py-2 border border-gray-200 rounded-full text-xs uppercase tracking-widest font-medium hover:bg-black hover:border-black hover:text-white transition-all duration-300 cursor-default"
-            >
-              {skill}
-            </div>
-          ))}
-        </div>
-      </div>
+
     </section>
   );
 };
