@@ -7,137 +7,149 @@ gsap.registerPlugin(ScrollTrigger, useGSAP);
 
 const Education = () => {
     const containerRef = useRef(null);
+    const diplomaRef = useRef(null);
+    const btechRef = useRef(null);
 
     useGSAP(() => {
-        // Sticky Header Parallax
-        gsap.to('.edu-header-content', {
-            y: -15, 
-            ease: 'none',
+        // Master Timeline controls the sequence
+        const tl = gsap.timeline({
             scrollTrigger: {
                 trigger: containerRef.current,
                 start: 'top top',
-                end: 'bottom bottom',
-                scrub: true
+                end: '+=2500', // Long scroll distance for narrative pacing
+                pin: true,
+                scrub: 1,
+                anticipatePin: 1
             }
         });
 
-        // Sticky Status Rotator
-        gsap.to('.edu-status-icon', {
-            rotate: 360,
-            ease: 'none',
-            scrollTrigger: {
-                trigger: containerRef.current,
-                start: 'top top',
-                end: 'bottom bottom',
-                scrub: 1
-            }
-        });
+        // 0. Initial State Setups
+        gsap.set(btechRef.current, { autoAlpha: 0, y: 50 });
+        
+        // --- PHASE 1: DIPLOMA DRIFT (0% - 30%) ---
+        // Subtle movement of diploma elements to feel alive before leaving
+        tl.to(diplomaRef.current.querySelectorAll('.stagger-el'), {
+            y: -20,
+            stagger: 0.1,
+            duration: 2,
+            ease: 'none'
+        }, 0)
 
-        // Entries Reveal Sequence
-        const entries = gsap.utils.toArray('.edu-entry');
-        entries.forEach((entry, i) => {
-            const tl = gsap.timeline({
-                scrollTrigger: {
-                    trigger: entry,
-                    start: 'top 80%',
-                    toggleActions: 'play none none reverse'
-                }
-            });
+        // --- PHASE 2: TRANSITION OUT (30% - 45%) ---
+        // Diploma fades out, moving up
+        .to(diplomaRef.current, {
+            autoAlpha: 0,
+            y: -40,
+            filter: 'blur(5px)',
+            duration: 1.5,
+            ease: 'power2.in'
+        }, 2)
 
-            tl.from(entry.querySelector('.edu-year'), {
-                y: 20,
-                opacity: 0,
-                duration: 1,
-                ease: 'power3.out'
-            })
-            .from(entry.querySelector('.edu-title'), {
-                y: 20,
-                opacity: 0,
-                duration: 1,
-                ease: 'power3.out'
-            }, '-=0.8')
-            .from(entry.querySelector('.edu-meta'), {
-                y: 20,
-                opacity: 0,
-                duration: 1,
-                ease: 'power3.out'
-            }, '-=0.8');
-        });
+        // --- PHASE 3: SILENCE / DIVIDER STRETCH (45% - 55%) ---
+        .to('.progress-line', {
+            scaleX: 1.5,
+            opacity: 0.2,
+            duration: 1,
+            ease: 'power1.inOut'
+        }, 3.5)
+
+        // --- PHASE 4: EVOLUTION IN (55% - 100%) ---
+        // BTech enters from below, clearer and sharper
+        .to(btechRef.current, {
+            autoAlpha: 1,
+            y: 0,
+            duration: 2,
+            ease: 'power2.out'
+        }, 4.5)
+        
+        // Inner stagger for BTech details
+        .from(btechRef.current.querySelectorAll('.stagger-el-2'), {
+            y: 20,
+            autoAlpha: 0,
+            stagger: 0.2,
+            duration: 1.5,
+            ease: 'power2.out'
+        }, 5);
 
     }, { scope: containerRef });
 
     return (
         <section 
             ref={containerRef} 
-            className="w-full min-h-screen bg-white text-black px-6 md:px-12 lg:px-24 py-32 relative z-10 font-sans"
+            className="w-full h-screen bg-white text-black px-6 md:px-12 lg:px-24 overflow-hidden relative font-sans"
         >
-            <div className="max-w-[1600px] mx-auto flex flex-col lg:flex-row gap-16 lg:gap-32">
+            <div className="max-w-[1600px] mx-auto h-full flex flex-col lg:flex-row">
                 
-                {/* LEFT COLUMN - STICKY */}
-                <div className="lg:w-1/3 flex flex-col justify-between lg:h-[calc(100vh-200px)] lg:sticky lg:top-32 edu-header-content">
-                    <div>
-                        <h2 
-                            className="text-6xl md:text-7xl lg:text-8xl font-bold tracking-tighter leading-[0.9] mb-8"
-                            style={{ fontFamily: "'Inter', sans-serif" }}
-                        >
-                            Academic<br/>Journey
-                        </h2>
-                        <div className="h-1 w-24 bg-black mb-8 origin-left hover:scale-x-150 transition-transform duration-700 ease-out"></div>
-                        <p 
-                            className="text-lg text-gray-500 font-normal leading-relaxed max-w-sm"
-                            style={{ fontFamily: "'Inter', sans-serif" }}
-                        >
-                            A timeline of technical discipline, foundational theory, and continuous growth.
-                        </p>
-                    </div>
-
-                    <div className="hidden lg:flex items-center gap-3 opacity-60 mt-auto">
-                         <span className="material-symbols-outlined edu-status-icon text-2xl">history_edu</span>
-                         <span className="text-xs font-mono uppercase tracking-widest">Education History</span>
-                    </div>
+                {/* LEFT COLUMN: Fixed Editorial Header */}
+                <div className="lg:w-1/3 flex flex-col justify-center h-full relative z-10">
+                    <h2 
+                        className="text-6xl md:text-7xl lg:text-[7rem] font-bold tracking-tighter leading-[0.9] mb-8"
+                        style={{ fontFamily: "'Inter', sans-serif" }}
+                    >
+                        Academic<br/>Journey
+                    </h2>
+                    <div className="w-24 h-1 bg-black mb-8 progress-line origin-left"></div>
+                    <p 
+                        className="text-lg text-gray-500 font-normal leading-relaxed max-w-sm"
+                        style={{ fontFamily: "'Inter', sans-serif" }}
+                    >
+                        Evolution of craft through disciplined study.
+                    </p>
                 </div>
 
-                {/* RIGHT COLUMN - SCROLLABLE ENTRIES */}
-                <div className="lg:w-2/3 flex flex-col gap-32 pt-10 lg:pt-20 pb-20">
+                {/* RIGHT COLUMN: The Narrative Stage */}
+                <div className="lg:w-2/3 h-full relative flex items-center lg:pl-32">
                     
-                    {/* Entry 1 */}
-                    <article className="edu-entry group relative pl-8 md:pl-0 border-l md:border-l-0 border-gray-200 md:border-none">
-                         <div className="edu-year mb-4">
-                            <span className="text-sm font-mono uppercase tracking-widest text-gray-400 border border-gray-200 px-3 py-1 rounded-full">
-                                2025 — 2028
+                    {/* CHAPTER 1: DIPLOMA (Absolute positioned to overlap) */}
+                    <div ref={diplomaRef} className="absolute w-full max-w-2xl">
+                        <div className="stagger-el mb-6">
+                            <span className="text-sm font-mono uppercase tracking-[0.2em] text-gray-400">
+                                Phase I — Foundation
                             </span>
-                         </div>
-                         <h3 
-                            className="edu-title text-3xl md:text-4xl lg:text-5xl font-medium tracking-tight mb-4 group-hover:text-primary transition-colors duration-500"
+                        </div>
+                        <h3 
+                            className="stagger-el text-4xl md:text-5xl lg:text-6xl font-medium tracking-tight mb-8 leading-tight"
                             style={{ fontFamily: "'Inter', sans-serif" }}
                         >
-                            Bachelor of Technology —<br/>Computer Engineering
-                         </h3>
-                         <div className="edu-meta space-y-2 text-lg md:text-xl text-gray-500 font-light">
-                            <p>MIT Academy of Engineering, Alandi, Pune</p>
-                            <div className="w-12 h-[1px] bg-gray-200 my-4 origin-left group-hover:scale-x-150 transition-transform duration-500"></div>
-                         </div>
-                    </article>
+                            Diploma in<br/>Computer Technology
+                        </h3>
+                        
+                        <div className="stagger-el flex flex-col gap-4 text-xl md:text-2xl text-gray-500 font-light border-l border-gray-200 pl-6">
+                            <p>Solapur Education Society’s<br/>Polytechnic, Solapur</p>
+                            <span className="font-mono text-sm tracking-widest text-gray-400 mt-2">2022 — 2025</span>
+                        </div>
 
-                    {/* Entry 2 */}
-                    <article className="edu-entry group relative pl-8 md:pl-0 border-l md:border-l-0 border-gray-200 md:border-none">
-                         <div className="edu-year mb-4">
-                            <span className="text-sm font-mono uppercase tracking-widest text-gray-400 border border-gray-200 px-3 py-1 rounded-full">
-                                2022 — 2025
+                        {/* The Reward */}
+                        <div className="stagger-el mt-12 inline-flex items-center gap-4 px-6 py-3 bg-gray-50 rounded-full">
+                            <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+                            <span className="text-sm font-medium tracking-wide">Grade Distinction: 93.20%</span>
+                        </div>
+                    </div>
+
+                    {/* CHAPTER 2: BTECH (Absolute positioned, starts hidden) */}
+                    <div ref={btechRef} className="absolute w-full max-w-2xl translate-y-12 opacity-0 invisible">
+                         <div className="stagger-el-2 mb-6">
+                            <span className="text-sm font-mono uppercase tracking-[0.2em] text-primary">
+                                Phase II — Evolution
                             </span>
-                         </div>
-                         <h3 
-                            className="edu-title text-3xl md:text-4xl lg:text-5xl font-medium tracking-tight mb-4 group-hover:text-primary transition-colors duration-500"
+                        </div>
+                        <h3 
+                            className="stagger-el-2 text-4xl md:text-5xl lg:text-6xl font-medium tracking-tight mb-8 leading-tight text-black"
                             style={{ fontFamily: "'Inter', sans-serif" }}
                         >
-                            Diploma —<br/>Computer Technology
-                         </h3>
-                         <div className="edu-meta space-y-2 text-lg md:text-xl text-gray-500 font-light">
-                            <p>Solapur Education Society’s Polytechnic, Solapur</p>
-                            <p className="text-primary font-medium">Grade: 93.20%</p>
-                            <div className="w-12 h-[1px] bg-gray-200 my-4 origin-left group-hover:scale-x-150 transition-transform duration-500"></div>
-                         </div>
-                    </article>
+                            Bachelor of Technology<br/>Computer Engineering
+                        </h3>
+                        
+                        <div className="stagger-el-2 flex flex-col gap-4 text-xl md:text-2xl text-gray-500 font-light border-l border-black pl-6">
+                            <p>MIT Academy of Engineering,<br/>Alandi, Pune</p>
+                            <span className="font-mono text-sm tracking-widest text-gray-400 mt-2">2025 — 2028</span>
+                        </div>
+
+                        <div className="stagger-el-2 mt-12 flex items-center gap-3 opacity-60">
+                            <span className="material-symbols-outlined text-xl">arrow_forward</span>
+                            <span className="text-sm font-medium tracking-wide border-b border-black/20 pb-0.5">Focus: Systems & Architecture</span>
+                        </div>
+                    </div>
 
                 </div>
             </div>
