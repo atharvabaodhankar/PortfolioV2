@@ -120,9 +120,8 @@ const Education = () => {
                         </div>
 
                         {/* The Reward */}
-                        <div className="stagger-el mt-12 inline-flex items-center gap-4 px-6 py-3 bg-gray-50 rounded-full">
-                            <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
-                            <span className="text-sm font-medium tracking-wide">Grade Distinction: 93.20%</span>
+                        <div className="stagger-el mt-12 inline-flex items-center px-6 py-3 bg-gray-50 rounded-full">
+                            <span className="text-sm font-medium tracking-wide text-gray-700">Grade Distinction: 93.20%</span>
                         </div>
                     </div>
 
@@ -145,9 +144,10 @@ const Education = () => {
                             <span className="font-mono text-sm tracking-widest text-gray-400 mt-2">2025 — 2028</span>
                         </div>
 
-                        <div className="stagger-el-2 mt-12 flex items-center gap-3 opacity-60">
-                            <span className="material-symbols-outlined text-xl">arrow_forward</span>
-                            <span className="text-sm font-medium tracking-wide border-b border-black/20 pb-0.5">Focus: Systems & Architecture</span>
+                        <div className="stagger-el-2 mt-12 flex items-center opacity-60">
+                            <span className="text-sm font-medium tracking-wide border-b border-black/20 pb-0.5 lowercase italic" style={{ fontFamily: "'Bodoni Moda', serif" }}>
+                                future focus: Systems & Architecture
+                            </span>
                         </div>
                     </div>
 
