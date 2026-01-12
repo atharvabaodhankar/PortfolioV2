@@ -8,6 +8,7 @@ import Hero from './components/Hero';
 import Marquee from './components/Marquee';
 import About from './components/About';
 import Skills from './components/Skills';
+import Education from './components/Education';
 import Created from './components/Created';
 import Ferro from './components/Ferro';
 import Projects from './components/Projects';
@@ -110,6 +111,7 @@ function PortfolioPage() {
           <About />
           <Marquee />
           <Skills />
+          <Education />
           <Created />
           <Ferro />
           <Projects />
