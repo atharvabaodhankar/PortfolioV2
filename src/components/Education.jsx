@@ -11,65 +11,51 @@ const Education = () => {
     const btechRef = useRef(null);
 
     useGSAP(() => {
-        // Master Timeline controls the sequence
         const tl = gsap.timeline({
             scrollTrigger: {
                 trigger: containerRef.current,
                 start: 'top top',
-                end: '+=2500', // Long scroll distance for narrative pacing
+                end: '+=1200',
                 pin: true,
                 scrub: 1,
                 anticipatePin: 1
             }
         });
 
-        // 0. Initial State Setups
+        // Initial setup - only diploma visible
+        gsap.set(diplomaRef.current, { autoAlpha: 1, y: 0 });
         gsap.set(btechRef.current, { autoAlpha: 0, y: 50 });
         
-        // --- PHASE 1: DIPLOMA DRIFT (0% - 30%) ---
-        // Subtle movement of diploma elements to feel alive before leaving
-        tl.to(diplomaRef.current.querySelectorAll('.stagger-el'), {
-            y: -20,
-            stagger: 0.1,
+        // Phase 1: Diploma stays visible (0% - 40%)
+        tl.to(diplomaRef.current, {
+            y: -10,
             duration: 2,
             ease: 'none'
         }, 0)
-
-        // --- PHASE 2: TRANSITION OUT (30% - 45%) ---
-        // Diploma fades out, moving up
+        
+        // Phase 2: Diploma fades out (40% - 60%)
         .to(diplomaRef.current, {
             autoAlpha: 0,
-            y: -40,
-            filter: 'blur(5px)',
-            duration: 1.5,
+            y: -30,
+            duration: 1,
             ease: 'power2.in'
         }, 2)
-
-        // --- PHASE 3: SILENCE / DIVIDER STRETCH (45% - 55%) ---
-        .to('.progress-line', {
-            scaleX: 1.5,
-            opacity: 0.2,
-            duration: 1,
-            ease: 'power1.inOut'
-        }, 3.5)
-
-        // --- PHASE 4: EVOLUTION IN (55% - 100%) ---
-        // BTech enters from below, clearer and sharper
+        
+        // Phase 3: B.Tech fades in (60% - 100%)
         .to(btechRef.current, {
             autoAlpha: 1,
             y: 0,
-            duration: 2,
+            duration: 1.5,
             ease: 'power2.out'
-        }, 4.5)
+        }, 3)
         
-        // Inner stagger for BTech details
         .from(btechRef.current.querySelectorAll('.stagger-el-2'), {
             y: 20,
             autoAlpha: 0,
-            stagger: 0.2,
-            duration: 1.5,
+            stagger: 0.15,
+            duration: 1,
             ease: 'power2.out'
-        }, 5);
+        }, 3.5);
 
     }, { scope: containerRef });
 
@@ -100,6 +86,12 @@ const Education = () => {
                 {/* RIGHT COLUMN: The Narrative Stage */}
                 <div className="lg:w-2/3 h-full relative flex items-center lg:pl-32">
                     
+                    {/* Scroll indicator */}
+                    <div className="absolute bottom-8 right-8 flex flex-col items-center text-gray-400 animate-pulse">
+                        <span className="text-xs font-mono mb-2 rotate-90 origin-center">scroll</span>
+                        <div className="w-px h-8 bg-gray-300"></div>
+                    </div>
+                    
                     {/* CHAPTER 1: DIPLOMA (Absolute positioned to overlap) */}
                     <div ref={diplomaRef} className="absolute w-full max-w-2xl">
                         <div className="stagger-el mb-6">
@@ -126,7 +118,7 @@ const Education = () => {
                     </div>
 
                     {/* CHAPTER 2: BTECH (Absolute positioned, starts hidden) */}
-                    <div ref={btechRef} className="absolute w-full max-w-2xl translate-y-12 opacity-0 invisible">
+                    <div ref={btechRef} className="absolute w-full max-w-2xl opacity-0 invisible">
                          <div className="stagger-el-2 mb-6">
                             <span className="text-sm font-mono uppercase tracking-[0.2em] text-primary">
                                 Phase II — Evolution
