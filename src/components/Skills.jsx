@@ -10,77 +10,62 @@ const Skills = () => {
   
   const skillGroups = [
     {
-      title: "Web Engineering",
-      description: "Building the backbone of modern web experiences.",
-      skills: ["JavaScript (ES6+)", "React / Vite", "MERN Stack", "API Design", "Performance Optimization"]
+      title: "01 / Web Engineering",
+      description: "Designing and engineering modern web applications with a strong focus on performance, maintainability, and real-world usability.",
+      skills: ["JavaScript (ES6+)", "React", "Vite", "Node.js", "REST APIs"]
     },
     {
-      title: "Blockchain & Web3",
-      description: "Decentralized systems and smart contract logic.",
-      skills: ["Solidity", "Ethers.js", "Smart Contracts", "Account Abstraction (ERC-4337)", "Polygon / Ethereum Testnets"]
+      title: "02 / Blockchain & Web3",
+      description: "Building decentralized applications and smart contract systems that prioritize security, clarity, and developer experience.",
+      skills: ["Solidity", "Ethers.js", "Smart Contracts", "ERC-4337", "Polygon / Testnets"]
     },
     {
-      title: "System Design",
-      description: "Architecting scalable and maintainable data flows.",
-      skills: ["Application Architecture", "Data Modeling", "Auth & Role Systems", "Scalable Frontend Patterns"]
+      title: "03 / System Design",
+      description: "Approaching problems with a system-first mindset — focusing on structure, data flow, and long-term scalability.",
+      skills: ["Application Architecture", "Auth & Role Systems", "Database Design", "API Structuring", "Performance Thinking"]
     },
     {
-      title: "Motion & Interaction",
-      description: "Bringing interfaces to life with fluid motion.",
-      skills: ["GSAP", "ScrollTrigger", "Smooth Scrolling Systems", "Micro-interactions"]
+      title: "04 / Motion & Interaction",
+      description: "Using motion as a functional layer — guiding attention, improving clarity, and enhancing the feel of the interface.",
+      skills: ["GSAP", "ScrollTrigger", "Smooth Scrolling", "Micro-interactions"]
     },
     {
-      title: "Tooling & Learning",
-      description: "The ecosystem that powers the workflow.",
-      skills: ["Git & GitHub", "Docker (Foundations)", "Agentic AI Tools", "Continuous Experimentation"]
+      title: "05 / Tooling & Learning",
+      description: "The instruments of creation and the perpetual pursuit of knowledge.",
+      skills: ["Git & GitHub", "Docker (Foundations)", "Agentic AI Tools", "Continuous Learning"]
     }
   ];
 
   useGSAP(() => {
-    // Reveal section header
-    gsap.from('.skills-header', {
+    // Initial reveal for Left Column
+    gsap.from('.left-inv', {
       scrollTrigger: {
         trigger: containerRef.current,
         start: 'top 80%',
-        end: 'top 60%',
+        end: 'top 50%',
         toggleActions: 'play none none reverse'
       },
-      y: 50,
+      y: 40,
       opacity: 0,
       duration: 1,
+      stagger: 0.1,
       ease: 'power3.out'
     });
 
-    // Reveal each group
-    const groups = gsap.utils.toArray('.skill-group');
+    // Animate each right-column section
+    const sections = gsap.utils.toArray('.skill-section');
     
-    groups.forEach((group, i) => {
-      gsap.from(group, {
+    sections.forEach((section) => {
+      gsap.from(section, {
         scrollTrigger: {
-          trigger: group,
+          trigger: section,
           start: 'top 85%',
           toggleActions: 'play none none reverse'
         },
         y: 40,
         opacity: 0,
-        duration: 1,
-        delay: i * 0.1, // Stagger groups slightly
-        ease: 'power2.out'
-      });
-      
-      // Animate skills within the group
-      const skills = group.querySelectorAll('.skill-item');
-      gsap.from(skills, {
-        scrollTrigger: {
-          trigger: group,
-          start: 'top 85%'
-        },
-        y: 20,
-        opacity: 0,
         duration: 0.8,
-        stagger: 0.05,
-        ease: 'power2.out',
-        delay: 0.2 // Wait for group to start appearing
+        ease: 'power2.out'
       });
     });
 
@@ -89,71 +74,74 @@ const Skills = () => {
   return (
     <section 
       ref={containerRef} 
-      className="w-full min-h-screen bg-white text-black px-6 md:px-12 lg:px-24 py-32 relative z-10 font-sans"
+      className="w-full min-h-screen bg-white text-black px-6 md:px-12 lg:px-24 py-20 relative z-10 font-sans"
     >
-      <div className="max-w-[1600px] mx-auto">
-        {/* Editorial Header */}
-        <div className="skills-header mb-24 lg:mb-32 border-b border-black/10 pb-8">
-          <h2 
-            className="text-5xl md:text-7xl lg:text-[6rem] leading-[0.9] font-medium tracking-tight"
-            style={{ fontFamily: "'Bodoni Moda', serif" }}
-          >
-            Technical Practice
-          </h2>
-          <div className="flex justify-end mt-4">
-            <p 
-              className="text-sm uppercase tracking-[0.2em] text-gray-400 font-medium max-w-xs text-right"
+      <div className="max-w-[1600px] mx-auto flex flex-col lg:flex-row gap-16 lg:gap-32">
+        
+        {/* LEFT COLUMN - STICKY */}
+        <div className="lg:w-1/3 flex flex-col justify-between lg:h-[calc(100vh-160px)] lg:sticky lg:top-32">
+          <div className="left-inv">
+            <h1 
+              className="text-6xl md:text-7xl lg:text-8xl font-bold tracking-tighter leading-[0.9] mb-8"
               style={{ fontFamily: "'Inter', sans-serif" }}
             >
-              Curated capabilities for high-end digital production
+              Areas<br/>of Craft
+            </h1>
+            <div className="h-1 w-24 bg-black mb-8"></div>
+            <p 
+              className="text-lg text-gray-500 font-normal leading-relaxed max-w-sm"
+              style={{ fontFamily: "'Inter', sans-serif" }}
+            >
+              A focused overview of how I build modern web systems — blending engineering fundamentals, decentralized technology, and thoughtful interaction design.
             </p>
+          </div>
+          
+          <div className="left-inv hidden lg:flex items-center gap-3 opacity-60 mt-auto">
+            <span className="animate-spin-slow text-2xl">✳</span>
+            <span className="text-xs font-mono uppercase tracking-widest">System Status: Online</span>
           </div>
         </div>
 
-        {/* Skills Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-y-20 lg:gap-x-12">
-          {skillGroups.map((group, index) => (
-            <div 
-              key={group.title} 
-              className={`skill-group lg:col-span-4 ${index === 0 || index === 3 ? 'lg:col-start-1' : ''} ${index === 1 || index === 4 ? 'lg:col-start-5' : ''} ${index === 2 ? 'lg:col-start-9' : ''} flex flex-col gap-6`}
-            >
-              <div className="border-t border-black/5 pt-6">
+        {/* RIGHT COLUMN - SCROLLABLE */}
+        <div className="lg:w-2/3 flex flex-col gap-20 pt-10 lg:pt-0">
+          {skillGroups.map((group) => (
+            <div key={group.title} className="skill-section border-t border-gray-200 pt-8">
+              {/* Header Row */}
+              <div className="flex flex-col md:flex-row md:items-baseline justify-between mb-8 gap-4">
                 <h3 
-                  className="text-2xl font-light mb-2 text-primary"
-                  style={{ fontFamily: "'Bodoni Moda', serif" }}
+                  className="text-2xl md:text-3xl font-medium tracking-tight"
+                  style={{ fontFamily: "'Inter', sans-serif" }}
                 >
                   {group.title}
                 </h3>
                 <p 
-                  className="text-sm text-gray-400 font-light leading-relaxed mb-6"
+                  className="text-sm md:text-base text-gray-400 max-w-md text-left md:text-right leading-relaxed font-normal"
                   style={{ fontFamily: "'Inter', sans-serif" }}
                 >
                   {group.description}
                 </p>
-                
-                <ul className="space-y-4">
-                  {group.skills.map((skill) => (
-                    <li 
-                      key={skill} 
-                      className="skill-item text-lg md:text-xl font-light tracking-wide group cursor-default w-fit"
+              </div>
+
+              {/* Skills List */}
+              <div className="flex flex-wrap gap-x-6 gap-y-3 text-xl md:text-2xl lg:text-3xl leading-snug">
+                {group.skills.map((skill, i) => (
+                  <div key={skill} className="flex items-center gap-6">
+                    <span 
+                      className="hover:text-primary transition-colors duration-300 cursor-default font-normal"
                       style={{ fontFamily: "'Inter', sans-serif" }}
                     >
-                      <span className="relative inline-block overflow-hidden">
-                        <span className="block transition-transform duration-500 ease-out group-hover:-translate-y-full">
-                          {skill}
-                        </span>
-                        <span className="absolute top-0 left-0 block translate-y-full transition-transform duration-500 ease-out group-hover:translate-y-0 italic text-gray-500 font-medium">
-                          {skill}
-                        </span>
-                        <span className="absolute bottom-0 left-0 w-full h-[1px] bg-black transform scale-x-0 transition-transform duration-500 origin-left group-hover:scale-x-100"></span>
-                      </span>
-                    </li>
-                  ))}
-                </ul>
+                      {skill}
+                    </span>
+                    {i !== group.skills.length - 1 && (
+                      <span className="text-gray-200 font-light">/</span>
+                    )}
+                  </div>
+                ))}
               </div>
             </div>
           ))}
         </div>
+
       </div>
     </section>
   );
