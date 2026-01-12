@@ -37,36 +37,70 @@ const Skills = () => {
   ];
 
   useGSAP(() => {
-    // Initial reveal for Left Column
-    gsap.from('.left-inv', {
+    // 1. Initial reveal for Left Column
+    const leftTl = gsap.timeline({
       scrollTrigger: {
         trigger: containerRef.current,
-        start: 'top 80%',
+        start: 'top 70%',
         end: 'top 50%',
         toggleActions: 'play none none reverse'
-      },
-      y: 40,
+      }
+    });
+
+    leftTl.from('.left-inv', {
+      y: 30,
       opacity: 0,
-      duration: 1,
-      stagger: 0.1,
+      duration: 1.2,
+      stagger: 0.15,
       ease: 'power3.out'
     });
 
-    // Animate each right-column section
+    // 5. Left Column Parallax (Subtle)
+    gsap.to('.left-column-content', {
+      y: -20, // Tiny parallax drift
+      ease: 'none',
+      scrollTrigger: {
+        trigger: containerRef.current,
+        start: 'top top',
+        end: 'bottom bottom',
+        scrub: true
+      }
+    });
+
+    // Animate each right-column section with rhythm
     const sections = gsap.utils.toArray('.skill-section');
     
-    sections.forEach((section) => {
-      gsap.from(section, {
+    sections.forEach((section, index) => {
+      const border = section.querySelector('.section-border');
+      const header = section.querySelector('.section-header');
+      const list = section.querySelector('.skills-list');
+
+      const tl = gsap.timeline({
         scrollTrigger: {
           trigger: section,
           start: 'top 85%',
           toggleActions: 'play none none reverse'
-        },
-        y: 40,
+        }
+      });
+
+      // 3. Divider Line Animation (Premium ScaleX)
+      tl.fromTo(border, 
+        { scaleX: 0, transformOrigin: 'left center' },
+        { scaleX: 1, duration: 0.8, ease: 'power3.out' }
+      )
+      // 1. Section Reveal (Staggered Content)
+      .from(header, {
+        y: 16,
         opacity: 0,
         duration: 0.8,
-        ease: 'power2.out'
-      });
+        ease: 'power3.out'
+      }, '-=0.4')
+      .from(list, {
+        y: 16,
+        opacity: 0,
+        duration: 0.8,
+        ease: 'power3.out'
+      }, '-=0.6');
     });
 
   }, { scope: containerRef });
@@ -79,7 +113,7 @@ const Skills = () => {
       <div className="max-w-[1600px] mx-auto flex flex-col lg:flex-row gap-16 lg:gap-32">
         
         {/* LEFT COLUMN - STICKY */}
-        <div className="lg:w-1/3 flex flex-col justify-between lg:h-[calc(100vh-160px)] lg:sticky lg:top-32">
+        <div className="lg:w-1/3 flex flex-col justify-between lg:h-[calc(100vh-160px)] lg:sticky lg:top-32 left-column-content">
           <div className="left-inv">
             <h1 
               className="text-6xl md:text-7xl lg:text-8xl font-bold tracking-tighter leading-[0.9] mb-8"
@@ -105,9 +139,12 @@ const Skills = () => {
         {/* RIGHT COLUMN - SCROLLABLE */}
         <div className="lg:w-2/3 flex flex-col gap-20 pt-10 lg:pt-0">
           {skillGroups.map((group) => (
-            <div key={group.title} className="skill-section border-t border-gray-200 pt-8">
+            <div key={group.title} className="skill-section pt-8 relative">
+               {/* 3. Independent Border for Animation */}
+              <div className="section-border absolute top-0 left-0 w-full h-[1px] bg-gray-200"></div>
+              
               {/* Header Row */}
-              <div className="flex flex-col md:flex-row md:items-baseline justify-between mb-8 gap-4">
+              <div className="section-header flex flex-col md:flex-row md:items-baseline justify-between mb-8 gap-4">
                 <h3 
                   className="text-2xl md:text-3xl font-medium tracking-tight"
                   style={{ fontFamily: "'Inter', sans-serif" }}
@@ -123,14 +160,15 @@ const Skills = () => {
               </div>
 
               {/* Skills List */}
-              <div className="flex flex-wrap gap-x-6 gap-y-3 text-xl md:text-2xl lg:text-3xl leading-snug">
+              <div className="skills-list flex flex-wrap gap-x-6 gap-y-3 text-xl md:text-2xl lg:text-3xl leading-snug">
                 {group.skills.map((skill, i) => (
                   <div key={skill} className="flex items-center gap-6">
                     <span 
-                      className="hover:text-primary transition-colors duration-300 cursor-default font-normal"
+                      className="relative cursor-default font-normal transition-all duration-500 hover:tracking-tight hover:-translate-y-[2px] inline-block group"
                       style={{ fontFamily: "'Inter', sans-serif" }}
                     >
                       {skill}
+                      <span className="absolute bottom-0 left-0 w-full h-[1px] bg-primary scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left ease-expo-out"></span>
                     </span>
                     {i !== group.skills.length - 1 && (
                       <span className="text-gray-200 font-light">/</span>
