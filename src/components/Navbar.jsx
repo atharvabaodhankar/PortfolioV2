@@ -254,12 +254,16 @@ const Navbar = () => {
                     </span>
                     <a 
                         href={`#${key === 'home' ? 'hero' : key}`} 
-                        className="text-[clamp(3rem,6vw,6rem)] font-arsenica text-white leading-none block transition-colors duration-300 group-hover:text-white mix-blend-difference"
+                        className="text-[clamp(3rem,6vw,6rem)] font-arsenica block relative overflow-hidden leading-[1.15] mix-blend-difference pb-1"
                         onClick={toggleNav}
                     >
-                        {key.charAt(0).toUpperCase() + key.slice(1)}
+                        <span className="block transition-all duration-500 ease-[cubic-bezier(0.76,0,0.24,1)] group-hover:-translate-y-full group-hover:skew-y-2 text-white/90">
+                            {key.charAt(0).toUpperCase() + key.slice(1)}
+                        </span>
+                        <span className="block absolute top-0 left-0 transition-all duration-500 ease-[cubic-bezier(0.76,0,0.24,1)] translate-y-full rotate-2 skew-y-6 group-hover:translate-y-0 group-hover:rotate-0 group-hover:skew-y-0 text-white">
+                            {key.charAt(0).toUpperCase() + key.slice(1)}
+                        </span>
                     </a>
-                    <span className="block h-[2px] w-0 bg-white transition-all duration-500 group-hover:w-full mt-2 mix-blend-difference"></span>
                 </div>
               </div>
             ))}
