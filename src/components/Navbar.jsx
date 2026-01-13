@@ -254,7 +254,7 @@ const Navbar = () => {
                     </span>
                     <a 
                         href={`#${key === 'home' ? 'hero' : key}`} 
-                        className="text-[clamp(3rem,6vw,6rem)] font-arsenica block relative overflow-hidden leading-[1.15] mix-blend-difference pb-1"
+                        className="text-[clamp(3rem,6vw,6rem)] font-arsenica block relative overflow-hidden leading-[1.25] mix-blend-difference"
                         onClick={toggleNav}
                     >
                         <span className="block transition-all duration-500 ease-[cubic-bezier(0.76,0,0.24,1)] group-hover:-translate-y-full group-hover:skew-y-2 text-white/90">
