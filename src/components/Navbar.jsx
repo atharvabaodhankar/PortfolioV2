@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
+import { X } from 'lucide-react';
 
 // Import assets
 import heroImg from '../assets/imgs/hero-img.jpg';
@@ -47,6 +48,7 @@ const Navbar = () => {
   const backdropRef = useRef(null);
   const navLinksRef = useRef([]);
   const rightContentRef = useRef(null);
+  const closeBtnRef = useRef(null);
   
   // Register GSAP plugins if needed (ScrollTrigger is usually global but good practice)
   gsap.registerPlugin(useGSAP);
@@ -229,13 +231,33 @@ const Navbar = () => {
           <div className="absolute inset-0 opacity-[0.03] pointer-events-none bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIj48ZmlsdGVyIGlkPSJmIj48ZmVUdXJidWxlbmNlIHR5cGU9ImZyYWN0YWxOb2lzZSIgYmFzZUZyZXF1ZW5jeT0iMC42NSIgbnVtT2N0YXZlcz0iMyIgc3RpdGNoVGlsZXM9InN0aXRjaCIvPjwvZmlsdGVyPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbHRlcj0idXJsKCNmKSIgb3BhY2l0eT0iMC40Ii8+PC9zdmc+')]"></div>
 
           <div 
-            className="absolute top-8 left-8 md:right-8 md:left-auto text-white/60 hover:text-white cursor-pointer z-50 text-xl font-light tracking-widest"
+            ref={closeBtnRef}
+            className="nav-close-trigger absolute top-6 left-6 md:left-auto md:right-12 md:top-10 w-14 h-14 md:w-16 md:h-16 rounded-full border border-white/20 flex items-center justify-center cursor-pointer group hover:bg-white hover:scale-110 transition-all duration-300 z-50 backdrop-blur-sm"
             onClick={toggleNav}
+            onMouseEnter={() => {
+                gsap.to(closeBtnRef.current, { scale: 1.1, duration: 0.3 });
+                gsap.to('.ferro-mouse-follower-ball', { scale: 0, opacity: 0 }); // Hide global cursor for clean interaction
+            }}
+            onMouseLeave={() => {
+                gsap.to(closeBtnRef.current, { scale: 1, x: 0, y: 0, duration: 0.5, ease: 'elastic.out(1, 0.3)' });
+                 gsap.to('.ferro-mouse-follower-ball', { scale: 1, opacity: 1 });
+            }}
+            onMouseMove={(e) => {
+                const bg = closeBtnRef.current;
+                const r = bg.getBoundingClientRect();
+                const x = e.clientX - r.left - r.width / 2;
+                const y = e.clientY - r.top - r.height / 2;
+                gsap.to(bg, {
+                    x: x * 0.3,
+                    y: y * 0.3,
+                    duration: 0.2
+                });
+            }}
           >
-            CLOSE
+            <X strokeWidth={1.5} className="text-white group-hover:text-black w-6 h-6 md:w-8 md:h-8 transition-colors duration-300" />
           </div>
 
-          <div className="flex flex-col space-y-8 md:space-y-12">
+          <div className="flex flex-col space-y-0 md:space-y-12">
             {Object.keys(contentMap).map((key, index) => (
               <div 
                 key={key} 
@@ -249,18 +271,18 @@ const Navbar = () => {
                     onMouseMove={(e) => handleMouseMove(e, index)}
                     onMouseLeave={() => handleMouseLeave(index)} // Keep magnetic reset separate if needed, or combine
                 >
-                    <span className="absolute -left-8 top-2 text-sm md:text-lg text-white/40 font-mono opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform -translate-x-4 group-hover:translate-x-0">
+                    <span className="absolute -left-6 top-1 text-sm md:-left-8 md:top-2 md:text-lg text-white/40 font-mono opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform -translate-x-4 group-hover:translate-x-0 hidden md:block">
                         0{index + 1}
                     </span>
                     <a 
                         href={`#${key === 'home' ? 'hero' : key}`} 
-                        className="text-[clamp(3rem,6vw,6rem)] font-arsenica block relative overflow-hidden leading-[1.25] mix-blend-difference"
+                        className="text-[clamp(5rem,18vw,9rem)] md:text-[clamp(3rem,6vw,6rem)] font-arsenica block relative overflow-hidden leading-[1.1] mix-blend-difference"
                         onClick={toggleNav}
                     >
-                        <span className="block transition-all duration-500 ease-[cubic-bezier(0.76,0,0.24,1)] group-hover:-translate-y-full group-hover:skew-y-2 text-white/90">
+                        <span className="block transition-all duration-500 ease-[cubic-bezier(0.76,0,0.24,1)] group-hover:-translate-y-full group-hover:skew-y-2 active:-translate-y-full active:skew-y-2 text-white/90">
                             {key.charAt(0).toUpperCase() + key.slice(1)}
                         </span>
-                        <span className="block absolute top-0 left-0 transition-all duration-500 ease-[cubic-bezier(0.76,0,0.24,1)] translate-y-full rotate-2 skew-y-6 group-hover:translate-y-0 group-hover:rotate-0 group-hover:skew-y-0 text-white">
+                        <span className="block absolute top-0 left-0 transition-all duration-500 ease-[cubic-bezier(0.76,0,0.24,1)] translate-y-[110%] rotate-2 skew-y-6 group-hover:translate-y-0 group-hover:rotate-0 group-hover:skew-y-0 active:translate-y-0 active:rotate-0 active:skew-y-0 text-white">
                             {key.charAt(0).toUpperCase() + key.slice(1)}
                         </span>
                     </a>
