@@ -46,7 +46,6 @@ const Navbar = () => {
   const rightPanelRef = useRef(null);
   const backdropRef = useRef(null);
   const navLinksRef = useRef([]);
-  const customCursorRef = useRef(null);
   const rightContentRef = useRef(null);
   
   // Register GSAP plugins if needed (ScrollTrigger is usually global but good practice)
@@ -122,24 +121,6 @@ const Navbar = () => {
     }
   }, [navActive]);
 
-  // Custom Cursor Logic
-  useGSAP(() => {
-    const cursor = customCursorRef.current;
-    if (!cursor) return;
-
-    const xTo = gsap.quickTo(cursor, "x", { duration: 0.2, ease: "power3" });
-    const yTo = gsap.quickTo(cursor, "y", { duration: 0.2, ease: "power3" });
-
-    const moveCursor = (e) => {
-      xTo(e.clientX);
-      yTo(e.clientY);
-    };
-
-    window.addEventListener('mousemove', moveCursor);
-
-    return () => window.removeEventListener('mousemove', moveCursor);
-  }, { scope: containerRef });
-
   // Magnetic Effect for Links with Cursor Interaction
   const handleMouseMove = (e, index) => {
     const el = navLinksRef.current[index];
@@ -170,21 +151,17 @@ const Navbar = () => {
 
   const handleLinkEnter = (key) => {
       handleLinkHover(key);
-      gsap.to(customCursorRef.current, {
-          scale: 3.5,
-          borderColor: 'transparent',
-          backgroundColor: 'rgba(255,255,255,0.2)',
-          duration: 0.3
+      gsap.to('.ferro-mouse-follower-ball', {
+          scale: 3,
+          duration: 0.3,
+          opacity: 1
       });
-      // Optional: Add text inside cursor here if component structure supports it
   };
 
   const handleLinkLeave = (index) => {
       handleMouseLeave(index);
-      gsap.to(customCursorRef.current, {
+      gsap.to('.ferro-mouse-follower-ball', {
           scale: 1,
-          borderColor: 'white',
-          backgroundColor: 'transparent',
           duration: 0.3
       });
   };
@@ -277,12 +254,12 @@ const Navbar = () => {
                     </span>
                     <a 
                         href={`#${key === 'home' ? 'hero' : key}`} 
-                        className="text-[clamp(3rem,6vw,6rem)] font-arsenica text-white leading-none block transition-colors duration-300 group-hover:text-[#00ff87]"
+                        className="text-[clamp(3rem,6vw,6rem)] font-arsenica text-white leading-none block transition-colors duration-300 group-hover:text-white mix-blend-difference"
                         onClick={toggleNav}
                     >
                         {key.charAt(0).toUpperCase() + key.slice(1)}
                     </a>
-                    <span className="block h-[2px] w-0 bg-gradient-to-r from-[#00ff87] to-[#60efff] transition-all duration-500 group-hover:w-full mt-2"></span>
+                    <span className="block h-[2px] w-0 bg-white transition-all duration-500 group-hover:w-full mt-2 mix-blend-difference"></span>
                 </div>
               </div>
             ))}
@@ -315,11 +292,6 @@ const Navbar = () => {
         </div>
       </div>
       
-      {/* Custom Cursor for Nav */}
-      <div 
-        ref={customCursorRef}
-        className="fixed top-0 left-0 w-6 h-6 border-2 border-white rounded-full pointer-events-none z-[100] mix-blend-difference hidden md:block -translate-x-1/2 -translate-y-1/2"
-      ></div>
     </>
   );
 };
