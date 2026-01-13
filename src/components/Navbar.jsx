@@ -56,16 +56,17 @@ const Navbar = () => {
     setNavActive((prev) => !prev);
   };
 
+  /* Removed duplicate useGSAP block */
+    
+  const tl = useRef();
+
   useGSAP(() => {
-    const tl = gsap.timeline({
+    tl.current = gsap.timeline({
       paused: true,
-      onReverseComplete: () => {
-         // Reset any necessary state if needed
-      }
     });
 
     // Opening Sequence
-    tl.to(backdropRef.current, {
+    tl.current.to(backdropRef.current, {
       opacity: 0.95,
       duration: 0.4,
       ease: 'power2.out',
@@ -111,13 +112,15 @@ const Navbar = () => {
         ease: 'power2.out'
     }, 1.4);
 
-    if (navActive) {
-      tl.play();
-    } else {
-      tl.reverse();
-    }
+  }, { scope: containerRef }); // Removed navActive dependency
 
-  }, { scope: containerRef, dependencies: [navActive] });
+  useEffect(() => {
+    if (navActive) {
+      tl.current?.play();
+    } else {
+      tl.current?.reverse();
+    }
+  }, [navActive]);
 
   // Custom Cursor Logic
   useGSAP(() => {
