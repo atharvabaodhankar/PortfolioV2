@@ -45,7 +45,7 @@ const Projects = () => {
       scrollTrigger: {
         trigger: containerRef.current,
         start: 'top 60%',
-        toggleActions: 'play none none reverse'
+        once: true, // Only play once to avoid conflicts
       }
     });
     
@@ -67,47 +67,45 @@ const Projects = () => {
         trigger: '.gallery-pin-container',
         pin: true,
         start: 'top top',
-        end: `+=${totalSections * 100}%`, // Scroll distance proportional to items
-        scrub: 1,
-        snap: 1 / totalSections,
+        end: `+=${totalSections * 100}%`, // Scroll distance
+        scrub: 0.5, // Smooth scrubbing
+        anticipatePin: 1, // Prevent oscillation
       }
     });
 
     sections.forEach((section, i) => {
-      // Logic: 
-      // Current item (i) is visible initially (or slides in).
-      // As we scroll, current item zooms out/fades, next item slides in.
-      
-      if (i === totalSections - 1) return; // Last item doesn't animate out to another item here
+      if (i === totalSections - 1) return; 
 
       const nextSection = sections[i + 1];
 
+      // Add a small hold for the first section
+      const position = i === 0 ? '+=0.2' : '+=0';
+
       scrollTl.to(section, {
         opacity: 0,
-        scale: 1.1, // Zoom affect before disappearing
-        filter: 'blur(10px)',
+        scale: 0.95, // Subtle zoom out
+        filter: 'blur(5px)',
         duration: 1,
         ease: 'none'
-      })
+      }, position)
       .fromTo(nextSection, 
         { yPercent: 100, opacity: 0 },
         { yPercent: 0, opacity: 1, duration: 1, ease: 'none' }, 
-        "<" // Start at the same time
+        "<" 
       );
     });
 
     // 3. Final Transition to "Archive" CTA
-    // This happens after the last project is fully visible
     scrollTl.to(sections[totalSections - 1], {
       opacity: 0,
       scale: 0.9,
-      filter: 'blur(20px)',
+      filter: 'blur(10px)',
       duration: 1,
       ease: 'none'
     })
     .fromTo('.gallery-archive', 
-      { opacity: 0, scale: 1.2 },
-      { opacity: 1, scale: 1, duration: 1, ease: 'power2.out' },
+      { opacity: 0, scale: 1.1 },
+      { opacity: 1, scale: 1, duration: 1, ease: 'none' },
       "<"
     );
 
@@ -120,25 +118,24 @@ const Projects = () => {
     <section 
       ref={containerRef} 
       id="projects" 
-      className="relative w-full bg-[#0a0a0a] text-white selection:bg-indigo-500/30"
+      className="relative w-full bg-[#EDECE7] text-[#1a1a1a] selection:bg-black/10"
     >
-      {/* Dynamic Background Gradient */}
+      {/* Subtle Noise Overlay (Light Mode) */}
       <div className="fixed inset-0 pointer-events-none z-0">
-          <div className="absolute inset-0 bg-gradient-to-b from-[#020617] via-[#1e1b4b] to-[#000000]" />
-          <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 brightness-100 contrast-150 mix-blend-overlay"></div>
+          <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.03] mix-blend-multiply"></div>
       </div>
 
-      {/* Intro Title (Scrolls away normally) */}
+      {/* Intro Title */}
       <div className="relative z-10 w-full h-[60vh] flex flex-col items-center justify-center pointer-events-none">
-        <h2 className="gallery-title text-[clamp(3rem,8vw,8rem)] font-arsenica leading-[0.9] text-center mix-blend-overlay">
+        <h2 className="gallery-title text-[clamp(3rem,8vw,8rem)] font-arsenica leading-[0.9] text-center text-[#1a1a1a] mix-blend-darken">
           <span className="inline-block">Selected</span> <br/>
-          <span className="inline-block italic font-light">Works</span>
+          <span className="inline-block italic font-light opacity-60">Works</span>
         </h2>
-        <div className="absolute bottom-12 w-[1px] h-24 bg-gradient-to-b from-white to-transparent opacity-50"></div>
+        <div className="absolute bottom-12 w-[1px] h-24 bg-gradient-to-b from-[#1a1a1a] to-transparent opacity-20"></div>
       </div>
 
       {/* Pinned Exhibition Container */}
-      <div className="gallery-pin-container relative w-full h-screen z-10 overflow-hidden">
+      <div className="gallery-pin-container relative w-full h-screen z-10 overflow-hidden bg-[#EDECE7]">
         
         {/* Projects Stack */}
         {projects.map((project, index) => (
@@ -151,34 +148,32 @@ const Projects = () => {
             <div className={`w-full max-w-[1600px] h-full flex flex-col md:flex-row ${index % 2 === 1 ? 'md:flex-row-reverse' : ''} gap-8 md:gap-20 items-center`}>
                
                {/* 1. Image Side (Glass Container) */}
-               <div className="w-full md:w-[60%] h-[40vh] md:h-[80vh] relative group rounded-2xl overflow-hidden border border-white/10 shadow-2xl shadow-indigo-900/20">
-                  <div className="absolute inset-0 bg-indigo-900/20 mix-blend-color group-hover:bg-transparent transition-all duration-700"></div>
+               <div className="w-full md:w-[60%] h-[40vh] md:h-[80vh] relative group rounded-2xl overflow-hidden shadow-2xl shadow-black/5">
+                  <div className="absolute inset-0 bg-black/5 mix-blend-multiply group-hover:bg-transparent transition-all duration-700"></div>
                   <img 
                     src={project.image_url} 
                     alt={project.title}
                     className="w-full h-full object-cover transition-transform duration-[1.5s] ease-[cubic-bezier(0.25,0.46,0.45,0.94)] group-hover:scale-105"
                   />
-                  {/* Subtle noise overlay on image */}
-                  <div className="absolute inset-0 opacity-20 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] mix-blend-overlay"></div>
                </div>
 
                {/* 2. Content Side */}
                <div className="w-full md:w-[40%] flex flex-col items-start text-left">
-                  <span className="font-mono text-indigo-300/80 mb-6 tracking-widest text-sm">
-                    0{index + 1} — EXHIBITION
+                  <span className="font-mono text-[#1a1a1a]/40 mb-6 tracking-widest text-sm uppercase">
+                    0{index + 1} — Exhibition
                   </span>
                   
-                  <h3 className="text-[clamp(2.5rem,4vw,4.5rem)] font-arsenica leading-[1.1] mb-4">
+                  <h3 className="text-[clamp(2.5rem,4vw,4.5rem)] font-arsenica leading-[1.1] mb-4 text-[#1a1a1a]">
                     {project.title}
                   </h3>
                   
-                  <p className="font-mono text-white/60 mb-8 italic text-lg border-l-2 border-indigo-500/50 pl-6">
+                  <p className="font-mono text-[#1a1a1a]/60 mb-8 italic text-lg border-l-2 border-[#1a1a1a]/10 pl-6">
                     {project.subtitle}
                   </p>
 
                   <div className="flex flex-wrap gap-2 mb-12">
                      {project.technologies && Array.isArray(project.technologies) && project.technologies.slice(0, 4).map(tech => (
-                       <span key={tech} className="px-4 py-2 rounded-full border border-white/10 bg-white/5 backdrop-blur-sm text-xs font-mono text-indigo-100/70 hover:bg-white/10 transition-colors">
+                       <span key={tech} className="px-4 py-2 rounded-full border border-[#1a1a1a]/10 bg-white/40 backdrop-blur-sm text-xs font-mono text-[#1a1a1a]/60 hover:bg-[#1a1a1a] hover:text-white transition-colors">
                          {tech}
                        </span>
                      ))}
@@ -187,7 +182,7 @@ const Projects = () => {
                   <a 
                     href={project.link} 
                     target="_blank"
-                    className="group relative inline-flex items-center gap-4 px-8 py-4 bg-white text-black hover:bg-indigo-300 transition-colors duration-500 rounded-full font-medium"
+                    className="group relative inline-flex items-center gap-4 px-8 py-4 bg-[#1a1a1a] text-white hover:bg-black transition-colors duration-500 rounded-full font-medium shadow-lg shadow-black/10 hover:shadow-xl"
                   >
                     View Project
                     <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
@@ -198,18 +193,18 @@ const Projects = () => {
           </div>
         ))}
 
-        {/* Archive Call to Action (The "End" Card) */}
-        <div className="gallery-archive absolute inset-0 w-full h-full z-[50] flex flex-col items-center justify-center bg-transparent backdrop-blur-xl pointer-events-none opacity-0">
-           <div className="relative p-12 md:p-24 border border-white/10 bg-black/60 rounded-3xl flex flex-col items-center text-center max-w-2xl pointer-events-auto shadow-2xl shadow-indigo-500/10">
-              <h2 className="text-5xl md:text-7xl font-arsenica mb-6 bg-gradient-to-br from-white to-indigo-400 bg-clip-text text-transparent">
+        {/* Archive Call to Action (Light Mode) */}
+        <div className="gallery-archive absolute inset-0 w-full h-full z-[50] flex flex-col items-center justify-center bg-transparent backdrop-blur-sm pointer-events-none opacity-0">
+           <div className="relative p-12 md:p-24 border border-[#1a1a1a]/10 bg-white/80 rounded-3xl flex flex-col items-center text-center max-w-2xl pointer-events-auto shadow-2xl shadow-black/5">
+              <h2 className="text-5xl md:text-7xl font-arsenica mb-6 text-[#1a1a1a]">
                 The Archive
               </h2>
-              <p className="font-mono text-white/50 mb-12 max-w-md">
+              <p className="font-mono text-[#1a1a1a]/50 mb-12 max-w-md">
                 There is more to explore. Deep dive into the full collection of experiments and case studies.
               </p>
               <button 
                 onClick={() => navigate('/projects')}
-                className="px-10 py-5 bg-indigo-600 hover:bg-indigo-500 text-white rounded-full transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-indigo-500/25 flex items-center gap-3"
+                className="px-10 py-5 bg-[#1a1a1a] hover:bg-black text-white rounded-full transition-all duration-300 hover:scale-105 hover:shadow-lg flex items-center gap-3"
               >
                 Explore All Projects
                 <ExternalLink className="w-4 h-4" />
