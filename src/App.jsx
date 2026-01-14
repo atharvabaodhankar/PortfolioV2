@@ -12,6 +12,7 @@ import Education from './components/Education';
 import Created from './components/Created';
 import Ferro from './components/Ferro';
 import Projects from './components/Projects';
+import ProjectsArchive from './components/ProjectsArchive';
 import Work from './components/Work';
 import Footer from './components/Footer';
 
@@ -113,7 +114,7 @@ function PortfolioPage() {
           <Skills />
           <Education />
           <Created />
-          <Ferro />
+          {/* <Ferro /> */}
           <Projects />
           <Work />
           <Footer />
@@ -129,6 +130,7 @@ function AppContent() {
       <Routes>
         {/* Main Portfolio Route */}
         <Route path="/" element={<PortfolioPage />} />
+        <Route path="/projects" element={<ProjectsArchive />} />
         
         {/* Admin Login */}
         <Route path="/admin/login" element={<Login />} />
