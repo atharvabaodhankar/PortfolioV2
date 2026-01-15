@@ -62,19 +62,20 @@ const ProjectsArchive = () => {
 
 
   // --- Animations ---
+  
+  // 1. Hero Animation (Runs ONCE after loading)
   useGSAP(() => {
     if (loading) return;
 
-    // 1. Hero Text Reveal
-    const tl = gsap.timeline();
+    const tl = gsap.timeline({ delay: 0.2 });
     
     tl.from('.hero-word', {
-      y: 100,
+      y: '100%',
       opacity: 0,
-      rotate: 5,
-      duration: 1.2,
-      stagger: 0.1,
-      ease: 'power4.out'
+      rotate: 3,
+      duration: 1.4,
+      stagger: 0.15,
+      ease: 'power3.out'
     })
     .from('.hero-subtitle', {
       opacity: 0,
@@ -89,8 +90,13 @@ const ProjectsArchive = () => {
       ease: 'power3.out'
     }, "-=0.5");
 
+  }, { scope: containerRef, dependencies: [loading] });
 
-    // 2. Grid Items Entry (Batching)
+  // 2. Grid Animation (Runs on Load & Filter Change)
+  useGSAP(() => {
+    if (loading) return;
+
+    // Batch animations for grid items
     const cards = gsap.utils.toArray('.project-card');
     
     if (cards.length > 0) {
@@ -105,10 +111,12 @@ const ProjectsArchive = () => {
               overwrite: true
             });
           },
-          start: "top 85%",
+          start: "top 90%",
           once: true 
         });
     }
+
+    ScrollTrigger.refresh(); // Ensure locations are correct after render
 
   }, { scope: containerRef, dependencies: [loading, filteredProjects] });
 
