@@ -110,7 +110,8 @@ const ProjectsArchive = () => {
                 trigger: heroRef.current,
                 start: 'top top',
                 end: 'bottom top',
-                scrub: 1.5
+                scrub: 1.5,
+                invalidateOnRefresh: true
             }
         });
         
@@ -121,7 +122,8 @@ const ProjectsArchive = () => {
                 trigger: heroRef.current,
                 start: 'top top',
                 end: 'bottom top',
-                scrub: 1
+                scrub: 1,
+                invalidateOnRefresh: true
             }
         });
 
@@ -133,7 +135,8 @@ const ProjectsArchive = () => {
                 trigger: heroRef.current,
                 start: 'top top',
                 end: 'bottom top',
-                scrub: 1
+                scrub: 1,
+                invalidateOnRefresh: true
             }
         });
     }
@@ -175,7 +178,8 @@ const ProjectsArchive = () => {
                 trigger: card,
                 start: 'top bottom',
                 end: 'bottom top',
-                scrub: 1.5
+                scrub: 1.5,
+                invalidateOnRefresh: true
             }
         });
 
@@ -190,7 +194,8 @@ const ProjectsArchive = () => {
                     trigger: card,
                     start: 'top bottom',
                     end: 'bottom top',
-                    scrub: 2
+                    scrub: 2,
+                    invalidateOnRefresh: true
                 }
             });
         }

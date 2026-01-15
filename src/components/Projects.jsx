@@ -38,14 +38,20 @@ const Projects = () => {
 
   // Animation Logic
   useGSAP(() => {
-    if (loading || projects.length === 0) return;
+    if (loading) return;
+    if (projects.length === 0) {
+        console.warn("Projects: No projects loaded to animate.");
+        return;
+    }
+
+    console.log("Projects: UseGSAP starting. Loaded projects:", projects.length);
 
     // 1. Intro Animation
     const introTl = gsap.timeline({
       scrollTrigger: {
         trigger: containerRef.current,
         start: 'top 60%',
-        once: true, // Only play once to avoid conflicts
+        once: true,
       }
     });
     
@@ -61,15 +67,31 @@ const Projects = () => {
     const sections = gsap.utils.toArray('.gallery-item');
     const totalSections = sections.length;
     
-    // The container pins for the duration of all slides
+    if (totalSections === 0) {
+        console.error("Projects: No .gallery-item elements found!");
+        return;
+    }
+
+    // Explicitly set initial states to avoid Z-fighting or FOUC
+    // First item: Visible
+    gsap.set(sections[0], { autoAlpha: 1, yPercent: 0 });
+    // Subsequent items: Hidden and moved down
+    if (totalSections > 1) {
+        gsap.set(sections.slice(1), { autoAlpha: 0, yPercent: 100 });
+    }
+    
+    // Archive: Hidden
+    gsap.set('.gallery-archive', { autoAlpha: 0, scale: 1.1 });
+
     const scrollTl = gsap.timeline({
       scrollTrigger: {
         trigger: '.gallery-pin-container',
         pin: true,
         start: 'top top',
-        end: `+=${totalSections * 100}%`, // Scroll distance
-        scrub: 0.5, // Smooth scrubbing
-        anticipatePin: 1, // Prevent oscillation
+        end: `+=${totalSections * 100}%`, 
+        scrub: 0.5,
+        anticipatePin: 1,
+        invalidateOnRefresh: true,
       }
     });
 
@@ -77,35 +99,31 @@ const Projects = () => {
       if (i === totalSections - 1) return; 
 
       const nextSection = sections[i + 1];
-
-      // Add a small hold for the first section
       const position = i === 0 ? '+=0.2' : '+=0';
 
       scrollTl.to(section, {
-        opacity: 0,
-        scale: 0.95, // Subtle zoom out
+        autoAlpha: 0, // handles opacity + visibility
+        scale: 0.95,
         filter: 'blur(5px)',
         duration: 1,
         ease: 'none'
       }, position)
-      .fromTo(nextSection, 
-        { yPercent: 100, opacity: 0 },
-        { yPercent: 0, opacity: 1, duration: 1, ease: 'none' }, 
+      .to(nextSection, 
+        { yPercent: 0, autoAlpha: 1, duration: 1, ease: 'none' }, 
         "<" 
       );
     });
 
     // 3. Final Transition to "Archive" CTA
     scrollTl.to(sections[totalSections - 1], {
-      opacity: 0,
+      autoAlpha: 0,
       scale: 0.9,
       filter: 'blur(10px)',
       duration: 1,
       ease: 'none'
     })
-    .fromTo('.gallery-archive', 
-      { opacity: 0, scale: 1.1 },
-      { opacity: 1, scale: 1, duration: 1, ease: 'none' },
+    .to('.gallery-archive', 
+      { autoAlpha: 1, scale: 1, duration: 1, ease: 'none' },
       "<"
     );
 

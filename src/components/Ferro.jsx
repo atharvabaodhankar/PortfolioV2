@@ -18,6 +18,7 @@ const Ferro = () => {
         start: 'top top',
         end: '+300% top',
         pin: true,
+        invalidateOnRefresh: true
       },
     });
   }, { scope: ferroRef });

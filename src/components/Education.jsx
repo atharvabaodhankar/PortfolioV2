@@ -18,7 +18,8 @@ const Education = () => {
                 end: '+=1200',
                 pin: true,
                 scrub: 1,
-                anticipatePin: 1
+                anticipatePin: 1,
+                invalidateOnRefresh: true
             }
         });
 

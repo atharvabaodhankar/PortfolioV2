@@ -43,7 +43,8 @@ const Skills = () => {
         trigger: containerRef.current,
         start: 'top 70%',
         end: 'top 50%',
-        toggleActions: 'play none none reverse'
+        toggleActions: 'play none none reverse',
+        invalidateOnRefresh: true
       }
     });
 
@@ -63,7 +64,8 @@ const Skills = () => {
         trigger: containerRef.current,
         start: 'top top',
         end: 'bottom bottom',
-        scrub: true
+        scrub: true,
+        invalidateOnRefresh: true
       }
     });
 
@@ -79,7 +81,8 @@ const Skills = () => {
         scrollTrigger: {
           trigger: section,
           start: 'top 85%',
-          toggleActions: 'play none none reverse'
+          toggleActions: 'play none none reverse',
+          invalidateOnRefresh: true
         }
       });
 

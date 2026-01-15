@@ -19,6 +19,7 @@ const Footer = () => {
         scrub: 2,
         start: 'top 90%',
         end: 'top 30%',
+        invalidateOnRefresh: true
       },
     });
 
@@ -33,6 +34,7 @@ const Footer = () => {
         scrub: 2,
         start: 'top 85%',
         end: 'top 30%',
+        invalidateOnRefresh: true
       },
     });
   }, { scope: footerRef });

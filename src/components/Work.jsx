@@ -13,7 +13,7 @@ const Work = () => {
         gsap.fromTo(
           '.work-img img',
           { y: '-9vw' },
-          { y: '9vw', scrollTrigger: { trigger: '.work-img', scrub: 3 } }
+          { y: '9vw', scrollTrigger: { trigger: '.work-img', scrub: 3, invalidateOnRefresh: true } }
         );
       } else {
         gsap.from('.work-img img', {
@@ -27,6 +27,7 @@ const Work = () => {
             start: '0% 60%',
             end: '20% 60%',
             scrub: 2,
+            invalidateOnRefresh: true
           },
         });
       }
@@ -42,6 +43,7 @@ const Work = () => {
           start: '0% 80%',
           end: '30% 80%',
           scrub: 2,
+          invalidateOnRefresh: true
         },
       });
 
@@ -55,6 +57,7 @@ const Work = () => {
           start: '0% 50%',
           end: '20% 50%',
           scrub: 2,
+          invalidateOnRefresh: true
         },
       });
     }, workRef);

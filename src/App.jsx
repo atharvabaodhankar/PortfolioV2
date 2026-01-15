@@ -52,14 +52,21 @@ function PortfolioPage() {
   useEffect(() => {
     // Initialize Lenis smooth scroll
     const lenis = new Lenis({
-      lerp: 0.05,
+      lerp: 0.1,
+      duration: 1.5,
+      smoothTouch: true, // Improved mobile experience
     });
 
-    function raf(time) {
-      lenis.raf(time);
-      requestAnimationFrame(raf);
-    }
-    requestAnimationFrame(raf);
+    // Synchronize Lenis and ScrollTrigger
+    lenis.on('scroll', ScrollTrigger.update);
+
+    // Use GSAP ticker for smoother animation loop
+    gsap.ticker.add((time) => {
+      lenis.raf(time * 1000);
+    });
+
+    // Disable GSAP lag smoothing for creating stutter-free experience
+    gsap.ticker.lagSmoothing(0);
 
     return () => {
       lenis.destroy();

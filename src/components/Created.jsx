@@ -22,6 +22,7 @@ const Created = () => {
             start: '30% 50%',
             end: '55% 50%',
             scrub: 2,
+            invalidateOnRefresh: true
           },
         });
 
@@ -37,6 +38,7 @@ const Created = () => {
             start: '30% 50%',
             end: '55% 50%',
             scrub: 2,
+            invalidateOnRefresh: true
           },
         });
       } else {
@@ -49,6 +51,7 @@ const Created = () => {
             start: '30% 50%',
             end: '55% 50%',
             scrub: 2,
+            invalidateOnRefresh: true
           },
         });
 
@@ -62,6 +65,7 @@ const Created = () => {
             start: '30% 50%',
             end: '55% 50%',
             scrub: 2,
+            invalidateOnRefresh: true
           },
         });
       }
