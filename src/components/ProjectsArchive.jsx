@@ -142,24 +142,30 @@ const ProjectsArchive = () => {
     }
 
     // B. Hero Entry Animation (Timeline)
-    const tl = gsap.timeline({ delay: 0.2 });
-    tl.from('.hero-word-text', {
-        y: '100%',
-        opacity: 0,
-        rotate: 3,
+    const tl = gsap.timeline({ delay: 0.1 }); // Reduced delay
+    
+    // Explicitly set initial state to avoid FOUC or stuck state
+    gsap.set('.hero-word-text', { y: '100%', opacity: 0, rotate: 3 });
+    gsap.set('.hero-subtitle-content', { y: 20, opacity: 0 });
+    gsap.set('.scroll-indicator', { y: -20, opacity: 0 });
+
+    tl.to('.hero-word-text', {
+        y: '0%',
+        opacity: 1,
+        rotate: 0,
         duration: 1.4,
         stagger: 0.15,
         ease: 'power3.out'
     })
-    .from('.hero-subtitle-content', {
-        opacity: 0,
-        y: 20,
+    .to('.hero-subtitle-content', {
+        opacity: 1,
+        y: 0,
         duration: 1,
         ease: 'power3.out'
     }, "-=0.8")
-    .from('.scroll-indicator', {
-        opacity: 0,
-        y: -20,
+    .to('.scroll-indicator', {
+        opacity: 1,
+        y: 0,
         duration: 1,
         ease: 'power3.out'
     }, "-=0.5");
