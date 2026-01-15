@@ -13,9 +13,6 @@ const SmoothScroll = ({ children }) => {
       smoothTouch: true,
     });
 
-    // Expose Lenis instance globally for other components
-    window.lenis = lenis;
-
     lenis.on('scroll', ScrollTrigger.update);
 
     gsap.ticker.add((time) => {
@@ -27,7 +24,6 @@ const SmoothScroll = ({ children }) => {
     return () => {
       lenis.destroy();
       gsap.ticker.remove(lenis.raf);
-      window.lenis = null;
     };
   }, []);
 

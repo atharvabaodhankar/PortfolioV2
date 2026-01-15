@@ -322,31 +322,7 @@ const ProjectsArchive = () => {
   };
 
 
-  // --- 7. Helper: Bento Grid Classes ---
-  const getBentoClasses = (index, isFeatured) => {
-      // Mobile: all full width
-      let classes = "col-span-12";
-      
-      if (typeof window !== 'undefined' && window.innerWidth >= 768) {
-          // Tablet & Desktop logic
-          // Use grid-cols-12 system
-          
-          if (isFeatured || index === 0) {
-              // Large item
-              classes = "col-span-12 md:col-span-8 lg:col-span-8 row-span-2";
-          } else if (index % 5 === 0 && index !== 0) {
-              // Wide item
-              classes = "col-span-12 md:col-span-12 lg:col-span-8 row-span-1";
-          } else {
-              // Standard item
-              classes = "col-span-12 md:col-span-6 lg:col-span-4 row-span-1";
-          }
-      } else {
-          // Default for SSR or mobile fallback
-           classes = "col-span-12"; 
-      }
-      return classes;
-  };
+
 
 
   if (loading) return (
@@ -455,54 +431,53 @@ const ProjectsArchive = () => {
       </div>
 
 
-      {/* 5. Projects Grid (Bento) */}
+      {/* 5. Projects Grid (Pinterest-style Masonry) */}
       <div className="max-w-[1800px] mx-auto px-4 md:px-12 lg:px-24">
-          <div className="grid grid-cols-12 gap-4 md:gap-6 lg:gap-8 auto-rows-[300px] md:auto-rows-[400px]">
+          <div className="columns-1 md:columns-2 gap-8 space-y-8">
               
               {filteredProjects.map((project, index) => {
-                  const bentoClass = getBentoClasses(index, project.is_featured);
-
                   return (
                       <article 
                         key={project.id}
                         onMouseEnter={handleMouseEnter}
                         onMouseMove={handleMouseMove}
                         onMouseLeave={handleMouseLeave}
-                        className={`project-card group relative bg-white rounded-lg overflow-hidden cursor-pointer will-change-transform ${bentoClass}`}
+                        className="project-card group relative break-inside-avoid bg-white rounded-lg overflow-hidden cursor-pointer will-change-transform mb-8"
                         style={{ transformStyle: 'preserve-3d' }}
                       >
-                          {/* Image Container */}
-                          <div className="w-full h-full overflow-hidden absolute inset-0">
+                          {/* Image Container (Aspect Ratio Helper) */}
+                          <div className="w-full relative overflow-hidden">
+                              {/* Maintain aspect ratio or let image dictate height */}
                               <img 
                                 loading="lazy"
                                 src={project.image_url} 
                                 alt={project.title}
-                                className="project-img w-full h-full object-cover filter grayscale scale-100 transition-transform duration-700 ease-out"
+                                className="project-img w-full h-auto min-h-[300px] object-cover filter grayscale scale-100 transition-transform duration-700 ease-out"
                               />
-                          </div>
-                      
-                          {/* Content Overlay */}
-                          <div className="project-overlay absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 translate-y-4 flex flex-col justify-end p-6 md:p-10 transition-all duration-500 pointer-events-none">
-                                <div className="overlay-content transform translate-y-4">
-                                    <div className="flex items-center justify-between mb-4">
-                                        <div className="flex flex-wrap gap-2">
-                                            {project.technologies?.slice(0,3).map((t, i) => (
-                                                <span key={i} className="tech-badge text-[10px] font-mono uppercase tracking-wider text-white/90 bg-white/20 backdrop-blur-md px-2 py-1 rounded-sm border border-white/10 shadow-sm">
-                                                    {t}
-                                                </span>
-                                            ))}
+                              
+                              {/* Content Overlay */}
+                              <div className="project-overlay absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 translate-y-4 flex flex-col justify-end p-6 md:p-10 transition-all duration-500 pointer-events-none">
+                                    <div className="overlay-content transform translate-y-4">
+                                        <div className="flex items-center justify-between mb-4">
+                                            <div className="flex flex-wrap gap-2">
+                                                {project.technologies?.slice(0,3).map((t, i) => (
+                                                    <span key={i} className="tech-badge text-[10px] font-mono uppercase tracking-wider text-white/90 bg-white/20 backdrop-blur-md px-2 py-1 rounded-sm border border-white/10 shadow-sm">
+                                                        {t}
+                                                    </span>
+                                                ))}
+                                            </div>
+                                            <div className="bg-white/90 p-3 rounded-full text-black">
+                                                <ArrowUpRight size={16} />
+                                            </div>
                                         </div>
-                                        <div className="bg-white/90 p-3 rounded-full text-black">
-                                            <ArrowUpRight size={16} />
-                                        </div>
+                                        <h3 className="text-2xl md:text-4xl font-arsenica text-[#FAFAF9] mb-2 leading-none">
+                                            {project.title}
+                                        </h3>
+                                        <p className="text-[#FAFAF9]/80 font-mono text-xs md:text-sm line-clamp-2 max-w-lg">
+                                            {project.subtitle || project.description}
+                                        </p>
                                     </div>
-                                    <h3 className="text-2xl md:text-4xl font-arsenica text-[#FAFAF9] mb-2 leading-none">
-                                        {project.title}
-                                    </h3>
-                                    <p className="text-[#FAFAF9]/80 font-mono text-xs md:text-sm line-clamp-2 max-w-lg">
-                                        {project.subtitle || project.description}
-                                    </p>
-                                </div>
+                              </div>
                           </div>
                       </article>
                   );

@@ -25,7 +25,7 @@ import SkillsManager from './components/admin/SkillsManager';
 import WorkManager from './components/admin/WorkManager';
 import ProtectedRoute from './components/admin/ProtectedRoute';
 
-import Lenis from 'lenis';
+
 import gsap from 'gsap';
 import ScrollTrigger from 'gsap/ScrollTrigger';
 import FerroLib from './lib/ferro';
@@ -49,29 +49,7 @@ function PortfolioPage() {
     markAsLoaded();
   }, heroImages);
 
-  useEffect(() => {
-    // Initialize Lenis smooth scroll
-    const lenis = new Lenis({
-      lerp: 0.1,
-      duration: 1.5,
-      smoothTouch: true, // Improved mobile experience
-    });
-
-    // Synchronize Lenis and ScrollTrigger
-    lenis.on('scroll', ScrollTrigger.update);
-
-    // Use GSAP ticker for smoother animation loop
-    gsap.ticker.add((time) => {
-      lenis.raf(time * 1000);
-    });
-
-    // Disable GSAP lag smoothing for creating stutter-free experience
-    gsap.ticker.lagSmoothing(0);
-
-    return () => {
-      lenis.destroy();
-    };
-  }, []);
+  // Lenis is now handled globally in SmoothScroll.jsx
 
   useEffect(() => {
     if (!isLoaded) return;
@@ -131,32 +109,36 @@ function PortfolioPage() {
   );
 }
 
+import SmoothScroll from './components/SmoothScroll';
+
 function AppContent() {
   return (
     <Router>
-      <Routes>
-        {/* Main Portfolio Route */}
-        <Route path="/" element={<PortfolioPage />} />
-        <Route path="/projects" element={<ProjectsArchive />} />
-        
-        {/* Admin Login */}
-        <Route path="/admin/login" element={<Login />} />
-        
-        {/* Protected Admin Routes */}
-        <Route
-          path="/admin/*"
-          element={
-            <ProtectedRoute>
-              <AdminLayout />
-            </ProtectedRoute>
-          }
-        >
-          <Route path="dashboard" element={<Dashboard />} />
-          <Route path="projects" element={<ProjectManager />} />
-          <Route path="skills" element={<SkillsManager />} />
-          <Route path="work" element={<WorkManager />} />
-        </Route>
-      </Routes>
+      <SmoothScroll>
+        <Routes>
+          {/* Main Portfolio Route */}
+          <Route path="/" element={<PortfolioPage />} />
+          <Route path="/projects" element={<ProjectsArchive />} />
+          
+          {/* Admin Login */}
+          <Route path="/admin/login" element={<Login />} />
+          
+          {/* Protected Admin Routes */}
+          <Route
+            path="/admin/*"
+            element={
+              <ProtectedRoute>
+                <AdminLayout />
+              </ProtectedRoute>
+            }
+          >
+            <Route path="dashboard" element={<Dashboard />} />
+            <Route path="projects" element={<ProjectManager />} />
+            <Route path="skills" element={<SkillsManager />} />
+            <Route path="work" element={<WorkManager />} />
+          </Route>
+        </Routes>
+      </SmoothScroll>
     </Router>
   );
 }

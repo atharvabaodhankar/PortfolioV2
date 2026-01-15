@@ -66,11 +66,30 @@ const Projects = () => {
 
   // Animation Logic (Fake Pin / Scrub)
   useGSAP(() => {
+    // 1. Intro Animation (Immediate)
+    const introTl = gsap.timeline({
+      scrollTrigger: {
+        trigger: containerRef.current,
+        start: 'top 60%',
+        once: true,
+      }
+    });
+    
+    // Animate title immediately
+    introTl.from('.gallery-title span', {
+      y: 100,
+      opacity: 0,
+      duration: 1.2,
+      stagger: 0.1,
+      ease: 'power4.out'
+    });
+
     if (loading || !projects.length) return;
 
+    // 2. Main Scroll Exhibition (Async / Wait for Images)
     let ctx;
-
-    const init = async () => {
+    const initGallery = async () => {
+      // Wait for images only for the scroll scrub logic
       if (containerRef.current) {
           await waitForImages(containerRef.current);
       }
@@ -127,7 +146,7 @@ const Projects = () => {
       }, containerRef);
     };
 
-    init();
+    initGallery();
     return () => ctx?.revert();
   }, { dependencies: [loading, projects], scope: containerRef });
 
