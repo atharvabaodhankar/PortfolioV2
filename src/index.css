@@ -677,3 +677,25 @@ p {
         --nav-btn: 14vw;
     }
 }
+
+/* Projects Gallery "Fake Pin" Styles */
+.gallery-scroll-container {
+  position: relative;
+}
+
+.gallery-viewport {
+  position: sticky;
+  top: 0;
+}
+
+.gallery-item {
+  position: absolute;
+  inset: 0;
+  will-change: transform, opacity, filter;
+}
+
+@media (max-width: 768px) {
+  .gallery-scroll-container {
+    height: 250vh;
+  }
+}
