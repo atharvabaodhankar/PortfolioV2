@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { X } from 'lucide-react';
 
 // Import assets
@@ -37,27 +38,47 @@ const contentMap = {
   }
 };
 
+gsap.registerPlugin(ScrollTrigger, useGSAP);
+
 const Navbar = () => {
   const [navActive, setNavActive] = useState(false);
   const [activeLink, setActiveLink] = useState('home');
   const [hoveredLink, setHoveredLink] = useState(null);
   
   const containerRef = useRef(null);
+  const navbarRef = useRef(null);
   const leftPanelRef = useRef(null);
   const rightPanelRef = useRef(null);
   const backdropRef = useRef(null);
   const navLinksRef = useRef([]);
   const rightContentRef = useRef(null);
   const closeBtnRef = useRef(null);
-  
-  // Register GSAP plugins if needed (ScrollTrigger is usually global but good practice)
-  gsap.registerPlugin(useGSAP);
 
   const toggleNav = () => {
     setNavActive((prev) => !prev);
   };
 
-  /* Removed duplicate useGSAP block */
+  useGSAP(() => {
+    const showNav = gsap.fromTo(navbarRef.current, {
+        yPercent: -100,
+        paused: true,
+        duration: 0.3
+    }, {
+        yPercent: 0,
+        duration: 0.3,
+        ease: 'power2.out',
+        paused: true 
+    }).progress(1);
+
+    ScrollTrigger.create({
+        start: "top top",
+        end: 99999,
+        onUpdate: (self) => {
+            if (navActive) return; // Don't hide if menu is open
+            self.direction === -1 ? showNav.play() : showNav.reverse();
+        }
+    });
+  }, [navActive]);
     
   const tl = useRef();
 
@@ -203,7 +224,7 @@ const Navbar = () => {
   // Render
   return (
     <>
-      <div className="navbar pointer-events-auto">
+      <div ref={navbarRef} className="navbar pointer-events-auto">
         <div className="logo">
           <a href="/#hero" className="btn-underline font-arsenica text-3xl text-black">ATHARVA</a>
         </div>
