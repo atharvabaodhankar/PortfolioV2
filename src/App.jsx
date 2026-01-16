@@ -99,7 +99,7 @@ function PortfolioPage() {
           <Skills />
           <Education />
           <Created />
-          {/* <Ferro /> */}
+          <Ferro />
           <Projects />
           <Work />
           <Footer />

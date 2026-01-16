@@ -9,6 +9,7 @@ const Ferro = () => {
   const ferroRef = useRef(null);
 
   useGSAP(() => {
+    // Horizontal scroll animation
     gsap.to('.ferro-c1', {
       xPercent: -200,
       ease: 'none',
@@ -21,6 +22,29 @@ const Ferro = () => {
         invalidateOnRefresh: true
       },
     });
+
+    // Image animation
+    gsap.fromTo('.ferro-img',
+      {
+        scale: 0.8,
+        rotation: -5,
+        opacity: 0.5
+      },
+      {
+        scale: 1,
+        rotation: 0,
+        opacity: 1,
+        ease: 'power2.out',
+        scrollTrigger: {
+          trigger: '.ferro-section-2',
+          start: 'left center',
+          end: 'center center',
+          scrub: 1,
+          containerAnimation: gsap.to('.ferro-c1', { xPercent: -200 }),
+          invalidateOnRefresh: true
+        }
+      }
+    );
   }, { scope: ferroRef });
 
   return (
@@ -35,17 +59,19 @@ const Ferro = () => {
             <h2 className="ferro-h2 text-[3rem]">A Dynamic JavaScript Animation Library</h2>
           </div>
         </div>
-        <div className="ferro-c1 ferro-section-2 w-screen h-full flex-shrink-0 py-12 px-16 flex items-center justify-center flex-col text-center">
-          <div className="ferro-img w-1/2 h-auto mb-16">
-            <img 
-              src="/src/assets/imgs/ferro.png" 
-              data-tilt 
-              data-tilt-full-page-listening 
-              alt="" 
-              className="w-full h-full object-contain grayscale brightness-[0.1]"
-            />
+        <div className="ferro-c1 ferro-section-2 w-screen h-full flex-shrink-0 py-12 px-16 flex items-center justify-center flex-col">
+          <div className="w-full flex items-center justify-center mb-16">
+            <div className="ferro-img w-[40%] h-auto">
+              <img 
+                src="/src/assets/imgs/ferro.png" 
+                data-tilt 
+                data-tilt-full-page-listening 
+                alt="Ferro.js Logo" 
+                className="w-full h-full object-contain grayscale brightness-[0.1]"
+              />
+            </div>
           </div>
-          <p className="text-[2vw] leading-[2.5vw] w-4/5">
+          <p className="text-[2vw] leading-[2.5vw] w-4/5 text-center">
             Ferro.js is a versatile JavaScript library I developed to enhance web design with engaging, interactive
             animations. Built on top of the powerful GSAP (GreenSock Animation Platform), Ferro.js offers a suite of
             customizable effects designed to bring elements like headings, buttons, images, and more to life. Whether

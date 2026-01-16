@@ -38,40 +38,6 @@ const Work = () => {
   const handleIntentSelect = (intent) => {
     setSelectedIntent(intent);
     setEmailCopied(false);
-
-    // Animate contact details reveal
-    if (contactRef.current) {
-      gsap.fromTo(
-        contactRef.current,
-        { 
-          opacity: 0, 
-          y: 20,
-          height: 0
-        },
-        { 
-          opacity: 1, 
-          y: 0,
-          height: 'auto',
-          duration: 0.6,
-          ease: 'power2.out'
-        }
-      );
-
-      // Stagger social icons
-      gsap.fromTo(
-        '.social-icon',
-        { opacity: 0, scale: 0.8, y: 10 },
-        { 
-          opacity: 1, 
-          scale: 1, 
-          y: 0,
-          duration: 0.4,
-          stagger: 0.08,
-          ease: 'back.out(1.4)',
-          delay: 0.3
-        }
-      );
-    }
   };
 
   const handleCopyEmail = async () => {
@@ -206,15 +172,14 @@ const Work = () => {
           ))}
         </div>
 
-        {/* Contact Details - Revealed after selection */}
-        {selectedIntent && (
-          <div ref={contactRef} className="contact-reveal mt-12 opacity-0">
+        {/* Contact Details - Always Visible */}
+        <div ref={contactRef} className="contact-reveal mt-12">
             {/* Email Section */}
             <div className="mb-8 pb-8 border-b border-gray-200">
               <p className="text-[1.4rem] text-gray-500 mb-3">Get in touch</p>
               <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
                 <a 
-                  href={`mailto:${email}?subject=${encodeURIComponent(selectedIntent.subject)}`}
+                  href={`mailto:${email}?subject=${encodeURIComponent(selectedIntent?.subject || 'Hello')}`}
                   className="text-[2rem] md:text-[2.4rem] font-arsenica hover:text-gray-600 transition-colors"
                 >
                   {email}
@@ -281,8 +246,7 @@ const Work = () => {
             <div className="mt-8 text-[1.4rem] text-gray-500">
               <p>Based in Solapur, Maharashtra</p>
             </div>
-          </div>
-        )}
+        </div>
       </div>
     </section>
   );
