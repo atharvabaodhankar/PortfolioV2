@@ -5,6 +5,7 @@ import { useGSAP } from '@gsap/react';
 import ScrollTrigger from 'gsap/ScrollTrigger';
 import { throttle } from 'lodash';
 import Footer from './Footer';
+import Navbar from './Navbar';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -328,9 +329,6 @@ const ProjectsArchive = () => {
   };
 
 
-
-
-
   if (loading) return (
     <div className="min-h-screen bg-[#FAFAF9] flex items-center justify-center text-[#1C1917] font-mono">
        <span className="animate-pulse tracking-widest uppercase text-sm">Loading Archive...</span>
@@ -340,6 +338,9 @@ const ProjectsArchive = () => {
   return (
     <main ref={containerRef} className="relative min-h-screen bg-[#FAFAF9] text-[#1C1917] overflow-hidden pb-24 selection:bg-[#1C1917] selection:text-white">
       
+      {/* 0. Navbar */}
+      <Navbar />
+
       {/* 1. Scroll Progress Bar */}
       <div className="fixed top-0 left-0 w-full h-[2px] bg-[#E7E5E4] z-50">
         <div 
@@ -386,8 +387,7 @@ const ProjectsArchive = () => {
              <div className="hero-subtitle mt-8 md:mt-12 flex flex-col md:flex-row gap-6 md:items-center max-w-2xl">
                 <div className="hero-subtitle-content h-[1px] w-12 bg-[#1C1917]/20 hidden md:block"></div>
                 <p className="hero-subtitle-content font-mono text-[#78716C] text-sm md:text-base leading-relaxed">
-                   Crafting digital experiences that merge systems thinking with editorial aesthetics. 
-                   A curated archive of web, mobile, and 3D experiments.
+                   Projects built with a systems-first mindset — spanning web platforms, blockchain applications, and interactive experiences.
                 </p>
              </div>
         </div>

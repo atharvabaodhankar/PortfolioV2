@@ -205,7 +205,7 @@ const Navbar = () => {
     <>
       <div className="navbar pointer-events-auto">
         <div className="logo">
-          <a href="#hero" className="btn-underline font-arsenica text-3xl text-black">ATHARVA</a>
+          <a href="/#hero" className="btn-underline font-arsenica text-3xl text-black">ATHARVA</a>
         </div>
         <div className="menu btn-underline text-2xl cursor-pointer text-black" onClick={toggleNav}>
           Menu
@@ -275,7 +275,7 @@ const Navbar = () => {
                         0{index + 1}
                     </span>
                     <a 
-                        href={`#${key === 'home' ? 'hero' : key}`} 
+                        href={`/${key === 'home' ? '#hero' : '#' + key}`} 
                         className="text-[clamp(5rem,18vw,9rem)] md:text-[clamp(3rem,6vw,6rem)] font-arsenica block relative overflow-hidden leading-[1.1] mix-blend-difference"
                         onClick={toggleNav}
                     >
