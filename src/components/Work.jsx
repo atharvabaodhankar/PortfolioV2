@@ -6,9 +6,11 @@ gsap.registerPlugin(ScrollTrigger);
 
 const Work = () => {
   const workRef = useRef(null);
+  const portraitRef = useRef(null);
+  const emailSectionRef = useRef(null);
   const [selectedIntent, setSelectedIntent] = useState(null);
   const [emailCopied, setEmailCopied] = useState(false);
-  const contactRef = useRef(null);
+  const [emailRevealed, setEmailRevealed] = useState(false);
 
   const intents = [
     { 
@@ -36,8 +38,26 @@ const Work = () => {
   const email = 'baodhankaratharva@gmail.com';
 
   const handleIntentSelect = (intent) => {
+    if (selectedIntent?.id === intent.id) return;
+    
     setSelectedIntent(intent);
     setEmailCopied(false);
+    
+    if (!emailRevealed) {
+      setEmailRevealed(true);
+      gsap.fromTo(emailSectionRef.current, 
+        { opacity: 0, y: 20 },
+        { opacity: 1, y: 0, duration: 1.2, ease: 'power2.out', delay: 0.3 }
+      );
+    }
+    
+    if (portraitRef.current) {
+      gsap.to(portraitRef.current, {
+        scale: 1.05,
+        duration: 1.5,
+        ease: 'power2.out'
+      });
+    }
   };
 
   const handleCopyEmail = async () => {
@@ -45,56 +65,47 @@ const Work = () => {
       await navigator.clipboard.writeText(email);
       setEmailCopied(true);
       
-      // Reset copied state after 2 seconds
-      setTimeout(() => setEmailCopied(false), 2000);
+      if (portraitRef.current) {
+        gsap.to(portraitRef.current, {
+          scale: 1.08,
+          duration: 0.8,
+          ease: 'power2.out',
+          yoyo: true,
+          repeat: 1
+        });
+      }
+      
+      setTimeout(() => setEmailCopied(false), 3000);
     } catch (err) {
       console.error('Failed to copy email:', err);
-      // Fallback to mailto
       window.location.href = `mailto:${email}?subject=${encodeURIComponent(selectedIntent?.subject || 'Hello')}`;
     }
   };
 
   useLayoutEffect(() => {
     const ctx = gsap.context(() => {
-      // Headline animation
       gsap.from('.work-headline', {
         opacity: 0,
-        y: 30,
-        duration: 1,
+        y: 40,
+        duration: 1.8,
         ease: 'power2.out',
         scrollTrigger: {
           trigger: '.work-headline',
-          start: 'top 85%',
-          end: 'top 60%',
+          start: 'top 80%',
+          end: 'top 50%',
           scrub: 1,
           invalidateOnRefresh: true
         },
       });
 
-      // Question animation
       gsap.from('.work-question', {
         opacity: 0,
         y: 20,
-        duration: 0.8,
+        duration: 1.4,
         ease: 'power2.out',
+        delay: 0.3,
         scrollTrigger: {
           trigger: '.work-question',
-          start: 'top 85%',
-          end: 'top 65%',
-          scrub: 1,
-          invalidateOnRefresh: true
-        },
-      });
-
-      // Intent cards stagger
-      gsap.from('.intent-card', {
-        opacity: 0,
-        y: 20,
-        stagger: 0.1,
-        duration: 0.6,
-        ease: 'power2.out',
-        scrollTrigger: {
-          trigger: '.intent-cards-container',
           start: 'top 80%',
           end: 'top 60%',
           scrub: 1,
@@ -102,21 +113,50 @@ const Work = () => {
         },
       });
 
-      // Portrait parallax (subtle)
-      if (window.matchMedia('(min-width: 768px)').matches) {
-        gsap.fromTo(
-          '.work-portrait',
-          { y: '-30px' },
-          { 
-            y: '30px', 
-            scrollTrigger: { 
-              trigger: workRef.current, 
-              scrub: 2,
-              invalidateOnRefresh: true 
-            } 
-          }
-        );
-      }
+      gsap.from('.intent-card', {
+        opacity: 0,
+        y: 15,
+        stagger: 0.15,
+        duration: 1,
+        ease: 'power2.out',
+        delay: 0.6,
+        scrollTrigger: {
+          trigger: '.intent-cards-container',
+          start: 'top 75%',
+          end: 'top 55%',
+          scrub: 1,
+          invalidateOnRefresh: true
+        },
+      });
+
+      gsap.from('.work-portrait', {
+        opacity: 0,
+        scale: 0.95,
+        duration: 2,
+        ease: 'power2.out',
+        delay: 0.8,
+        scrollTrigger: {
+          trigger: workRef.current,
+          start: 'top 70%',
+          end: 'top 40%',
+          scrub: 1,
+          invalidateOnRefresh: true
+        },
+      });
+
+      // Parallax effect
+      gsap.fromTo(
+        '.work-portrait',
+        { y: '-30px' },
+        { 
+          y: '30px', 
+          scrollTrigger: { 
+            trigger: workRef.current, 
+            scrub: 2,
+            invalidateOnRefresh: true 
+          } 
+        }
+      );
     }, workRef);
 
     return () => ctx.revert();
@@ -128,13 +168,13 @@ const Work = () => {
       ref={workRef} 
       className="relative min-h-screen flex items-center justify-center py-24 md:py-32 px-6 md:px-16 overflow-hidden bg-[#fafafa]"
     >
-      {/* Background Portrait - Subtle and Secondary */}
-      <div className="hidden md:block absolute right-8 lg:right-16 top-1/2 -translate-y-1/2 w-[280px] h-[360px] lg:w-[320px] lg:h-[400px] opacity-[0.08] pointer-events-none z-0">
-        <div className="work-portrait relative w-full h-full">
+      {/* Background Portrait */}
+      <div className="absolute right-8 lg:right-16 top-1/2 -translate-y-1/2 w-[280px] h-[360px] lg:w-[320px] lg:h-[400px] opacity-25 pointer-events-none z-0">
+        <div ref={portraitRef} className="work-portrait relative w-full h-full">
           <img 
             src="/src/assets/imgs/navBar-img.jpg" 
             alt="" 
-            className="w-full h-full object-cover rounded-3xl grayscale blur-[2px]"
+            className="w-full h-full object-cover rounded-3xl grayscale"
           />
         </div>
       </div>
@@ -148,13 +188,16 @@ const Work = () => {
           something together
         </h1>
 
-        {/* Guiding Question */}
+        {/* Question */}
         <p className="work-question text-[1.7rem] md:text-[2rem] text-gray-600 mb-10 md:mb-14 font-light max-w-2xl">
-          What do you want to build?
+          {selectedIntent ? 
+            `Perfect. I'd love to ${selectedIntent.label.toLowerCase()}.` : 
+            'What brings you here today?'
+          }
         </p>
 
-        {/* Intent Selection Cards */}
-        <div className="intent-cards-container grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4 mb-12 max-w-3xl">
+        {/* Intent Cards */}
+        <div className="intent-cards-container grid grid-cols-1 sm:grid-cols-2 gap-4 mb-12 max-w-3xl">
           {intents.map((intent) => (
             <button
               key={intent.id}
@@ -172,80 +215,83 @@ const Work = () => {
           ))}
         </div>
 
-        {/* Contact Details - Always Visible */}
-        <div ref={contactRef} className="contact-reveal mt-12">
-            {/* Email Section */}
-            <div className="mb-8 pb-8 border-b border-gray-200">
-              <p className="text-[1.4rem] text-gray-500 mb-3">Get in touch</p>
-              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
-                <a 
-                  href={`mailto:${email}?subject=${encodeURIComponent(selectedIntent?.subject || 'Hello')}`}
-                  className="text-[2rem] md:text-[2.4rem] font-arsenica hover:text-gray-600 transition-colors"
-                >
-                  {email}
-                </a>
-                <button
-                  onClick={handleCopyEmail}
-                  className="px-5 py-2 text-[1.4rem] border-2 border-black rounded-full hover:bg-black hover:text-white transition-all duration-300 whitespace-nowrap"
-                >
-                  {emailCopied ? '✓ Copied!' : 'Copy email'}
-                </button>
+        {/* Email Section */}
+        <div 
+          ref={emailSectionRef} 
+          className={`transition-opacity duration-1000 ${emailRevealed ? 'opacity-100' : 'opacity-0'}`}
+        >
+          <div className="mb-8 pb-8 border-b border-gray-200">
+            <p className="text-[1.4rem] text-gray-500 mb-3">
+              {selectedIntent ? 'Ready when you are' : 'Get in touch'}
+            </p>
+            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+              <a 
+                href={`mailto:${email}?subject=${encodeURIComponent(selectedIntent?.subject || 'Hello')}`}
+                className="text-[2rem] md:text-[2.4rem] font-arsenica hover:text-gray-600 transition-colors"
+              >
+                {email}
+              </a>
+              <button
+                onClick={handleCopyEmail}
+                className="px-5 py-2 text-[1.4rem] border-2 border-black rounded-full hover:bg-black hover:text-white transition-all duration-300 whitespace-nowrap"
+              >
+                {emailCopied ? '✓ Copied!' : 'Copy email'}
+              </button>
+            </div>
+          </div>
+
+          {/* Social Icons */}
+          <div className="flex items-center gap-4 flex-wrap">
+            <p className="text-[1.4rem] text-gray-500 mr-2">Find me on</p>
+            
+            <a 
+              href="https://github.com/atharvabaodhankar" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="social-icon group"
+            >
+              <div className="w-[50px] h-[50px] rounded-full border-2 border-gray-300 flex items-center justify-center text-gray-700 group-hover:border-black group-hover:bg-black group-hover:text-white transition-all duration-300">
+                <i className="fa-brands fa-github text-[2rem]"></i>
               </div>
-            </div>
+            </a>
 
-            {/* Social Icons */}
-            <div className="flex items-center gap-4 flex-wrap">
-              <p className="text-[1.4rem] text-gray-500 mr-2">Find me on</p>
-              
-              <a 
-                href="https://github.com/atharvabaodhankar" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="social-icon group"
-              >
-                <div className="w-[50px] h-[50px] rounded-full border-2 border-gray-300 flex items-center justify-center text-gray-700 group-hover:border-black group-hover:bg-black group-hover:text-white transition-all duration-300">
-                  <i className="fa-brands fa-github text-[2rem]"></i>
-                </div>
-              </a>
+            <a 
+              href="https://www.linkedin.com/in/atharva-baodhankar" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="social-icon group"
+            >
+              <div className="w-[50px] h-[50px] rounded-full border-2 border-gray-300 flex items-center justify-center text-gray-700 group-hover:border-black group-hover:bg-black group-hover:text-white transition-all duration-300">
+                <i className="fa-brands fa-linkedin-in text-[2rem]"></i>
+              </div>
+            </a>
 
-              <a 
-                href="https://www.linkedin.com/in/atharva-baodhankar" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="social-icon group"
-              >
-                <div className="w-[50px] h-[50px] rounded-full border-2 border-gray-300 flex items-center justify-center text-gray-700 group-hover:border-black group-hover:bg-black group-hover:text-white transition-all duration-300">
-                  <i className="fa-brands fa-linkedin-in text-[2rem]"></i>
-                </div>
-              </a>
+            <a 
+              href="https://www.instagram.com/op_athu_/" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="social-icon group"
+            >
+              <div className="w-[50px] h-[50px] rounded-full border-2 border-gray-300 flex items-center justify-center text-gray-700 group-hover:border-black group-hover:bg-black group-hover:text-white transition-all duration-300">
+                <i className="fa-brands fa-instagram text-[2rem]"></i>
+              </div>
+            </a>
 
-              <a 
-                href="https://www.instagram.com/op_athu_/" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="social-icon group"
-              >
-                <div className="w-[50px] h-[50px] rounded-full border-2 border-gray-300 flex items-center justify-center text-gray-700 group-hover:border-black group-hover:bg-black group-hover:text-white transition-all duration-300">
-                  <i className="fa-brands fa-instagram text-[2rem]"></i>
-                </div>
-              </a>
+            <a 
+              href="https://www.facebook.com/profile.php?id=100069517304222" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="social-icon group"
+            >
+              <div className="w-[50px] h-[50px] rounded-full border-2 border-gray-300 flex items-center justify-center text-gray-700 group-hover:border-black group-hover:bg-black group-hover:text-white transition-all duration-300">
+                <i className="fa-brands fa-facebook-f text-[2rem]"></i>
+              </div>
+            </a>
+          </div>
 
-              <a 
-                href="https://www.facebook.com/profile.php?id=100069517304222" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="social-icon group"
-              >
-                <div className="w-[50px] h-[50px] rounded-full border-2 border-gray-300 flex items-center justify-center text-gray-700 group-hover:border-black group-hover:bg-black group-hover:text-white transition-all duration-300">
-                  <i className="fa-brands fa-facebook-f text-[2rem]"></i>
-                </div>
-              </a>
-            </div>
-
-            {/* Optional: Location info */}
-            <div className="mt-8 text-[1.4rem] text-gray-500">
-              <p>Based in Solapur, Maharashtra</p>
-            </div>
+          <div className="mt-8 text-[1.4rem] text-gray-500">
+            <p>Based in Solapur, Maharashtra</p>
+          </div>
         </div>
       </div>
     </section>
