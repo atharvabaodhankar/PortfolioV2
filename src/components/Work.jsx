@@ -251,10 +251,10 @@ const Work = () => {
                       href={social.href} 
                       target="_blank" 
                       rel="noopener noreferrer"
-                      className="group relative w-12 h-12 rounded-full bg-gray-100 hover:bg-gray-900 flex items-center justify-center transition-all duration-300 hover:scale-110"
+                      className="group relative w-16 h-16 rounded-full bg-gray-100 hover:bg-gray-900 flex items-center justify-center transition-all duration-300 hover:scale-110"
                       aria-label={social.label}
                     >
-                      <i className={`fa-brands ${social.icon} text-[1.2rem] text-gray-600 group-hover:text-white transition-colors duration-300`}></i>
+                      <i className={`fa-brands ${social.icon} text-[1.8rem] text-gray-600 group-hover:text-white transition-colors duration-300`}></i>
                     </a>
                   ))}
                 </div>
