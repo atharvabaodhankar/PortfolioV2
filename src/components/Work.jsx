@@ -10,7 +10,6 @@ const Work = () => {
   const emailSectionRef = useRef(null);
   const [selectedIntent, setSelectedIntent] = useState(null);
   const [emailCopied, setEmailCopied] = useState(false);
-  const [emailRevealed, setEmailRevealed] = useState(false);
 
   const intents = [
     { 
@@ -42,14 +41,6 @@ const Work = () => {
     
     setSelectedIntent(intent);
     setEmailCopied(false);
-    
-    if (!emailRevealed) {
-      setEmailRevealed(true);
-      gsap.fromTo(emailSectionRef.current, 
-        { opacity: 0, y: 20 },
-        { opacity: 1, y: 0, duration: 1.2, ease: 'power2.out', delay: 0.3 }
-      );
-    }
     
     if (portraitRef.current) {
       gsap.to(portraitRef.current, {
@@ -193,47 +184,31 @@ const Work = () => {
               }
             </p>
 
-            {/* Intent Cards - Modern Grid */}
-            <div className="intent-cards-container space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-2xl">
+            {/* Intent Cards - Fixed */}
+            <div className="intent-cards-container">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-2xl">
                 {intents.map((intent, index) => (
                   <button
                     key={intent.id}
                     onClick={() => handleIntentSelect(intent)}
-                    className={`intent-card group relative text-left px-8 py-6 rounded-2xl border transition-all duration-500 ease-out overflow-hidden ${
+                    className={`intent-card text-left px-6 py-5 rounded-xl border-2 transition-all duration-300 ease-out ${
                       selectedIntent?.id === intent.id
-                        ? 'border-gray-900 bg-gray-900 text-white shadow-2xl scale-[1.02]'
-                        : 'border-gray-200 bg-white/80 backdrop-blur-sm text-gray-800 hover:border-gray-400 hover:shadow-xl hover:scale-[1.01] hover:bg-white'
+                        ? 'border-black bg-black text-white shadow-xl scale-[1.01]'
+                        : 'border-gray-200 bg-white text-black hover:border-gray-300 hover:shadow-md hover:scale-[1.005]'
                     }`}
                   >
-                    {/* Gradient overlay for selected state */}
-                    <div className={`absolute inset-0 bg-gradient-to-r from-gray-900 to-gray-700 transition-opacity duration-500 ${
-                      selectedIntent?.id === intent.id ? 'opacity-100' : 'opacity-0'
-                    }`}></div>
-                    
-                    {/* Content */}
-                    <div className="relative z-10">
-                      <span className="block text-[1.3rem] md:text-[1.5rem] font-semibold leading-tight">
-                        {intent.label}
-                      </span>
-                      <div className={`mt-2 text-sm opacity-70 transition-all duration-300 ${
-                        selectedIntent?.id === intent.id ? 'text-gray-200' : 'text-gray-500'
-                      }`}>
-                        0{index + 1}
-                      </div>
-                    </div>
-                    
-                    {/* Hover effect */}
-                    <div className="absolute inset-0 bg-gradient-to-r from-gray-50 to-gray-100 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    <span className="block text-[1.4rem] md:text-[1.6rem] font-medium">
+                      {intent.label}
+                    </span>
                   </button>
                 ))}
               </div>
             </div>
 
-            {/* Email Section - Modern Design */}
+            {/* Email Section - Always Visible */}
             <div 
               ref={emailSectionRef} 
-              className={`space-y-8 transition-all duration-1000 ${emailRevealed ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
+              className="space-y-8"
             >
               <div className="space-y-6 p-8 rounded-3xl bg-white/60 backdrop-blur-sm border border-gray-200 shadow-lg">
                 <div className="flex items-center space-x-3">
