@@ -243,7 +243,7 @@ const Work = () => {
                   {[
                     { href: "https://github.com/atharvabaodhankar", icon: "fa-github", label: "GitHub" },
                     { href: "https://www.linkedin.com/in/atharva-baodhankar", icon: "fa-linkedin-in", label: "LinkedIn" },
-                    { href: "https://www.instagram.com/op_athu_/", icon: "fa-instagram", label: "Instagram" },
+                    { href: "https://www.instagram.com/atharvabaodhankar/", icon: "fa-instagram", label: "Instagram" },
                     { href: "https://www.facebook.com/profile.php?id=100069517304222", icon: "fa-facebook-f", label: "Facebook" }
                   ].map((social, index) => (
                     <a 
