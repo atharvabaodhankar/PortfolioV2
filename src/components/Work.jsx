@@ -135,15 +135,15 @@ const Work = () => {
         },
       });
 
-      // Enhanced parallax effect for image - Strong movement
+      // Proper parallax effect - image moves inside fixed container
       gsap.fromTo(
         '.work-portrait',
-        { y: '-80px' },
+        { y: '-10%' },
         { 
-          y: '80px', 
+          y: '10%', 
           scrollTrigger: { 
             trigger: workRef.current, 
-            scrub: 0.5,
+            scrub: 1,
             invalidateOnRefresh: true 
           } 
         }
@@ -266,7 +266,7 @@ const Work = () => {
             </div>
           </div>
 
-          {/* Right Column - Image with Strong Parallax */}
+          {/* Right Column - Image with Proper Parallax */}
           <div className="lg:col-span-5 relative h-[500px] lg:h-screen flex items-center justify-center">
             <div className="relative w-full max-w-[450px] h-[600px] lg:h-[700px]">
               
@@ -274,20 +274,23 @@ const Work = () => {
               <div className="absolute -top-4 -right-4 w-32 h-32 bg-gradient-to-br from-gray-200 to-gray-300 rounded-full opacity-60 blur-xl"></div>
               <div className="absolute -bottom-8 -left-8 w-24 h-24 bg-gradient-to-br from-gray-300 to-gray-400 rounded-full opacity-40 blur-lg"></div>
               
-              {/* Main Image Container */}
-              <div className="relative w-full h-full">
-                <div ref={portraitRef} className="work-portrait relative w-full h-full group">
-                  <div className="absolute inset-0 bg-gradient-to-t from-gray-900/20 to-transparent rounded-3xl z-10"></div>
+              {/* Fixed Container for Parallax */}
+              <div className="relative w-full h-full overflow-hidden rounded-3xl shadow-2xl">
+                {/* Moving Image Inside Fixed Container */}
+                <div ref={portraitRef} className="work-portrait absolute inset-0 w-full h-[120%] -top-[10%]">
                   <img 
                     src="/src/assets/imgs/navBar-img.jpg" 
                     alt="Atharva Baodhankar" 
-                    className="w-full h-full object-cover rounded-3xl shadow-2xl transition-all duration-700 group-hover:scale-[1.02]"
+                    className="w-full h-full object-cover transition-all duration-700 hover:scale-[1.02]"
                   />
-                  
-                  {/* Floating Badge */}
-                  <div className="absolute bottom-6 left-6 z-20 px-4 py-2 bg-white/90 backdrop-blur-sm rounded-full shadow-lg">
-                    <span className="text-sm font-semibold text-gray-900">Available for work</span>
-                  </div>
+                </div>
+                
+                {/* Overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-gray-900/20 to-transparent z-10"></div>
+                
+                {/* Floating Badge */}
+                <div className="absolute bottom-6 left-6 z-20 px-4 py-2 bg-white/90 backdrop-blur-sm rounded-full shadow-lg">
+                  <span className="text-sm font-semibold text-gray-900">Available for work</span>
                 </div>
               </div>
               
