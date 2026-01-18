@@ -8,6 +8,7 @@ const Work = () => {
   const workRef = useRef(null);
   const portraitRef = useRef(null);
   const emailSectionRef = useRef(null);
+  const tiltRef = useRef(null);
   const [selectedIntent, setSelectedIntent] = useState(null);
   const [emailCopied, setEmailCopied] = useState(false);
 
@@ -71,6 +72,37 @@ const Work = () => {
       console.error('Failed to copy email:', err);
       window.location.href = `mailto:${email}?subject=${encodeURIComponent(selectedIntent?.subject || 'Hello')}`;
     }
+  };
+
+  const handleMouseMove = (e) => {
+    if (!tiltRef.current) return;
+
+    const { left, top, width, height } = tiltRef.current.getBoundingClientRect();
+    const x = (e.clientX - left) / width - 0.5;
+    const y = (e.clientY - top) / height - 0.5;
+
+    gsap.to(tiltRef.current, {
+      rotationY: -x * 20, // Negative to pull towards mouse
+      rotationX: y * 20,  // Positive to pull towards mouse (since y is inverted in DOM)
+      transformPerspective: 1000,
+      scale: 1.02,
+      ease: 'power2.out',
+      duration: 0.5,
+      overwrite: 'auto'
+    });
+  };
+
+  const handleMouseLeave = () => {
+    if (!tiltRef.current) return;
+    
+    gsap.to(tiltRef.current, {
+      rotationY: 0,
+      rotationX: 0,
+      scale: 1,
+      ease: 'power2.out',
+      duration: 1,
+      overwrite: 'auto'
+    });
   };
 
   useLayoutEffect(() => {
@@ -275,7 +307,21 @@ const Work = () => {
               <div className="absolute -bottom-8 -left-8 w-24 h-24 bg-gradient-to-br from-gray-300 to-gray-400 rounded-full opacity-40 blur-lg"></div>
               
               {/* Fixed Container for Parallax */}
-              <div className="relative w-full h-full overflow-hidden rounded-3xl shadow-2xl">
+              <div 
+                ref={tiltRef}
+                onMouseMove={handleMouseMove}
+                onMouseLeave={handleMouseLeave}
+                className="relative w-full h-full overflow-hidden rounded-3xl shadow-2xl transition-all duration-300 ease-out will-change-transform"
+                style={{ 
+                  transformStyle: 'preserve-3d',
+                  transform: 'translateZ(0)',
+                  WebkitMaskImage: '-webkit-radial-gradient(white, black)',
+                  maskImage: 'radial-gradient(white, black)',
+                  backfaceVisibility: 'hidden',
+                  MozBackfaceVisibility: 'hidden',
+                  isolation: 'isolate'
+                }}
+              >
                 {/* Moving Image Inside Fixed Container */}
                 <div ref={portraitRef} className="work-portrait absolute inset-0 w-full h-[120%] -top-[10%]">
                   <img 
