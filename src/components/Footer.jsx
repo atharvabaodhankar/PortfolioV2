@@ -78,14 +78,14 @@ const Footer = () => {
             {/* Row 2: Navigation / Links */}
             <div className="footer-row footer-center my-20 md:my-0 flex-1 flex flex-col justify-center items-end text-right">
                 <nav className="footer-links flex flex-col gap-2">
-                    {['/ Projects', '/ About', '/ Contact'].map((item) => (
+                    {['Projects', 'About', 'Contact'].map((item) => (
                         <Magnetic key={item} strength={0.2}>
                             <a 
                                 href={`#${item.toLowerCase()}`} 
                                 className="block text-[12vw] md:text-[8vw] leading-[0.85] font-arsenica font-thin bg-gradient-to-b from-white via-white/80 to-white/40 bg-clip-text text-transparent opacity-80 hover:opacity-100 transition-opacity duration-500"
                             >
-                                <span className="text-[5vw] md:text-[3vw] opacity-40 font-light mr-4 align-top font-sans">/</span>
-                                {item}
+                                <span className="text-[5vw] md:text-[3vw] opacity-40 font-light mr-4 align-top font-sans">/</span> /&nbsp;
+                                 {item}
                             </a>
                         </Magnetic>
                     ))}
