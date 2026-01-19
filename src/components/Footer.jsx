@@ -88,15 +88,15 @@ const Footer = () => {
                             <Magnetic key={item} strength={0.2}>
                                 <Component 
                                     {...linkProps}
-                                    className="group block text-[12vw] md:text-[8vw] leading-[0.85] font-arsenica font-thin opacity-80 hover:opacity-100 transition-opacity duration-500 cursor-pointer"
+                                    className="group block text-[12vw] md:text-[8vw] leading-[0.85] !font-arsenica opacity-80 hover:opacity-100 transition-opacity duration-500 cursor-pointer"
                                 >
                                     <span className="text-[5vw] md:text-[3vw] opacity-40 font-light mr-4 align-top font-sans"></span> 
                                     <span className="text-white/40 font-light mr-2 font-sans">/</span>&nbsp;
                                      <div className="relative inline-block overflow-hidden align-bottom">
-                                        <span className="block bg-gradient-to-b from-white via-white/80 to-white/40 bg-clip-text text-transparent transition-transform duration-500 ease-[0.76,0,0.24,1] group-hover:-translate-y-full">
+                                        <span className="block bg-gradient-to-b from-white via-white/80 to-white/40 bg-clip-text text-transparent transition-transform duration-500 ease-[0.76,0,0.24,1] group-hover:-translate-y-full font-arsenica">
                                             {item}
                                         </span>
-                                        <span className="block absolute top-0 left-0 w-full bg-gradient-to-b from-white via-white/80 to-white/40 bg-clip-text text-transparent transition-transform duration-500 ease-[0.76,0,0.24,1] translate-y-full group-hover:translate-y-0">
+                                        <span className="block absolute top-0 left-0 w-full bg-gradient-to-b from-white via-white/80 to-white/40 bg-clip-text text-transparent transition-transform duration-500 ease-[0.76,0,0.24,1] translate-y-full group-hover:translate-y-0 font-arsenica">
                                             {item}
                                         </span>
                                      </div>

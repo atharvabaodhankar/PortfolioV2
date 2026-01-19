@@ -8,7 +8,10 @@
 /* Font Faces */
 @font-face {
     font-family: ArsenicaDemibold;
-    src: url(/src/assets/fonts/ArsenicaTrial-Demibold.woff2);
+    src: url(./assets/fonts/ArsenicaTrial-Demibold.woff2) format('woff2');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
 }
 
 @font-face {
