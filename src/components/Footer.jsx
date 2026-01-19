@@ -2,6 +2,7 @@ import React, { useRef } from 'react';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import ScrollTrigger from 'gsap/ScrollTrigger';
+import Magnetic from './Magnetic';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -53,37 +54,51 @@ const Footer = () => {
     <footer 
       ref={footerRef} 
       className="footer relative bg-[#0b0b0b] text-[#f5f5f5] overflow-hidden w-full z-10"
-      style={{ minHeight: '100vh' }} // Ensure it has substantial height for the effect
+      style={{ minHeight: '100vh' }}
     >
-        {/* Simple subtle noise overlay if desired, can be added via CSS later */}
         <div ref={containerRef} className="footer-container min-h-screen w-full flex flex-col justify-between px-[5vw] py-[8vw]">
             
-            {/* Row 1: Identity */}
-            <div className="footer-row footer-top flex flex-col gap-4">
-                <h2 className="font-arsenica text-[clamp(2.5rem,5vw,5rem)] leading-tight font-light">
-                    Atharva Baodhankar
-                </h2>
-                <p className="text-white/60 text-xl font-light tracking-wide mt-2">
-                    Web • Systems • Blockchain
+            {/* Row 1: Identity + Philosophy */}
+            <div className="footer-row footer-top flex flex-col gap-6">
+                <div>
+                    <h2 className="font-arsenica text-[clamp(2.5rem,5vw,5rem)] leading-tight font-light bg-gradient-to-b from-white to-white/60 bg-clip-text text-transparent">
+                        Atharva Baodhankar
+                    </h2>
+                    <p className="text-white/60 text-xl font-light tracking-wide mt-2">
+                        Web • Systems • Blockchain
+                    </p>
+                </div>
+                
+                {/* Philosophy Line - Center-Left / Subtly below name */}
+                <p className="text-white/40 text-lg md:text-xl font-light tracking-wider mt-4 max-w-md">
+                    Designing systems that feel simple.
                 </p>
             </div>
 
             {/* Row 2: Navigation / Links */}
-            <div className="footer-row footer-center my-20 md:my-0">
-                <nav className="footer-links flex flex-col md:flex-row gap-8 md:gap-16">
-                    <a href="#projects" className="text-3xl md:text-2xl font-light text-white/70 hover:text-white transition-colors duration-300">Projects</a>
-                    <a href="#about" className="text-3xl md:text-2xl font-light text-white/70 hover:text-white transition-colors duration-300">About</a>
-                    <a href="#contact" className="text-3xl md:text-2xl font-light text-white/70 hover:text-white transition-colors duration-300">Contact</a>
+            <div className="footer-row footer-center my-20 md:my-0 flex-1 flex flex-col justify-center items-end text-right">
+                <nav className="footer-links flex flex-col gap-2">
+                    {['/ Projects', '/ About', '/ Contact'].map((item) => (
+                        <Magnetic key={item} strength={0.2}>
+                            <a 
+                                href={`#${item.toLowerCase()}`} 
+                                className="block text-[12vw] md:text-[8vw] leading-[0.85] font-arsenica font-thin bg-gradient-to-b from-white via-white/80 to-white/40 bg-clip-text text-transparent opacity-80 hover:opacity-100 transition-opacity duration-500"
+                            >
+                                <span className="text-[5vw] md:text-[3vw] opacity-40 font-light mr-4 align-top font-sans">/</span>
+                                {item}
+                            </a>
+                        </Magnetic>
+                    ))}
                 </nav>
             </div>
 
             {/* Row 3: Closing */}
-            <div className="footer-row footer-bottom flex justify-between items-end border-t border-white/10 pt-8 mt-12">
-                <span className="text-sm md:text-base text-white/40 uppercase tracking-wider">
-                    Based in India • Building globally
+            <div className="footer-row footer-bottom flex flex-col md:flex-row justify-between items-start md:items-end border-t border-white/5 pt-8 mt-12 gap-4 md:gap-0">
+                <span className="text-sm md:text-[0.9rem] text-white/30 tracking-widest font-light uppercase">
+                    Based in India — Building globally
                 </span>
-                <span className="text-sm md:text-base text-white/40 uppercase tracking-wider">
-                    © {new Date().getFullYear()}
+                <span className="text-sm md:text-[0.9rem] text-white/30 tracking-widest font-light uppercase">
+                    © 2026
                 </span>
             </div>
         </div>
