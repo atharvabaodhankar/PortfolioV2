@@ -1,4 +1,5 @@
 import React, { useRef } from 'react';
+import { Link } from 'react-router-dom';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import ScrollTrigger from 'gsap/ScrollTrigger';
@@ -78,17 +79,31 @@ const Footer = () => {
             {/* Row 2: Navigation / Links */}
             <div className="footer-row footer-center my-20 md:my-0 flex-1 flex flex-col justify-center items-end text-right">
                 <nav className="footer-links flex flex-col gap-2">
-                    {['Projects', 'About', 'Contact'].map((item) => (
-                        <Magnetic key={item} strength={0.2}>
-                            <a 
-                                href={`#${item.toLowerCase()}`} 
-                                className="block text-[12vw] md:text-[8vw] leading-[0.85] font-arsenica font-thin bg-gradient-to-b from-white via-white/80 to-white/40 bg-clip-text text-transparent opacity-80 hover:opacity-100 transition-opacity duration-500"
-                            >
-                                <span className="text-[5vw] md:text-[3vw] opacity-40 font-light mr-4 align-top font-sans">/</span> /&nbsp;
-                                 {item}
-                            </a>
-                        </Magnetic>
-                    ))}
+                    {['Projects', 'About', 'Contact'].map((item) => {
+                        const isProjects = item === 'Projects';
+                        const Component = isProjects ? Link : 'a';
+                        const linkProps = isProjects ? { to: '/projects' } : { href: `#${item.toLowerCase()}` };
+
+                        return (
+                            <Magnetic key={item} strength={0.2}>
+                                <Component 
+                                    {...linkProps}
+                                    className="group block text-[12vw] md:text-[8vw] leading-[0.85] font-arsenica font-thin opacity-80 hover:opacity-100 transition-opacity duration-500 cursor-pointer"
+                                >
+                                    <span className="text-[5vw] md:text-[3vw] opacity-40 font-light mr-4 align-top font-sans"></span> 
+                                    <span className="text-white/40 font-light mr-2 font-sans">/</span>&nbsp;
+                                     <div className="relative inline-block overflow-hidden align-bottom">
+                                        <span className="block bg-gradient-to-b from-white via-white/80 to-white/40 bg-clip-text text-transparent transition-transform duration-500 ease-[0.76,0,0.24,1] group-hover:-translate-y-full">
+                                            {item}
+                                        </span>
+                                        <span className="block absolute top-0 left-0 w-full bg-gradient-to-b from-white via-white/80 to-white/40 bg-clip-text text-transparent transition-transform duration-500 ease-[0.76,0,0.24,1] translate-y-full group-hover:translate-y-0">
+                                            {item}
+                                        </span>
+                                     </div>
+                                </Component>
+                            </Magnetic>
+                        );
+                    })}
                 </nav>
             </div>
 
