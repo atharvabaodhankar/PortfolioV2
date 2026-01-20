@@ -157,7 +157,7 @@ const Projects = () => {
     <section 
       ref={containerRef} 
       id="projects" 
-      className="relative w-full bg-[#EDECE7] text-[#1a1a1a] selection:bg-black/10"
+      className="relative w-full text-[#1a1a1a] selection:bg-black/10"
     >
       {/* Subtle Noise Overlay (Light Mode) */}
       <div className="fixed inset-0 pointer-events-none z-0">
@@ -174,7 +174,7 @@ const Projects = () => {
       </div>
 
       {/* Fake Pin Scroll Container */}
-      <div className="gallery-scroll-container relative w-full h-[400vh] bg-[#EDECE7]">
+      <div className="gallery-scroll-container relative w-full h-[400vh]">
         <div className="gallery-viewport sticky top-0 w-full h-screen overflow-hidden">
             
             {/* Projects Stack */}

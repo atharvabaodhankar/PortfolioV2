@@ -89,14 +89,7 @@ const About = () => {
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-start relative">
         {/* Title */}
-        <div className="lg:col-span-12 mb-12 lg:mb-0 lg:absolute lg:-left-4 lg:top-0 reveal-text z-10">
-          <h1 
-            className="text-6xl md:text-8xl font-display font-medium tracking-tight text-transparent bg-clip-text bg-gradient-to-br from-black to-gray-600 opacity-90"
-            style={{ fontFamily: "'Bodoni Moda', serif" }}
-          >
-            About Me
-          </h1>
-        </div>
+       
 
         {/* Image */}
         <div className="lg:col-span-4 lg:col-start-2 lg:mt-32 relative reveal-text image-container">

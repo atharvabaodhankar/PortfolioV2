@@ -119,8 +119,8 @@ const Skills = () => {
         <div className="lg:w-1/3 flex flex-col justify-between lg:h-[calc(100vh-160px)] lg:sticky lg:top-32 left-column-content">
           <div className="left-inv">
             <h1 
-              className="text-6xl md:text-7xl lg:text-8xl font-bold tracking-tighter leading-[0.9] mb-8"
-              style={{ fontFamily: "'Inter', sans-serif" }}
+              className="text-6xl md:text-7xl lg:text-8xl font-bold tracking-tighter leading-[0.9] mb-8 font-arsenica"
+              
             >
               Areas<br/>of Craft
             </h1>

@@ -146,18 +146,12 @@ p {
 }
 
 /* Font family overrides - ensure proper loading */
-.font-display {
-    font-family: 'Bodoni Moda', serif !important;
-}
 
 .font-sans {
     font-family: 'Inter', sans-serif !important;
 }
 
 /* Specific About section font fixes */
-#aboutme h1 {
-    font-family: 'Bodoni Moda', serif !important;
-}
 
 #aboutme h2 {
     font-family: 'Inter', sans-serif !important;
