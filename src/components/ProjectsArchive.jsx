@@ -5,7 +5,6 @@ import { useGSAP } from '@gsap/react';
 import ScrollTrigger from 'gsap/ScrollTrigger';
 import { throttle } from 'lodash';
 import Footer from './Footer';
-import Navbar from './Navbar';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -338,9 +337,6 @@ const ProjectsArchive = () => {
   return (
     <main id="main" ref={containerRef} className="relative min-h-screen bg-[#FAFAF9] text-[#1C1917] overflow-hidden pb-24 selection:bg-[#1C1917] selection:text-white">
       
-      {/* 0. Navbar */}
-      <Navbar />
-
       {/* 1. Scroll Progress Bar */}
       <div className="fixed top-0 left-0 w-full h-[2px] bg-[#E7E5E4] z-50">
         <div 

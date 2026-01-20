@@ -92,7 +92,6 @@ function PortfolioPage() {
       <Preloader />
       {isLoaded && (
         <section id="main">
-          <Navbar />
           <Hero />
           <About />
           <Marquee />
@@ -114,6 +113,7 @@ function AppContent() {
     <Router>
       <TransitionProvider>
         <TransitionOverlay />
+        <Navbar />
         <div id="app-content">
           <SmoothScroll>
             <Routes>
