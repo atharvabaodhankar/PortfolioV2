@@ -696,3 +696,98 @@ p {
     height: 250vh;
   }
 }
+/* Responsive Work Section Enhancements */
+.intent-card {
+    /* Ensure intent cards are always visible as fallback */
+    opacity: 1 !important;
+    transform: translateY(0) !important;
+}
+
+@media (max-width: 640px) {
+    .work-headline {
+        line-height: 0.8;
+    }
+    
+    .intent-card {
+        min-height: 60px;
+    }
+}
+
+@media (max-width: 768px) {
+    /* Adjust grid spacing on mobile */
+    .grid {
+        gap: 1rem;
+    }
+}
+
+@media (min-width: 640px) and (max-width: 1024px) {
+    /* Tablet specific adjustments */
+    .work-headline {
+        line-height: 0.85;
+    }
+}
+
+/* Custom breakpoint for extra small devices */
+@media (max-width: 480px) {
+    .xs\:text-\[3rem\] {
+        font-size: 3rem;
+    }
+    
+    .xs\:text-\[1\.2rem\] {
+        font-size: 1.2rem;
+    }
+    
+    .xs\:text-\[1\.3rem\] {
+        font-size: 1.3rem;
+    }
+}
+/* Mobile Footer Enhancements */
+@media (max-width: 640px) {
+    .footer-container {
+        min-height: 100vh !important;
+        justify-content: space-between !important;
+    }
+    
+    .footer-top {
+        padding-top: 2rem;
+    }
+    
+    .footer-center {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+    }
+    
+    .footer-links {
+        width: 100%;
+    }
+    
+    .footer-links a {
+        font-size: clamp(2.5rem, 12vw, 4rem) !important;
+        line-height: 0.9 !important;
+    }
+    
+    .footer-bottom {
+        padding-bottom: 2rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .footer-container {
+        padding-left: 1rem !important;
+        padding-right: 1rem !important;
+    }
+    
+    .footer-links a {
+        font-size: clamp(3rem, 14vw, 4.5rem) !important;
+        line-height: 0.85 !important;
+    }
+}
+
+/* Ensure proper spacing on all mobile devices */
+@media (max-width: 768px) {
+    .footer {
+        padding-bottom: env(safe-area-inset-bottom);
+    }
+}
