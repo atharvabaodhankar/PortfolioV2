@@ -10,7 +10,6 @@ import About from './components/About';
 import Skills from './components/Skills';
 import Education from './components/Education';
 import Created from './components/Created';
-import Ferro from './components/Ferro';
 import Projects from './components/Projects';
 import ProjectsArchive from './components/ProjectsArchive';
 import Work from './components/Work';
@@ -99,7 +98,6 @@ function PortfolioPage() {
           <Skills />
           <Education />
           <Created />
-          <Ferro />
           <Projects />
           <Work />
           <Footer />
