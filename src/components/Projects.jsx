@@ -66,23 +66,35 @@ const Projects = () => {
 
   // Animation Logic (Fake Pin / Scrub)
   useGSAP(() => {
+    // Ensure title is visible initially
+    gsap.set('.gallery-title span', { 
+      opacity: 1,
+      y: 0
+    });
+
     // 1. Intro Animation (Immediate)
     const introTl = gsap.timeline({
       scrollTrigger: {
         trigger: containerRef.current,
-        start: 'top 60%',
+        start: 'top 80%',
         once: true,
       }
     });
     
     // Animate title immediately
-    introTl.from('.gallery-title span', {
-      y: 100,
-      opacity: 0,
-      duration: 1.2,
-      stagger: 0.1,
-      ease: 'power4.out'
-    });
+    introTl.fromTo('.gallery-title span', 
+      {
+        y: 100,
+        opacity: 0,
+      },
+      {
+        y: 0,
+        opacity: 1,
+        duration: 1.2,
+        stagger: 0.1,
+        ease: 'power4.out'
+      }
+    );
 
     if (loading || !projects.length) return;
 
@@ -166,9 +178,9 @@ const Projects = () => {
 
       {/* Intro Title */}
       <div className="relative z-10 w-full h-[60vh] flex flex-col items-center justify-center pointer-events-none">
-        <h2 className="gallery-title text-[clamp(3rem,8vw,8rem)] font-arsenica leading-[0.9] text-center text-[#1a1a1a] mix-blend-darken">
-          <span className="inline-block">Selected</span> <br/>
-          <span className="inline-block italic font-light opacity-60">Works</span>
+        <h2 className="gallery-title text-[clamp(3rem,8vw,8rem)] font-arsenica leading-[0.9] text-center text-[#1a1a1a] mix-blend-darken font-arsenica">
+          <span className="inline-block font-arsenica">Selected</span> <br/>
+          <span className="inline-block opacity-60 font-arsenica">Works</span>
         </h2>
         <div className="absolute bottom-12 w-[1px] h-24 bg-gradient-to-b from-[#1a1a1a] to-transparent opacity-20"></div>
       </div>
