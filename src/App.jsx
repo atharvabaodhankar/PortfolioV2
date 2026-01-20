@@ -5,11 +5,12 @@ import { usePreloader } from './hooks/usePreloader';
 import Preloader from './components/Preloader';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
+import { TransitionProvider } from './context/TransitionContext';
+import TransitionOverlay from './components/TransitionOverlay';
 import Marquee from './components/Marquee';
 import About from './components/About';
 import Skills from './components/Skills';
 import Education from './components/Education';
-import Created from './components/Created';
 import Projects from './components/Projects';
 import ProjectsArchive from './components/ProjectsArchive';
 import Work from './components/Work';
@@ -97,7 +98,6 @@ function PortfolioPage() {
           <Marquee />
           <Skills />
           <Education />
-          <Created />
           <Projects />
           <Work />
           <Footer />
@@ -112,31 +112,36 @@ import SmoothScroll from './components/SmoothScroll';
 function AppContent() {
   return (
     <Router>
-      <SmoothScroll>
-        <Routes>
-          {/* Main Portfolio Route */}
-          <Route path="/" element={<PortfolioPage />} />
-          <Route path="/projects" element={<ProjectsArchive />} />
-          
-          {/* Admin Login */}
-          <Route path="/admin/login" element={<Login />} />
-          
-          {/* Protected Admin Routes */}
-          <Route
-            path="/admin/*"
-            element={
-              <ProtectedRoute>
-                <AdminLayout />
-              </ProtectedRoute>
-            }
-          >
-            <Route path="dashboard" element={<Dashboard />} />
-            <Route path="projects" element={<ProjectManager />} />
-            <Route path="skills" element={<SkillsManager />} />
-            <Route path="work" element={<WorkManager />} />
-          </Route>
-        </Routes>
-      </SmoothScroll>
+      <TransitionProvider>
+        <TransitionOverlay />
+        <div id="app-content">
+          <SmoothScroll>
+            <Routes>
+              {/* Main Portfolio Route */}
+              <Route path="/" element={<PortfolioPage />} />
+              <Route path="/projects" element={<ProjectsArchive />} />
+              
+              {/* Admin Login */}
+              <Route path="/admin/login" element={<Login />} />
+              
+              {/* Protected Admin Routes */}
+              <Route
+                path="/admin/*"
+                element={
+                  <ProtectedRoute>
+                    <AdminLayout />
+                  </ProtectedRoute>
+                }
+              >
+                <Route path="dashboard" element={<Dashboard />} />
+                <Route path="projects" element={<ProjectManager />} />
+                <Route path="skills" element={<SkillsManager />} />
+                <Route path="work" element={<WorkManager />} />
+              </Route>
+            </Routes>
+          </SmoothScroll>
+        </div>
+      </TransitionProvider>
     </Router>
   );
 }

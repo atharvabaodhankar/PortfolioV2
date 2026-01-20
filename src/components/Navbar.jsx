@@ -3,6 +3,7 @@ import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { X } from 'lucide-react';
+import TransitionLink from './TransitionLink';
 
 // Import assets
 import heroImg from '../assets/imgs/hero-img.jpg';
@@ -295,18 +296,33 @@ const Navbar = () => {
                     <span className="absolute -left-6 top-1 text-sm md:-left-8 md:top-2 md:text-lg text-white/40 font-mono opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform -translate-x-4 group-hover:translate-x-0 hidden md:block">
                         0{index + 1}
                     </span>
-                    <a 
-                        href={`/${key === 'home' ? '#hero' : '#' + key}`} 
-                        className="text-[clamp(5rem,18vw,9rem)] md:text-[clamp(3rem,6vw,6rem)] font-arsenica block relative overflow-hidden leading-[1.1] mix-blend-difference"
-                        onClick={toggleNav}
-                    >
-                        <span className="block transition-all duration-500 ease-[cubic-bezier(0.76,0,0.24,1)] group-hover:-translate-y-full group-hover:skew-y-2 active:-translate-y-full active:skew-y-2 text-white/90">
-                            {key.charAt(0).toUpperCase() + key.slice(1)}
-                        </span>
-                        <span className="block absolute top-0 left-0 transition-all duration-500 ease-[cubic-bezier(0.76,0,0.24,1)] translate-y-[110%] rotate-2 skew-y-6 group-hover:translate-y-0 group-hover:rotate-0 group-hover:skew-y-0 active:translate-y-0 active:rotate-0 active:skew-y-0 text-white">
-                            {key.charAt(0).toUpperCase() + key.slice(1)}
-                        </span>
-                    </a>
+                    {key === 'projects' || key === 'home' ? (
+                        <TransitionLink
+                            to={key === 'projects' ? '/projects' : '/'}
+                            className="text-[clamp(5rem,18vw,9rem)] md:text-[clamp(3rem,6vw,6rem)] font-arsenica block relative overflow-hidden leading-[1.1] mix-blend-difference"
+                            onClick={toggleNav}
+                        >
+                            <span className="block transition-all duration-500 ease-[cubic-bezier(0.76,0,0.24,1)] group-hover:-translate-y-full group-hover:skew-y-2 active:-translate-y-full active:skew-y-2 text-white/90 font-arsenica">
+                                {key.charAt(0).toUpperCase() + key.slice(1)}
+                            </span>
+                            <span className="block absolute top-0 left-0 transition-all duration-500 ease-[cubic-bezier(0.76,0,0.24,1)] translate-y-[110%] rotate-2 skew-y-6 group-hover:translate-y-0 group-hover:rotate-0 group-hover:skew-y-0 active:translate-y-0 active:rotate-0 active:skew-y-0 text-white font-arsenica">
+                                {key.charAt(0).toUpperCase() + key.slice(1)}
+                            </span>
+                        </TransitionLink>
+                    ) : (
+                        <a 
+                            href={`/${key === 'home' ? '#hero' : '#' + key}`} 
+                            className="text-[clamp(5rem,18vw,9rem)] md:text-[clamp(3rem,6vw,6rem)] font-arsenica block relative overflow-hidden leading-[1.1] mix-blend-difference"
+                            onClick={toggleNav}
+                        >
+                            <span className="block transition-all duration-500 ease-[cubic-bezier(0.76,0,0.24,1)] group-hover:-translate-y-full group-hover:skew-y-2 active:-translate-y-full active:skew-y-2 text-white/90 font-arsenica">
+                                {key.charAt(0).toUpperCase() + key.slice(1)}
+                            </span>
+                            <span className="block absolute top-0 left-0 transition-all duration-500 ease-[cubic-bezier(0.76,0,0.24,1)] translate-y-[110%] rotate-2 skew-y-6 group-hover:translate-y-0 group-hover:rotate-0 group-hover:skew-y-0 active:translate-y-0 active:rotate-0 active:skew-y-0 text-white font-arsenica">
+                                {key.charAt(0).toUpperCase() + key.slice(1)}
+                            </span>
+                        </a>
+                    )}
                 </div>
               </div>
             ))}

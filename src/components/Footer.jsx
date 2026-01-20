@@ -1,5 +1,6 @@
 import React, { useRef } from 'react';
 import { Link } from 'react-router-dom';
+import TransitionLink from './TransitionLink';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import ScrollTrigger from 'gsap/ScrollTrigger';
@@ -81,7 +82,7 @@ const Footer = () => {
                 <nav className="footer-links flex flex-col gap-1 md:gap-2 w-full md:w-auto">
                     {['Projects', 'About', 'Contact'].map((item) => {
                         const isProjects = item === 'Projects';
-                        const Component = isProjects ? Link : 'a';
+                        const Component = isProjects ? TransitionLink : 'a';
                         const linkProps = isProjects ? { to: '/projects' } : { href: `#${item.toLowerCase()}` };
 
                         return (

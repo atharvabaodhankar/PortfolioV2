@@ -336,7 +336,7 @@ const ProjectsArchive = () => {
   );
 
   return (
-    <main ref={containerRef} className="relative min-h-screen bg-[#FAFAF9] text-[#1C1917] overflow-hidden pb-24 selection:bg-[#1C1917] selection:text-white">
+    <main id="main" ref={containerRef} className="relative min-h-screen bg-[#FAFAF9] text-[#1C1917] overflow-hidden pb-24 selection:bg-[#1C1917] selection:text-white">
       
       {/* 0. Navbar */}
       <Navbar />
