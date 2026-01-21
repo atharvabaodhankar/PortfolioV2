@@ -791,3 +791,73 @@ p {
         padding-bottom: env(safe-area-inset-bottom);
     }
 }
+/* Preloader Styles */
+.preloader-text {
+  font-feature-settings: 'kern' 1, 'liga' 1, 'calt' 1;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  animation: subtle-breathe 4s ease-in-out infinite;
+}
+
+@keyframes subtle-breathe {
+  0%, 100% { 
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% { 
+    opacity: 0.95;
+    transform: scale(1.002);
+  }
+}
+
+.preloader-subtitle {
+  font-feature-settings: 'kern' 1, 'tnum' 1;
+  letter-spacing: 0.15em;
+  animation: subtle-pulse 3s ease-in-out infinite;
+}
+
+@keyframes subtle-pulse {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 0.8; }
+}
+
+.progress-line {
+  background: linear-gradient(90deg, 
+    rgba(255, 255, 255, 0.8) 0%, 
+    rgba(255, 255, 255, 1) 50%, 
+    rgba(255, 255, 255, 0.8) 100%
+  );
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.counter {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: 'tnum' 1;
+  transition: all 0.3s ease;
+}
+
+/* Subtle grain texture for preloader background */
+.preloader-bg::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: 
+    radial-gradient(circle at 1px 1px, rgba(255,255,255,0.02) 1px, transparent 0);
+  background-size: 20px 20px;
+  pointer-events: none;
+  opacity: 0.5;
+  animation: grain-move 20s linear infinite;
+}
+
+@keyframes grain-move {
+  0% { transform: translate(0, 0); }
+  25% { transform: translate(-5px, -5px); }
+  50% { transform: translate(-10px, 5px); }
+  75% { transform: translate(5px, -10px); }
+  100% { transform: translate(0, 0); }
+}

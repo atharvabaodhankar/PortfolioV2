@@ -43,9 +43,44 @@ function PortfolioPage() {
       '/src/assets/imgs/Web_Photo_Editor.jpg',
     ];
     setHeroImages(criticalImages);
+
+    // Preload critical fonts
+    const preloadFont = (fontFamily, fontWeight = 'normal') => {
+      const link = document.createElement('link');
+      link.rel = 'preload';
+      link.as = 'font';
+      link.type = 'font/woff2';
+      link.crossOrigin = 'anonymous';
+      
+      // Try to find the font file in the document
+      const fontFace = Array.from(document.styleSheets)
+        .flatMap(sheet => {
+          try {
+            return Array.from(sheet.cssRules);
+          } catch (e) {
+            return [];
+          }
+        })
+        .find(rule => 
+          rule instanceof CSSFontFaceRule && 
+          rule.style.fontFamily.includes(fontFamily)
+        );
+      
+      if (fontFace) {
+        const src = fontFace.style.src;
+        const urlMatch = src.match(/url\(['"]?([^'"]+)['"]?\)/);
+        if (urlMatch) {
+          link.href = urlMatch[1];
+          document.head.appendChild(link);
+        }
+      }
+    };
+
+    // Preload Arsenica font
+    preloadFont('Arsenica Trial');
   }, []);
 
-  const { progress, imagesReady } = usePreloader(() => {
+  const { progress, imagesReady, fontsReady } = usePreloader(() => {
     markAsLoaded();
   }, heroImages);
 
@@ -89,18 +124,21 @@ function PortfolioPage() {
 
   return (
     <>
-      <Preloader />
+      <Preloader progress={progress} />
       {isLoaded && (
-        <section id="main">
-          <Hero />
-          <About />
-          <Marquee />
-          <Skills />
-          <Education />
-          <Projects />
-          <Work />
-          <Footer />
-        </section>
+        <>
+          <Navbar />
+          <section id="main">
+            <Hero />
+            <About />
+            <Marquee />
+            <Skills />
+            <Education />
+            <Projects />
+            <Work />
+            <Footer />
+          </section>
+        </>
       )}
     </>
   );
@@ -113,7 +151,6 @@ function AppContent() {
     <Router>
       <TransitionProvider>
         <TransitionOverlay />
-        <Navbar />
         <div id="app-content">
           <SmoothScroll>
             <Routes>
