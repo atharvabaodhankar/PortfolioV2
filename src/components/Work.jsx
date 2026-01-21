@@ -288,7 +288,7 @@ const Work = () => {
               <div className="space-y-4 sm:space-y-6 p-6 sm:p-8 rounded-2xl sm:rounded-3xl bg-white/60 backdrop-blur-sm border border-gray-200 shadow-lg">
                 <div className="flex items-center space-x-3">
                   <div className="w-2.5 h-2.5 sm:w-3 sm:h-3 bg-green-500 rounded-full animate-pulse"></div>
-                  <p className="text-[1rem] sm:text-[1.1rem] md:text-[1.2rem] text-gray-500 font-medium">
+                  <p className="text-[0.9rem] sm:text-[1rem] md:text-[1.1rem] lg:text-[1.2rem] text-gray-500 font-medium">
                     {selectedIntent ? 'Ready when you are' : 'Get in touch'}
                   </p>
                 </div>
@@ -296,7 +296,7 @@ const Work = () => {
                 <div className="flex flex-col gap-4 sm:gap-6">
                   <a 
                     href={`mailto:${email}?subject=${encodeURIComponent(selectedIntent?.subject || 'Hello')}`}
-                    className="text-[1.2rem] xs:text-[1.3rem] sm:text-[1.5rem] md:text-[1.8rem] lg:text-[2rem] xl:text-[2.2rem] font-arsenica text-gray-900 hover:text-gray-600 transition-colors duration-300 leading-tight break-all sm:break-normal"
+                    className="text-[1.8rem] xs:text-[1.6rem] sm:text-[1.8rem] md:text-[2rem] lg:text-[2.2rem] xl:text-[2.4rem] font-arsenica text-gray-900 hover:text-gray-600 transition-colors duration-300 leading-tight break-all sm:break-normal"
                   >
                     {email}
                   </a>
