@@ -797,18 +797,11 @@ p {
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  animation: subtle-breathe 4s ease-in-out infinite;
 }
 
-@keyframes subtle-breathe {
-  0%, 100% { 
-    opacity: 1;
-    transform: scale(1);
-  }
-  50% { 
-    opacity: 0.95;
-    transform: scale(1.002);
-  }
+.char-animate {
+  display: inline-block;
+  transform-origin: center bottom;
 }
 
 .preloader-subtitle {

@@ -13,7 +13,8 @@ const Preloader = ({ progress = 0 }) => {
     const ctx = gsap.context(() => {
       // Set initial states
       gsap.set(containerRef.current, { opacity: 1, yPercent: 0 });
-      gsap.set(".preloader-text", { y: 100, opacity: 0 });
+      gsap.set(".preloader-text", { opacity: 1 });
+      gsap.set(".char-animate", { y: 100, opacity: 0 });
       gsap.set(".preloader-subtitle", { y: 50, opacity: 0 });
       gsap.set(".progress-line", { scaleX: 0, transformOrigin: "left" });
       gsap.set(".counter", { opacity: 0 });
@@ -21,12 +22,12 @@ const Preloader = ({ progress = 0 }) => {
       // Entrance animation
       const tl = gsap.timeline();
 
-      tl.to(".preloader-text", {
+      tl.to(".char-animate", {
         y: 0,
         opacity: 1,
         duration: 1.2,
         ease: "power3.out",
-        stagger: 0.1
+        stagger: 0.05
       })
       .to(".preloader-subtitle", {
         y: 0,
@@ -39,6 +40,19 @@ const Preloader = ({ progress = 0 }) => {
         duration: 0.6,
         ease: "power2.out"
       }, "-=0.4");
+
+      // Continuous subtle animations
+      gsap.to(".char-animate", {
+        y: -2,
+        duration: 2,
+        ease: "sine.inOut",
+        repeat: -1,
+        yoyo: true,
+        stagger: {
+          amount: 0.5,
+          from: "random"
+        }
+      });
 
     }, containerRef);
 
@@ -91,12 +105,12 @@ const Preloader = ({ progress = 0 }) => {
           duration: 0.5,
           ease: "power2.in"
         }, "-=0.2")
-        .to(".preloader-text", {
+        .to(".char-animate", {
           y: -80,
           opacity: 0,
           duration: 0.7,
           ease: "power3.in",
-          stagger: 0.05
+          stagger: 0.02
         }, "-=0.4")
         .to(containerRef.current, {
           yPercent: -100,
@@ -125,13 +139,21 @@ const Preloader = ({ progress = 0 }) => {
         {/* Main Typography */}
         <div className="mb-12 overflow-hidden">
           <h1 className="preloader-text text-[8vw] md:text-[4.5rem] font-arsenica font-light text-white leading-[0.9] tracking-[-0.02em]">
-            CRAFTING
+            {"CRAFTING".split("").map((char, i) => (
+              <span key={i} className="inline-block char-animate" style={{animationDelay: `${i * 0.1}s`}}>
+                {char}
+              </span>
+            ))}
           </h1>
         </div>
         
         <div className="mb-16 overflow-hidden">
           <h2 className="preloader-text text-[8vw] md:text-[4.5rem] font-arsenica font-light text-white leading-[0.9] tracking-[-0.02em]">
-            EXPERIENCE
+            {"EXPERIENCE".split("").map((char, i) => (
+              <span key={i} className="inline-block char-animate" style={{animationDelay: `${(i + 8) * 0.1}s`}}>
+                {char}
+              </span>
+            ))}
           </h2>
         </div>
 
