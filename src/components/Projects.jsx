@@ -123,7 +123,7 @@ const Projects = () => {
             trigger: ".gallery-scroll-container",
             start: "top top",
             end: "bottom bottom",
-            scrub: 0.6,
+            scrub: 1.5, // Slower than 0.6 but not as slow as 2
             invalidateOnRefresh: true,
           },
         });
@@ -186,7 +186,7 @@ const Projects = () => {
       </div>
 
       {/* Fake Pin Scroll Container */}
-      <div className="gallery-scroll-container relative w-full h-[400vh]">
+      <div className="gallery-scroll-container relative w-full h-[600vh]">
         <div className="gallery-viewport sticky top-0 w-full h-screen overflow-hidden">
             
             {/* Projects Stack */}
