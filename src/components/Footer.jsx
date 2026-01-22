@@ -84,7 +84,7 @@ const Footer = () => {
                             <Magnetic key={item} strength={0.2}>
                                 <Component 
                                     {...linkProps}
-                                    className="group block text-[12vw] xs:text-[11vw] sm:text-[9vw] md:text-[8vw] leading-[0.85] opacity-80 hover:opacity-100 transition-opacity duration-500 cursor-pointer w-full md:w-auto"
+                                    className="group block text-[12vw] xs:text-[11vw] sm:text-[9vw] md:text-[8vw] leading-[0.85] opacity-80 hover:opacity-100 transition-opacity duration-500 cursor-pointer w-full md:w-auto my-2 sm:my-4 md:my-6"
                                 >
                                     <span className="hidden md:inline text-white/40 font-light mr-2 font-sans">/</span>&nbsp;
                                      <div className="relative inline-block overflow-hidden align-bottom">
