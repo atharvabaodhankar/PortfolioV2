@@ -19,61 +19,52 @@ const Preloader = ({ progress = 0 }) => {
       gsap.set(".progress-line", { scaleX: 0, transformOrigin: "left" });
       gsap.set(".counter", { opacity: 0 });
 
-      // Entrance animation
+      // Entrance animation - clean and simple
       const tl = gsap.timeline();
 
       tl.to(".char-animate", {
         y: 0,
         opacity: 1,
-        duration: 0.3,
+        duration: 0.6,
         ease: "power2.out",
-        stagger: 0.02
+        stagger: 0.03
       })
       .to(".preloader-subtitle", {
         y: 0,
         opacity: 1,
-        duration: 0.3,
+        duration: 0.4,
         ease: "power2.out"
-      }, "-=0.2")
+      }, "-=0.3")
       .to(".counter", {
         opacity: 1,
         duration: 0.3,
         ease: "power2.out"
       }, "-=0.2");
 
-      // Continuous subtle animations
-      gsap.to(".char-animate", {
-        y: -2,
-        duration: 1.5,
-        ease: "sine.inOut",
-        repeat: -1,
-        yoyo: true,
-        stagger: {
-          amount: 0.4,
-          from: "start"
-        }
-      });
+      // NO continuous animations - keep text static and clean
 
     }, containerRef);
 
     return () => ctx.revert();
   }, []);
 
-  // Update progress based on actual loading progress
+  // Enhanced progress updates with smooth animations
   useEffect(() => {
     if (counterRef.current && progressRef.current) {
       const currentProgress = Math.min(progress, 100);
       
+      // Smooth counter animation
       gsap.to(counterRef.current, {
         innerHTML: currentProgress,
-        duration: 0.5,
+        duration: 0.6,
         ease: "power2.out",
         snap: { innerHTML: 1 }
       });
 
+      // Smooth progress line animation
       gsap.to(".progress-line", {
         scaleX: currentProgress / 100,
-        duration: 0.5,
+        duration: 0.6,
         ease: "power2.out"
       });
     }
@@ -88,35 +79,36 @@ const Preloader = ({ progress = 0 }) => {
           }
         });
 
-        // Smooth slide-up exit animation
+        // Clean exit animation - consistent upward movement
         tl.to(".counter", {
+          y: -20,
           opacity: 0,
           duration: 0.3,
           ease: "power2.in"
         })
         .to(".progress-line", {
           scaleX: 1,
-          duration: 0.3,
+          duration: 0.2,
           ease: "power2.out"
         }, "-=0.2")
         .to(".preloader-subtitle", {
-          y: -30,
+          y: -40,
           opacity: 0,
-          duration: 0.3,
+          duration: 0.4,
           ease: "power2.in"
         }, "-=0.1")
         .to(".char-animate", {
-          y: -60,
+          y: -80,
           opacity: 0,
-          duration: 0.3,
+          duration: 0.5,
           ease: "power2.in",
-          stagger: 0.01
+          stagger: 0.02
         }, "-=0.2")
         .to(containerRef.current, {
           yPercent: -100,
           duration: 0.8,
           ease: "power3.inOut"
-        }, "-=0.2");
+        }, "-=0.3");
 
       }, containerRef);
 

@@ -38,6 +38,7 @@ const Ferro = {
       z-index: 9999;
       pointer-events: none;
       transform: translate(-50%, -50%);
+      mix-blend-mode: difference;
       transition: background-color 0.3s ease;
     `;
     
