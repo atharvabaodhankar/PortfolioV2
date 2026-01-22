@@ -1,14 +1,12 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { X } from 'lucide-react';
 import TransitionLink from './TransitionLink';
 
 // Import assets
 import heroImg from '../assets/imgs/hero-img.jpg';
 import aboutImg from '../assets/imgs/aboutme-img.jpeg';
-import skillsImg from '../assets/imgs/skills.png';
 import rejouiceImg from '../assets/sites/rejouice.png';
 import navImg from '../assets/imgs/navBar-img.jpg'; // Backup/Default
 
@@ -39,12 +37,13 @@ const contentMap = {
   }
 };
 
-gsap.registerPlugin(ScrollTrigger, useGSAP);
+gsap.registerPlugin(useGSAP);
 
 const Navbar = () => {
+  console.log('Navbar component is rendering!');
+  
   const [navActive, setNavActive] = useState(false);
   const [activeLink, setActiveLink] = useState('home');
-  const [hoveredLink, setHoveredLink] = useState(null);
   
   const containerRef = useRef(null);
   const navbarRef = useRef(null);
@@ -59,26 +58,65 @@ const Navbar = () => {
     setNavActive((prev) => !prev);
   };
 
-  useGSAP(() => {
-    const showNav = gsap.fromTo(navbarRef.current, {
-        yPercent: -100,
-        paused: true,
-        duration: 0.3
-    }, {
-        yPercent: 0,
-        duration: 0.3,
-        ease: 'power2.out',
-        paused: true 
-    }).progress(1);
+  useEffect(() => {
+    let lastScroll = 0;
 
-    ScrollTrigger.create({
-        start: "top top",
-        end: 99999,
-        onUpdate: (self) => {
-            if (navActive) return; // Don't hide if menu is open
-            self.direction === -1 ? showNav.play() : showNav.reverse();
+    const handleScroll = (e) => {
+      const currentScroll = e?.scroll || window.pageYOffset;
+      
+      if (currentScroll <= 0) {
+        // At top - show navbar
+        if (navbarRef.current) {
+          navbarRef.current.style.transform = 'translate3d(0, 0, 0)';
         }
-    });
+        return;
+      }
+
+      if (navActive) return; // Don't hide if menu is open
+
+      if (currentScroll > lastScroll) {
+        // Scrolling down - hide navbar
+        if (navbarRef.current) {
+          navbarRef.current.style.transform = 'translate3d(0, -100%, 0)';
+        }
+      } else if (currentScroll < lastScroll) {
+        // Scrolling up - show navbar
+        if (navbarRef.current) {
+          navbarRef.current.style.transform = 'translate3d(0, 0, 0)';
+        }
+      }
+
+      lastScroll = currentScroll;
+    };
+
+    // Wait for Lenis to be available
+    const attachScrollListener = () => {
+      if (window.lenis) {
+        window.lenis.on('scroll', handleScroll);
+        console.log('Lenis scroll listener attached');
+      } else {
+        // Fallback to regular scroll
+        window.addEventListener('scroll', handleScroll);
+        console.log('Regular scroll listener attached');
+      }
+    };
+
+    // Try to attach immediately or wait a bit
+    const timer = setTimeout(attachScrollListener, 100);
+
+    // Cleanup
+    return () => {
+      clearTimeout(timer);
+      if (window.lenis) {
+        window.lenis.off('scroll', handleScroll);
+      } else {
+        window.removeEventListener('scroll', handleScroll);
+      }
+      // Reset navbar position on cleanup
+      if (navbarRef.current) {
+        navbarRef.current.style.transform = 'translate3d(0, 0, 0)';
+      }
+    };
   }, [navActive]);
     
   const tl = useRef();
@@ -193,7 +231,6 @@ const Navbar = () => {
   // Content Transition on Hover
   const handleLinkHover = (key) => {
       if (key === activeLink) return;
-      setHoveredLink(key);
       
       // Animate Right Panel Content Change
       const tl = gsap.timeline();
@@ -225,11 +262,30 @@ const Navbar = () => {
   // Render
   return (
     <>
-      <div ref={navbarRef} className="navbar pointer-events-auto">
+      <div 
+        ref={navbarRef} 
+        className="navbar pointer-events-auto"
+        style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '80px',
+          zIndex: 99,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          padding: '0 3vw',
+          backgroundColor: 'rgba(255, 255, 255, 0.9)',
+          backdropFilter: 'blur(10px)',
+          transition: 'transform 0.3s ease-in-out',
+          transform: 'translate3d(0, 0, 0)'
+        }}
+      >
         <div className="logo">
-          <a href="/#hero" className="btn-underline font-arsenica text-3xl text-black">ATHARVA</a>
+          <a href="/#hero" className="font-arsenica text-3xl text-black font-semibold">ATHARVA</a>
         </div>
-        <div className="menu btn-underline text-2xl cursor-pointer text-black" onClick={toggleNav}>
+        <div className="menu text-2xl cursor-pointer text-black font-medium" onClick={toggleNav}>
           Menu
         </div>
       </div>
