@@ -93,8 +93,8 @@ function PortfolioPage() {
     if (window.matchMedia('(min-width: 768px)').matches) {
       // Small delay to ensure all DOM elements are rendered
       const timer = setTimeout(() => {
-        // Ultra smooth Ferro.mouseFollower with crisp edges
-        const cursor = FerroLib.mouseFollower(3, "15px", true, [
+        // Smooth trailing Ferro.mouseFollower
+        const cursor = FerroLib.mouseFollower(2, "15px", true, [
           "h1", "h2", "h3", "h4", "h5", "h6",
           ".nav-btn", ".hero-hover", ".ferro-c1 p", ".ferro-btn",
           ".work-headline", ".preloader-text", ".about-title",

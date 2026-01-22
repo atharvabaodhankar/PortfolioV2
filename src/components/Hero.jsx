@@ -49,7 +49,7 @@ const Hero = () => {
   }, { scope: heroRef, dependencies: [isLoaded] });
 
   return (
-    <section id="hero" ref={heroRef} className="h-screen flex items-center justify-center relative">
+    <section id="hero" ref={heroRef} className="h-screen flex items-center justify-center relative bg-white">
       <div className="hero flex items-center justify-center flex-col">
         <h1 className="hero-hover text-[13vw] md:text-[7vw] font-light -mb-6 md:-mb-10 z-[2] select-none font-arsenica">
           ATHARVA

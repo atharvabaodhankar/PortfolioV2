@@ -48,12 +48,12 @@ const Ferro = {
     document.body.appendChild(FerroMouseBall);
     
     const speedMap = {
-      0: 0.2,
-      1: 0.3,
-      2: 0.4,
-      3: 0.5,
-      4: 0.6,
-      5: 0.7,
+      0: 0.05,
+      1: 0.08,
+      2: 0.12,
+      3: 0.15,
+      4: 0.18,
+      5: 0.22,
     };
     
     const ScaleEnchancer = {
@@ -87,13 +87,20 @@ const Ferro = {
     
     window.addEventListener("mousemove", mouseMoveHandler);
 
-    // Ultra smooth animation using GSAP's ticker
+    // Smooth trailing animation using GSAP's ticker
     const tickerFunc = () => {
+        // Smooth interpolation for trailing effect
         const dt = 1.0 - Math.pow(1.0 - speed, gsap.ticker.deltaRatio());
-        pos.x += (mouse.x - pos.x) * dt;
-        pos.y += (mouse.y - pos.y) * dt;
         
-        // Direct GSAP animation for smoothest possible movement
+        // Calculate the distance for smooth easing
+        const dx = mouse.x - pos.x;
+        const dy = mouse.y - pos.y;
+        
+        // Apply smooth easing with distance-based adjustment
+        pos.x += dx * dt;
+        pos.y += dy * dt;
+        
+        // Smooth GSAP animation for trailing effect
         gsap.set(FerroMouseBall, {
             x: pos.x,
             y: pos.y

@@ -1,4 +1,4 @@
-/* Ultra Sharp Ferro Mouse Follower */
+/* Ultra Sharp Ferro Mouse Follower with Smooth Trailing */
 .ferro-mouse-follower-ball {
     --f-m-ball-size: 50px;
     width: var(--f-m-ball-size);
