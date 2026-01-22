@@ -93,8 +93,13 @@ function PortfolioPage() {
     if (window.matchMedia('(min-width: 768px)').matches) {
       // Small delay to ensure all DOM elements are rendered
       const timer = setTimeout(() => {
-        // Ferro.mouseFollower(speed, size, blendMode, selectors, scaleEnhancer)
-        const cursor = FerroLib.mouseFollower(1, "15px", true, ["h1", ".nav-btn" , ".hero-hover" , ".ferro-c1 p",".ferro-btn"], 3);
+        // Ultra smooth Ferro.mouseFollower with crisp edges
+        const cursor = FerroLib.mouseFollower(3, "15px", true, [
+          "h1", "h2", "h3", "h4", "h5", "h6",
+          ".nav-btn", ".hero-hover", ".ferro-c1 p", ".ferro-btn",
+          ".work-headline", ".preloader-text", ".about-title",
+          ".footer a", ".skill-tag", "a", "button"
+        ], 3);
         
         // Store cursor instance for cleanup
         window.ferroCursor = cursor;

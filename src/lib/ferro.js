@@ -26,70 +26,34 @@ const Ferro = {
     const FerroMouseBall = document.createElement("div");
     FerroMouseBall.className = "ferro-mouse-follower-ball";
     
-    // Start with black cursor
+    // Ultra crisp styling for perfect edges
     FerroMouseBall.style.cssText = `
       width: ${size};
       height: ${size};
       position: fixed;
       top: 0;
       left: 0;
-      background-color: #000;
+      background-color: #ffffff;
       border-radius: 50%;
-      z-index: 9999;
+      z-index: 99999;
       pointer-events: none;
-      transform: translate(-50%, -50%);
       mix-blend-mode: difference;
-      transition: background-color 0.3s ease;
+      transform-origin: center center;
+      image-rendering: -webkit-optimize-contrast;
+      image-rendering: crisp-edges;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
     `;
     
     document.body.appendChild(FerroMouseBall);
     
-    // Function to detect background and change cursor color
-    const updateCursorColor = (x, y) => {
-      // Temporarily hide cursor to get element below
-      FerroMouseBall.style.visibility = 'hidden';
-      const elementBelow = document.elementFromPoint(x, y);
-      FerroMouseBall.style.visibility = 'visible';
-      
-      if (elementBelow) {
-        // Check for dark sections by ID or class
-        const isDarkSection = 
-          elementBelow.closest('#footer') || 
-          elementBelow.closest('#work') ||
-          elementBelow.closest('.footer') ||
-          elementBelow.closest('.bg-black') ||
-          elementBelow.closest('[style*="background-color: #000"]') ||
-          elementBelow.closest('[style*="background-color: black"]');
-        
-        // Also check computed styles
-        let hasBlackBackground = false;
-        let currentElement = elementBelow;
-        
-        // Check up to 5 parent elements for black background
-        for (let i = 0; i < 5 && currentElement; i++) {
-          const computedStyle = window.getComputedStyle(currentElement);
-          const bgColor = computedStyle.backgroundColor;
-          
-          if (bgColor === 'rgb(0, 0, 0)' || bgColor === '#000' || bgColor === 'black') {
-            hasBlackBackground = true;
-            break;
-          }
-          currentElement = currentElement.parentElement;
-        }
-        
-        // Set cursor color: white on dark backgrounds, black on light backgrounds
-        const shouldBeWhite = isDarkSection || hasBlackBackground;
-        FerroMouseBall.style.backgroundColor = shouldBeWhite ? '#fff' : '#000';
-      }
-    };
-    
     const speedMap = {
-      0: 0.08,
-      1: 0.1,
-      2: 0.2,
-      3: 0.3,
-      4: 0.4,
-      5: 0.5,
+      0: 0.2,
+      1: 0.3,
+      2: 0.4,
+      3: 0.5,
+      4: 0.6,
+      5: 0.7,
     };
     
     const ScaleEnchancer = {
@@ -103,37 +67,37 @@ const Ferro = {
 
     const speed = speedMap[sp] || 0.1;
 
+    // Ultra smooth GSAP setup
     gsap.set(FerroMouseBall, {
         xPercent: -50,
         yPercent: -50,
-        scale: 1
+        scale: 1,
+        x: window.innerWidth / 2,
+        y: window.innerHeight / 2
     });
 
     const pos = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
     const mouse = { x: pos.x, y: pos.y };
 
-    const xSet = gsap.quickSetter(FerroMouseBall, "x", "px");
-    const ySet = gsap.quickSetter(FerroMouseBall, "y", "px");
-
     const mouseMoveHandler = (e) => {
         mouse.x = e.clientX;
         mouse.y = e.clientY;
-        
-        // Update cursor color based on background (throttled)
-        if (!mouseMoveHandler.lastUpdate || Date.now() - mouseMoveHandler.lastUpdate > 100) {
-          updateCursorColor(e.clientX, e.clientY);
-          mouseMoveHandler.lastUpdate = Date.now();
-        }
+        // Keep consistent white background for proper invert effect
     };
     
     window.addEventListener("mousemove", mouseMoveHandler);
 
+    // Ultra smooth animation using GSAP's ticker
     const tickerFunc = () => {
         const dt = 1.0 - Math.pow(1.0 - speed, gsap.ticker.deltaRatio());
         pos.x += (mouse.x - pos.x) * dt;
         pos.y += (mouse.y - pos.y) * dt;
-        xSet(pos.x);
-        ySet(pos.y);
+        
+        // Direct GSAP animation for smoothest possible movement
+        gsap.set(FerroMouseBall, {
+            x: pos.x,
+            y: pos.y
+        });
     };
 
     gsap.ticker.add(tickerFunc);
@@ -146,7 +110,7 @@ const Ferro = {
             const elements = document.querySelectorAll(selector);
             elements.forEach(element => {
                 const enterHandler = () => {
-                    // Calculate new scale based on element font size + enhancer
+                    // Calculate smooth scale based on element font size + enhancer
                     let fontSize = 20;
                     try {
                         fontSize = parseFloat(window.getComputedStyle(element).fontSize);
@@ -155,14 +119,23 @@ const Ferro = {
                     const enhancer = ScaleEnchancer[se] !== undefined ? ScaleEnchancer[se] : 80;
                     const targetSize = fontSize + enhancer;
                     const currentSizeVal = parseFloat(size) || 50;
-                    // Safety check for div by zero
                     const scale = currentSizeVal > 0 ? targetSize / currentSizeVal : 3;
 
-                    gsap.to(FerroMouseBall, { scale: scale, duration: 0.3, ease: "power2.out" });
+                    // Ultra smooth scaling animation
+                    gsap.to(FerroMouseBall, { 
+                        scale: scale, 
+                        duration: 0.8, 
+                        ease: "power4.out"
+                    });
                 };
 
                 const leaveHandler = () => {
-                    gsap.to(FerroMouseBall, { scale: 1, duration: 0.3, ease: "power2.out" });
+                    // Ultra smooth return to normal size
+                    gsap.to(FerroMouseBall, { 
+                        scale: 1, 
+                        duration: 0.6, 
+                        ease: "power4.out" 
+                    });
                 };
 
                 element.addEventListener('mouseenter', enterHandler);
@@ -174,12 +147,7 @@ const Ferro = {
         });
     }
 
-    // Initial color update
-    setTimeout(() => {
-      updateCursorColor(window.innerWidth / 2, window.innerHeight / 2);
-    }, 100);
-
-    // Return an object with destroy method
+    // Return the cursor instance
     return {
         destroy: () => {
             window.removeEventListener("mousemove", mouseMoveHandler);
