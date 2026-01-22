@@ -25,32 +25,32 @@ const Preloader = ({ progress = 0 }) => {
       tl.to(".char-animate", {
         y: 0,
         opacity: 1,
-        duration: 1.2,
-        ease: "power3.out",
-        stagger: 0.05
+        duration: 0.3,
+        ease: "power2.out",
+        stagger: 0.02
       })
       .to(".preloader-subtitle", {
         y: 0,
         opacity: 1,
-        duration: 0.8,
+        duration: 0.3,
         ease: "power2.out"
-      }, "-=0.6")
+      }, "-=0.2")
       .to(".counter", {
         opacity: 1,
-        duration: 0.6,
+        duration: 0.3,
         ease: "power2.out"
-      }, "-=0.4");
+      }, "-=0.2");
 
       // Continuous subtle animations
       gsap.to(".char-animate", {
         y: -2,
-        duration: 2,
+        duration: 1.5,
         ease: "sine.inOut",
         repeat: -1,
         yoyo: true,
         stagger: {
-          amount: 0.5,
-          from: "random"
+          amount: 0.4,
+          from: "start"
         }
       });
 
@@ -91,32 +91,32 @@ const Preloader = ({ progress = 0 }) => {
         // Smooth slide-up exit animation
         tl.to(".counter", {
           opacity: 0,
-          duration: 0.4,
+          duration: 0.3,
           ease: "power2.in"
         })
         .to(".progress-line", {
           scaleX: 1,
           duration: 0.3,
           ease: "power2.out"
-        }, "-=0.3")
+        }, "-=0.2")
         .to(".preloader-subtitle", {
           y: -30,
           opacity: 0,
-          duration: 0.5,
+          duration: 0.3,
           ease: "power2.in"
-        }, "-=0.2")
+        }, "-=0.1")
         .to(".char-animate", {
-          y: -80,
+          y: -60,
           opacity: 0,
-          duration: 0.7,
-          ease: "power3.in",
-          stagger: 0.02
-        }, "-=0.4")
+          duration: 0.3,
+          ease: "power2.in",
+          stagger: 0.01
+        }, "-=0.2")
         .to(containerRef.current, {
           yPercent: -100,
-          duration: 1.2,
-          ease: "power4.inOut"
-        }, "-=0.5");
+          duration: 0.8,
+          ease: "power3.inOut"
+        }, "-=0.2");
 
       }, containerRef);
 
