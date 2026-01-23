@@ -129,8 +129,8 @@ const Preloader = ({ progress = 0 }) => {
       <div className="relative flex flex-col items-center justify-center text-center px-8">
         
         {/* Main Typography */}
-        <div className="mb-12 overflow-hidden">
-          <h1 className="preloader-text text-[8vw] md:text-[4.5rem] font-arsenica font-light text-white leading-[0.9] tracking-[-0.02em]">
+        <div className="mb-8 overflow-hidden">
+          <h1 className="preloader-text text-[15vw] md:text-[12vw] lg:text-[8rem] xl:text-[12rem] font-black text-white leading-[0.8] tracking-[-0.05em]" style={{ fontFamily: "'Impact', 'Arial Black', sans-serif" }}>
             {"CRAFTING".split("").map((char, i) => (
               <span key={i} className="inline-block char-animate" style={{animationDelay: `${i * 0.1}s`}}>
                 {char}
@@ -140,7 +140,7 @@ const Preloader = ({ progress = 0 }) => {
         </div>
         
         <div className="mb-16 overflow-hidden">
-          <h2 className="preloader-text text-[8vw] md:text-[4.5rem] font-arsenica font-light text-white leading-[0.9] tracking-[-0.02em]">
+          <h2 className="preloader-text text-[15vw] md:text-[12vw] lg:text-[8rem] xl:text-[12rem] font-thin text-white leading-[0.8] tracking-[0.1em] italic" style={{ fontFamily: "'Playfair Display', serif" }}>
             {"EXPERIENCE".split("").map((char, i) => (
               <span key={i} className="inline-block char-animate" style={{animationDelay: `${(i + 8) * 0.1}s`}}>
                 {char}
