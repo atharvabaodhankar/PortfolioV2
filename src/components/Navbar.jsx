@@ -5,10 +5,10 @@ import { X } from 'lucide-react';
 import TransitionLink from './TransitionLink';
 
 // Import assets
-import heroImg from '../assets/imgs/hero-img.jpg';
-import aboutImg from '../assets/imgs/aboutme-img.jpeg';
-import rejouiceImg from '../assets/sites/rejouice.png';
-import navImg from '../assets/imgs/navBar-img.jpg'; // Backup/Default
+import heroImg from '../assets/imgs/hero.png';
+import aboutImg from '../assets/imgs/Web_Photo_Editor.png';
+import rejouiceImg from '../assets/sites/polystudi.png';
+import navImg from '../assets/imgs/wow.png'; // Backup/Default
 
 const contentMap = {
   home: {
@@ -27,7 +27,7 @@ const contentMap = {
     type: 'featured-preview',
     image: rejouiceImg,
     gradient: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
-    text: 'Featured Project: Rejouice'
+    text: 'Featured Project: Polystudi'
   },
   contact: {
     type: 'social-grid',

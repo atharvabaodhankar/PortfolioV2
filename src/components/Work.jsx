@@ -370,7 +370,7 @@ const Work = () => {
                 {/* Moving Image Inside Fixed Container - Parallax enabled for all devices */}
                 <div ref={portraitRef} className="work-portrait absolute inset-0 w-full h-[120%] -top-[10%]">
                   <img 
-                    src="/src/assets/imgs/navBar-img.jpg" 
+                    src="/src/assets/imgs/copy2.png" 
                     alt="Atharva Baodhankar" 
                     className="w-full h-full object-cover transition-all duration-700 hover:scale-[1.02]"
                   />
