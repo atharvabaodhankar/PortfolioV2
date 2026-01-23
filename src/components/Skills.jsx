@@ -8,33 +8,84 @@ gsap.registerPlugin(ScrollTrigger, useGSAP);
 const Skills = () => {
   const containerRef = useRef(null);
   
-  const skillGroups = [
-    {
-      title: "01 / Web Engineering",
-      description: "Designing and engineering modern web applications with a strong focus on performance, maintainability, and real-world usability.",
-      skills: ["JavaScript (ES6+)", "React", "Vite", "Node.js", "REST APIs"]
-    },
-    {
-      title: "02 / Blockchain & Web3",
-      description: "Building decentralized applications and smart contract systems that prioritize security, clarity, and developer experience.",
-      skills: ["Solidity", "Ethers.js", "Smart Contracts", "ERC-4337", "Polygon / Testnets"]
-    },
-    {
-      title: "03 / System Design",
-      description: "Approaching problems with a system-first mindset — focusing on structure, data flow, and long-term scalability.",
-      skills: ["Application Architecture", "Auth & Role Systems", "Database Design", "API Structuring", "Performance Thinking"]
-    },
-    {
-      title: "04 / Motion & Interaction",
-      description: "Using motion as a functional layer — guiding attention, improving clarity, and enhancing the feel of the interface.",
-      skills: ["GSAP", "ScrollTrigger", "Smooth Scrolling", "Micro-interactions"]
-    },
-    {
-      title: "05 / Tooling & Learning",
-      description: "The instruments of creation and the perpetual pursuit of knowledge.",
-      skills: ["Git & GitHub", "Docker (Foundations)", "Agentic AI Tools", "Continuous Learning"]
-    }
-  ];
+ const skillGroups = [
+  {
+    title: "01 / Web Engineering",
+    description:
+      "Designing and engineering modern web applications with a strong focus on performance, maintainability, and real-world usability.",
+    skills: [
+      "JavaScript (ES6+)",
+      "React",
+      "Node.js",
+      "Express.js",
+      "REST APIs",
+      "MERN Stack"
+    ]
+  },
+  {
+    title: "02 / Blockchain & Web3 Systems",
+    description:
+      "Building decentralized applications and smart contract systems that prioritize security, clarity, and long-term protocol design.",
+    skills: [
+      "Solidity",
+      "Smart Contracts",
+      "ERC-4337 (Account Abstraction)",
+      "Ethers.js",
+      "Polygon & Testnets",
+      "Proof-of-Existence Systems"
+    ]
+  },
+  {
+    title: "03 / Backend & Distributed Systems",
+    description:
+      "Engineering backend and distributed systems with an emphasis on scalability, data flow, and real-time communication.",
+    skills: [
+      "ScyllaDB",
+      "Distributed Systems",
+      "WebRTC",
+      "WebSockets",
+      "Socket.io",
+      "Backend Architecture"
+    ]
+  },
+  {
+    title: "04 / System Design & Architecture",
+    description:
+      "Approaching problems with a system-first mindset — focusing on structure, data flow, and long-term scalability.",
+    skills: [
+      "Application Architecture",
+      "Database Design",
+      "Auth & Role-Based Systems",
+      "API Structuring",
+      "Performance Thinking"
+    ]
+  },
+  {
+    title: "05 / Motion & Interaction",
+    description:
+      "Using motion as a functional layer — guiding attention, improving clarity, and enhancing the feel of the interface.",
+    skills: [
+      "GSAP",
+      "ScrollTrigger",
+      "Micro-interactions",
+      "Interaction Design"
+    ]
+  },
+  {
+    title: "06 / Tooling & Infrastructure",
+    description:
+      "The tools and infrastructure that support modern, scalable, and developer-friendly systems.",
+    skills: [
+      "Docker",
+      "Supabase",
+      "Firebase",
+      "MongoDB",
+      "SQL / MySQL",
+      "Git & GitHub"
+    ]
+  }
+];
+
 
   useGSAP(() => {
     // 1. Initial reveal for Left Column
