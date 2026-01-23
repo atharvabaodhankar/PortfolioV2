@@ -6,9 +6,9 @@ import TransitionLink from './TransitionLink';
 
 // Import assets
 import heroImg from '../assets/imgs/hero.png';
-import aboutImg from '../assets/imgs/Web_Photo_Editor.png';
+import aboutImg from '../assets/imgs/work-full.png';
 import rejouiceImg from '../assets/sites/polystudi.png';
-import navImg from '../assets/imgs/wow.png'; // Backup/Default
+import navImg from '../assets/imgs/hero-img.png'; // Backup/Default
 
 const contentMap = {
   home: {
