@@ -93,12 +93,10 @@ function PortfolioPage() {
     if (window.matchMedia('(min-width: 768px)').matches) {
       // Small delay to ensure all DOM elements are rendered
       const timer = setTimeout(() => {
-        // Smooth trailing Ferro.mouseFollower
+        // Smooth trailing Ferro.mouseFollower - Only target important interactive elements
         const cursor = FerroLib.mouseFollower(2, "15px", true, [
-          "h1", "h2", "h3", "h4", "h5", "h6",
-          ".nav-btn", ".hero-hover", ".ferro-c1 p", ".ferro-btn",
-          ".work-headline", ".preloader-text", ".about-title",
-          ".footer a", ".skill-tag", "a", "button"
+          ".nav-btn", ".hero-hover", ".ferro-btn",
+          ".footer a", ".menu", ".footer-h1",".hover-h1", ".project-h1", "a[href]", "button[onclick]", ".project-card"
         ], 3);
         
         // Store cursor instance for cleanup

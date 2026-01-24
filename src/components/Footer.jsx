@@ -58,7 +58,7 @@ const Footer = () => {
             {/* Row 1: Identity + Philosophy */}
             <div className="footer-row footer-top flex flex-col gap-4 sm:gap-6 md:gap-8">
                 <div>
-                    <h2 className="font-arsenica text-[2.5rem] xs:text-[3rem] sm:text-[3.5rem] md:text-[clamp(2.5rem,5vw,5rem)] leading-none md:leading-tight font-light bg-gradient-to-b from-white to-white/60 bg-clip-text text-transparent">
+                    <h2 className="footer-h1 font-arsenica text-[2.5rem] xs:text-[3rem] sm:text-[3.5rem] md:text-[clamp(2.5rem,5vw,5rem)] leading-none md:leading-tight font-light bg-gradient-to-b from-white to-white/60 bg-clip-text text-transparent">
                         Atharva Baodhankar
                     </h2>
                     <p className="text-white/60 text-base sm:text-lg md:text-xl font-light tracking-wide mt-2 sm:mt-3 md:mt-2">

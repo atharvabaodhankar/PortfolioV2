@@ -70,7 +70,7 @@ const Education = () => {
                 {/* LEFT COLUMN: Fixed Editorial Header */}
                 <div className="lg:w-1/3 flex flex-col justify-center h-full relative z-10">
                     <h2 
-                        className="text-6xl md:text-7xl lg:text-[7rem] font-bold tracking-tighter leading-[0.9] mb-8 font-arsenica"
+                        className="text-6xl md:text-7xl lg:text-[7rem] font-bold tracking-tighter leading-[0.9] mb-8 font-arsenica hover-h1"
                         
                     >
                         Academic<br/>Journey

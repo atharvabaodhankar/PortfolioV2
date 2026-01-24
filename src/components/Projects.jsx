@@ -249,7 +249,7 @@ const Projects = () => {
             {/* Archive Call to Action */}
             <div className="gallery-archive absolute inset-0 w-full h-full z-[50] flex flex-col items-center justify-center bg-transparent backdrop-blur-sm pointer-events-none opacity-0">
                 <div className="relative p-12 md:p-24 border border-[#1a1a1a]/10 bg-white/80 rounded-3xl flex flex-col items-center text-center max-w-2xl pointer-events-auto shadow-2xl shadow-black/5">
-                    <h2 className="text-5xl md:text-7xl font-arsenica mb-6 text-[#1a1a1a]">
+                    <h2 className="project-h1 text-5xl md:text-7xl font-arsenica mb-6 text-[#1a1a1a]">
                         The Archive
                     </h2>
                     <p className="font-mono text-[#1a1a1a]/50 mb-12 max-w-md">
