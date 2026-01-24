@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { ArrowUpRight, ArrowUp } from 'lucide-react';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
@@ -172,43 +172,7 @@ const ProjectsArchive = () => {
     }, "-=0.5");
 
 
-    // C. Card Parallax on Scroll
-    const cards = gsap.utils.toArray('.project-card');
-    cards.forEach((card, i) => {
-        // Alternating parallax direction
-        const direction = i % 2 === 0 ? -20 : 20;
-
-        gsap.to(card, {
-            y: direction,
-            ease: 'none',
-            scrollTrigger: {
-                trigger: card,
-                start: 'top bottom',
-                end: 'bottom top',
-                scrub: 1.5,
-                invalidateOnRefresh: true
-            }
-        });
-
-        // Image moves opposite direction (inner parallax)
-        const img = card.querySelector('.project-img');
-        if (img) {
-            gsap.to(img, {
-                y: -direction * 1.5,
-                scale: 1.1,
-                ease: 'none',
-                scrollTrigger: {
-                    trigger: card,
-                    start: 'top bottom',
-                    end: 'bottom top',
-                    scrub: 2,
-                    invalidateOnRefresh: true
-                }
-            });
-        }
-    });
-
-    // D. Floating Elements Animation
+    // C. Floating Elements Animation
     gsap.to('.floating-orb', {
         y: '+=50',
         x: '+=30',
@@ -256,6 +220,9 @@ const ProjectsArchive = () => {
   }, 16); // ~60fps
 
   const handleMouseEnter = (e) => {
+      // Only apply hover effects on desktop
+      if (window.innerWidth < 768) return;
+      
       const card = e.currentTarget;
       const img = card.querySelector('.project-img');
       const overlay = card.querySelector('.project-overlay');
@@ -293,6 +260,9 @@ const ProjectsArchive = () => {
   };
 
   const handleMouseLeave = (e) => {
+      // Only apply hover effects on desktop
+      if (window.innerWidth < 768) return;
+      
       const card = e.currentTarget;
       const img = card.querySelector('.project-img');
       const overlay = card.querySelector('.project-overlay');
@@ -315,7 +285,7 @@ const ProjectsArchive = () => {
           ease: 'power2.out' 
       });
 
-      // Reset Overlay
+      // Reset Overlay - but keep it visible on mobile
       gsap.to(overlay, { 
           opacity: 0, 
           y: 15, 
@@ -457,12 +427,12 @@ const ProjectsArchive = () => {
                                 loading="lazy"
                                 src={project.image_url} 
                                 alt={project.title}
-                                className="project-img w-full h-auto min-h-[300px] object-cover filter grayscale scale-100 transition-transform duration-700 ease-out"
+                                className="project-img w-full h-auto min-h-[300px] object-cover md:filter md:grayscale scale-100 transition-transform duration-700 ease-out"
                               />
                               
-                              {/* Content Overlay */}
-                              <div className="project-overlay absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 translate-y-4 flex flex-col justify-end p-6 md:p-10 transition-all duration-500 pointer-events-none">
-                                    <div className="overlay-content transform translate-y-4">
+                              {/* Content Overlay - Always visible on mobile */}
+                              <div className="project-overlay absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent md:opacity-0 md:translate-y-4 opacity-100 translate-y-0 flex flex-col justify-end p-6 md:p-10 transition-all duration-500 pointer-events-none">
+                                    <div className="overlay-content md:transform md:translate-y-4 transform translate-y-0">
                                         <div className="flex items-center justify-between mb-4">
                                             <div className="flex flex-wrap gap-2">
                                                 {project.technologies?.slice(0,3).map((t, i) => (
