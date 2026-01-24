@@ -136,8 +136,8 @@ function PortfolioPage() {
           <section id="main">
             <Hero />
             <About />
-            <Marquee />
             <Skills />
+            <Marquee />
             <Education />
             <Projects />
             <Work />

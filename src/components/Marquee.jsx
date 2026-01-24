@@ -60,21 +60,22 @@ const Marquee = () => {
   }, []);
 
   const quotes = [
-    "Decentralizing the Future",
-    "Design is Intelligence Made Visible",
-    "Scalable Systems Architecture",
-    "Trust in Code",
-    "Crafting Digital Experiences",
-    "Web 3 Revolution",
-    "Simplicity is the Ultimate Sophistication",
-    "Building Unstoppable Applications"
-  ];
+  "Design is Intelligence Made Visible",
+  "Trust in Code",
+  "Scalable Systems Architecture",
+  "Crafting Digital Experiences",
+  "Designing for Decentralization",
+  "Systems Built to Endure",
+  "Simplicity is the Ultimate Sophistication",
+  "Engineering with Intent"
+];
+
 
   return (
     <section 
       id="marquee" 
       ref={marqueeRef} 
-      className="relative bg-white text-black py-12 font-semibold text-[4rem] uppercase overflow-hidden select-none"
+      className="relative bg-white text-black/75 py-12 mt-20 font-semibold text-[4rem] uppercase overflow-hidden select-none"
     >
       <div className="marquee_inner flex w-fit whitespace-nowrap">
         {[0, 1].map((partKey) => (
