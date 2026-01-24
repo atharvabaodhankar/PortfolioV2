@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { ArrowUpRight, ArrowUp } from 'lucide-react';
+import { ArrowUpRight, ArrowUp, X, ExternalLink, Github } from 'lucide-react';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import ScrollTrigger from 'gsap/ScrollTrigger';
@@ -16,9 +16,12 @@ const ProjectsArchive = () => {
   const [activeFilter, setActiveFilter] = useState('All');
   const [scrollProgress, setScrollProgress] = useState(0);
   const [displayCount, setDisplayCount] = useState(0);
+  const [selectedProject, setSelectedProject] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   
   const containerRef = useRef(null);
   const heroRef = useRef(null);
+  const modalRef = useRef(null);
   
   const filters = ['All', 'Web', 'App', '3D', 'Design'];
 
@@ -187,6 +190,39 @@ const ProjectsArchive = () => {
 
   }, { scope: containerRef, dependencies: [loading, filteredProjects] });
 
+  // Modal animations
+  useGSAP(() => {
+    if (!modalRef.current || !isModalOpen) return;
+
+    // Modal entrance animation
+    const tl = gsap.timeline();
+    
+    // Check if modal elements exist before animating
+    const backdrop = modalRef.current.querySelector('.modal-backdrop');
+    const content = modalRef.current.querySelector('.modal-content');
+    const image = modalRef.current.querySelector('.modal-image');
+    const textElements = modalRef.current.querySelectorAll('.modal-text');
+    
+    if (!backdrop || !content) return;
+    
+    gsap.set(backdrop, { opacity: 0 });
+    gsap.set(content, { scale: 0.8, opacity: 0, y: 50 });
+    
+    if (image) gsap.set(image, { scale: 1.1, opacity: 0 });
+    if (textElements.length > 0) gsap.set(textElements, { y: 30, opacity: 0 });
+    
+    tl.to(backdrop, { opacity: 1, duration: 0.3, ease: 'power2.out' })
+      .to(content, { scale: 1, opacity: 1, y: 0, duration: 0.5, ease: 'back.out(1.7)' }, 0.1);
+      
+    if (image) {
+      tl.to(image, { scale: 1, opacity: 1, duration: 0.6, ease: 'power3.out' }, 0.2);
+    }
+    
+    if (textElements.length > 0) {
+      tl.to(textElements, { y: 0, opacity: 1, duration: 0.4, stagger: 0.1, ease: 'power3.out' }, 0.3);
+    }
+  }, { dependencies: [isModalOpen], scope: modalRef });
+
 
   // --- 6. Interaction Handlers ---
   
@@ -229,6 +265,9 @@ const ProjectsArchive = () => {
       const content = card.querySelector('.overlay-content');
       const badges = card.querySelectorAll('.tech-badge');
       
+      // Check if elements exist before animating
+      if (!img || !overlay || !content) return;
+      
       const tl = gsap.timeline();
       
       // Image scale & color
@@ -250,13 +289,16 @@ const ProjectsArchive = () => {
           { y: 30, opacity: 0 },
           { y: 0, opacity: 1, duration: 0.6, ease: 'power3.out' }, 
           0.2
-      )
-      // Badges Stagger
-      .fromTo(badges, 
-          { scale: 0, opacity: 0 },
-          { scale: 1, opacity: 1, duration: 0.4, stagger: 0.05, ease: 'back.out(2)' }, 
-          0.3
       );
+      
+      // Badges Stagger (only if badges exist)
+      if (badges.length > 0) {
+        tl.fromTo(badges, 
+            { scale: 0, opacity: 0 },
+            { scale: 1, opacity: 1, duration: 0.4, stagger: 0.05, ease: 'back.out(2)' }, 
+            0.3
+        );
+      }
   };
 
   const handleMouseLeave = (e) => {
@@ -266,6 +308,9 @@ const ProjectsArchive = () => {
       const card = e.currentTarget;
       const img = card.querySelector('.project-img');
       const overlay = card.querySelector('.project-overlay');
+      
+      // Check if elements exist before animating
+      if (!img || !overlay) return;
       
       // Reset card position (Elastic)
       gsap.to(card, {
@@ -297,6 +342,31 @@ const ProjectsArchive = () => {
   const scrollToTop = () => {
       window.scrollTo({ top: 0, behavior: 'smooth' });
   };
+
+  // Modal functions
+  const openModal = (project) => {
+    setSelectedProject(project);
+    setIsModalOpen(true);
+    document.body.style.overflow = 'hidden';
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    document.body.style.overflow = 'unset';
+    // Small delay before clearing selected project for exit animation
+    setTimeout(() => setSelectedProject(null), 300);
+  };
+
+  // Close modal on escape key
+  useEffect(() => {
+    const handleEscape = (e) => {
+      if (e.key === 'Escape' && isModalOpen) {
+        closeModal();
+      }
+    };
+    document.addEventListener('keydown', handleEscape);
+    return () => document.removeEventListener('keydown', handleEscape);
+  }, [isModalOpen]);
 
 
   if (loading) return (
@@ -414,6 +484,7 @@ const ProjectsArchive = () => {
                   return (
                       <article 
                         key={project.id}
+                        onClick={() => openModal(project)}
                         onMouseEnter={handleMouseEnter}
                         onMouseMove={handleMouseMove}
                         onMouseLeave={handleMouseLeave}
@@ -478,6 +549,121 @@ const ProjectsArchive = () => {
       >
           <ArrowUp size={24} className="group-hover:-translate-y-1 transition-transform" />
       </button>
+
+      {/* Project Modal */}
+      {isModalOpen && selectedProject && (
+        <div 
+          ref={modalRef}
+          className="modal-backdrop fixed inset-0 bg-black/80 backdrop-blur-md z-[100] flex items-center justify-center p-4"
+          onClick={(e) => e.target === e.currentTarget && closeModal()}
+        >
+          <div className="modal-content relative bg-white rounded-2xl max-w-6xl w-full max-h-[90vh] overflow-hidden shadow-2xl">
+            {/* Close Button */}
+            <button
+              onClick={closeModal}
+              className="absolute top-4 right-4 z-10 p-3 bg-black/10 hover:bg-black/20 rounded-full transition-colors backdrop-blur-sm"
+            >
+              <X size={24} className="text-white" />
+            </button>
+
+            <div className="flex flex-col lg:flex-row h-full">
+              {/* Image Section */}
+              <div className="lg:w-1/2 h-64 lg:h-auto relative overflow-hidden">
+                <img
+                  src={selectedProject.image_url}
+                  alt={selectedProject.title}
+                  className="modal-image w-full h-full object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent lg:hidden" />
+              </div>
+
+              {/* Content Section */}
+              <div className="lg:w-1/2 p-6 lg:p-12 flex flex-col justify-between overflow-y-auto">
+                <div>
+                  {/* Header */}
+                  <div className="modal-text mb-6">
+                    <span className="text-sm font-mono text-gray-500 uppercase tracking-widest">
+                      {selectedProject.project_type || 'Project'}
+                    </span>
+                    <h2 className="text-3xl lg:text-5xl font-arsenica text-[#1C1917] mt-2 leading-tight">
+                      {selectedProject.title}
+                    </h2>
+                    <p className="text-lg text-gray-600 mt-4 font-mono italic">
+                      {selectedProject.subtitle}
+                    </p>
+                  </div>
+
+                  {/* Description */}
+                  <div className="modal-text mb-8">
+                    <h3 className="text-lg font-semibold text-[#1C1917] mb-3">About</h3>
+                    <p className="text-gray-700 leading-relaxed">
+                      {selectedProject.description || selectedProject.subtitle}
+                    </p>
+                  </div>
+
+                  {/* Technologies */}
+                  {selectedProject.technologies && selectedProject.technologies.length > 0 && (
+                    <div className="modal-text mb-8">
+                      <h3 className="text-lg font-semibold text-[#1C1917] mb-4">Technologies</h3>
+                      <div className="flex flex-wrap gap-2">
+                        {selectedProject.technologies.map((tech, index) => (
+                          <span
+                            key={index}
+                            className="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm font-mono"
+                          >
+                            {tech}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Features */}
+                  {selectedProject.features && selectedProject.features.length > 0 && (
+                    <div className="modal-text mb-8">
+                      <h3 className="text-lg font-semibold text-[#1C1917] mb-4">Key Features</h3>
+                      <ul className="space-y-2">
+                        {selectedProject.features.map((feature, index) => (
+                          <li key={index} className="flex items-start gap-2 text-gray-700">
+                            <span className="w-1.5 h-1.5 bg-[#1C1917] rounded-full mt-2 flex-shrink-0" />
+                            {feature}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                </div>
+
+                {/* Action Buttons */}
+                <div className="modal-text flex flex-col sm:flex-row gap-4 pt-6 border-t border-gray-200">
+                  {selectedProject.link && (
+                    <a
+                      href={selectedProject.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center justify-center gap-2 px-6 py-3 bg-[#1C1917] text-white rounded-full hover:bg-black transition-colors font-medium"
+                    >
+                      <ExternalLink size={18} />
+                      View Live
+                    </a>
+                  )}
+                  {selectedProject.github_url && (
+                    <a
+                      href={selectedProject.github_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center justify-center gap-2 px-6 py-3 border border-[#1C1917] text-[#1C1917] rounded-full hover:bg-[#1C1917] hover:text-white transition-colors font-medium"
+                    >
+                      <Github size={18} />
+                      Source Code
+                    </a>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Footer */}
       <div className="mt-32">

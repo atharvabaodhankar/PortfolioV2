@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { X } from 'lucide-react';
@@ -40,8 +40,6 @@ const contentMap = {
 gsap.registerPlugin(useGSAP);
 
 const Navbar = () => {
-  console.log('Navbar component is rendering!');
-  
   const [navActive, setNavActive] = useState(false);
   const [activeLink, setActiveLink] = useState('home');
   
@@ -93,11 +91,9 @@ const Navbar = () => {
     const attachScrollListener = () => {
       if (window.lenis) {
         window.lenis.on('scroll', handleScroll);
-        console.log('Lenis scroll listener attached');
       } else {
         // Fallback to regular scroll
         window.addEventListener('scroll', handleScroll);
-        console.log('Regular scroll listener attached');
       }
     };
 
