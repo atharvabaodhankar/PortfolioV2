@@ -25,6 +25,14 @@ const ProjectsArchive = () => {
   
   const filters = ['All', 'Web', 'App', '3D', 'Design'];
 
+  // Helper function to strip HTML tags and decode entities
+  const stripHtml = (html) => {
+    if (!html) return '';
+    const tmp = document.createElement('div');
+    tmp.innerHTML = html;
+    return tmp.textContent || tmp.innerText || '';
+  };
+
   // --- 1. Data Fetching ---
   useEffect(() => {
     const fetchProjects = async () => {
@@ -190,40 +198,6 @@ const ProjectsArchive = () => {
 
   }, { scope: containerRef, dependencies: [loading, filteredProjects] });
 
-  // Modal animations
-  useGSAP(() => {
-    if (!modalRef.current || !isModalOpen) return;
-
-    // Modal entrance animation
-    const tl = gsap.timeline();
-    
-    // Check if modal elements exist before animating
-    const backdrop = modalRef.current.querySelector('.modal-backdrop');
-    const content = modalRef.current.querySelector('.modal-content');
-    const image = modalRef.current.querySelector('.modal-image');
-    const textElements = modalRef.current.querySelectorAll('.modal-text');
-    
-    if (!backdrop || !content) return;
-    
-    gsap.set(backdrop, { opacity: 0 });
-    gsap.set(content, { scale: 0.8, opacity: 0, y: 50 });
-    
-    if (image) gsap.set(image, { scale: 1.1, opacity: 0 });
-    if (textElements.length > 0) gsap.set(textElements, { y: 30, opacity: 0 });
-    
-    tl.to(backdrop, { opacity: 1, duration: 0.3, ease: 'power2.out' })
-      .to(content, { scale: 1, opacity: 1, y: 0, duration: 0.5, ease: 'back.out(1.7)' }, 0.1);
-      
-    if (image) {
-      tl.to(image, { scale: 1, opacity: 1, duration: 0.6, ease: 'power3.out' }, 0.2);
-    }
-    
-    if (textElements.length > 0) {
-      tl.to(textElements, { y: 0, opacity: 1, duration: 0.4, stagger: 0.1, ease: 'power3.out' }, 0.3);
-    }
-  }, { dependencies: [isModalOpen], scope: modalRef });
-
-
   // --- 6. Interaction Handlers ---
   
   // Throttle mouse move for performance
@@ -353,8 +327,7 @@ const ProjectsArchive = () => {
   const closeModal = () => {
     setIsModalOpen(false);
     document.body.style.overflow = 'unset';
-    // Small delay before clearing selected project for exit animation
-    setTimeout(() => setSelectedProject(null), 300);
+    setSelectedProject(null);
   };
 
   // Close modal on escape key
@@ -520,7 +493,7 @@ const ProjectsArchive = () => {
                                             {project.title}
                                         </h3>
                                         <p className="text-[#FAFAF9]/80 font-mono text-xs md:text-sm line-clamp-2 max-w-lg">
-                                            {project.subtitle || project.description}
+                                            {stripHtml(project.subtitle || project.description) || ""}
                                         </p>
                                     </div>
                               </div>
@@ -554,62 +527,76 @@ const ProjectsArchive = () => {
       {isModalOpen && selectedProject && (
         <div 
           ref={modalRef}
-          className="modal-backdrop fixed inset-0 bg-black/80 backdrop-blur-md z-[100] flex items-center justify-center p-4"
+          className="fixed inset-0 bg-black/80 backdrop-blur-xl z-[100] flex items-center justify-center p-4 md:p-8"
           onClick={(e) => e.target === e.currentTarget && closeModal()}
         >
-          <div className="modal-content relative bg-white rounded-2xl max-w-6xl w-full max-h-[90vh] overflow-hidden shadow-2xl">
+          <div className="bg-white rounded-3xl max-w-5xl w-full max-h-[90vh] overflow-hidden shadow-2xl relative">
             {/* Close Button */}
             <button
               onClick={closeModal}
-              className="absolute top-4 right-4 z-10 p-3 bg-black/10 hover:bg-black/20 rounded-full transition-colors backdrop-blur-sm"
+              className="absolute top-6 right-6 z-20 p-3 bg-black/10 hover:bg-black/20 rounded-full transition-all duration-300 backdrop-blur-sm group hover:scale-110"
             >
-              <X size={24} className="text-white" />
+              <X size={20} className="text-gray-700 group-hover:text-black transition-colors" />
             </button>
 
-            <div className="flex flex-col lg:flex-row h-full">
+            <div className="flex flex-col lg:flex-row">
               {/* Image Section */}
-              <div className="lg:w-1/2 h-64 lg:h-auto relative overflow-hidden">
-                <img
-                  src={selectedProject.image_url}
+              <div className="lg:w-3/5 h-80 lg:h-[600px] relative overflow-hidden bg-gradient-to-br from-gray-50 to-gray-100">
+                <div className="absolute inset-0 bg-gradient-to-t from-black/10 via-transparent to-transparent"></div>
+                <img 
+                  src={selectedProject.image_url} 
                   alt={selectedProject.title}
-                  className="modal-image w-full h-full object-cover"
+                  className="w-full h-full object-contain p-8"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent lg:hidden" />
+                {/* Decorative Elements */}
+                <div className="absolute top-6 left-6 w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
+                <div className="absolute bottom-6 right-6 w-1 h-1 bg-purple-500 rounded-full"></div>
               </div>
 
               {/* Content Section */}
-              <div className="lg:w-1/2 p-6 lg:p-12 flex flex-col justify-between overflow-y-auto">
-                <div>
+              <div className="lg:w-2/5 p-8 lg:p-12 flex flex-col justify-between bg-gradient-to-br from-white via-gray-50/50 to-white">
+                <div className="space-y-8">
                   {/* Header */}
-                  <div className="modal-text mb-6">
-                    <span className="text-sm font-mono text-gray-500 uppercase tracking-widest">
-                      {selectedProject.project_type || 'Project'}
-                    </span>
-                    <h2 className="text-3xl lg:text-5xl font-arsenica text-[#1C1917] mt-2 leading-tight">
+                  <div>
+                    <div className="flex items-center gap-2 mb-4">
+                      <div className="w-1.5 h-1.5 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full"></div>
+                      <span className="text-xs font-mono text-gray-500 uppercase tracking-widest">
+                        {selectedProject.project_type || 'Project'}
+                      </span>
+                    </div>
+                    <h2 className="text-3xl lg:text-4xl font-arsenica text-gray-900 leading-tight mb-4">
                       {selectedProject.title}
                     </h2>
-                    <p className="text-lg text-gray-600 mt-4 font-mono italic">
-                      {selectedProject.subtitle}
-                    </p>
+                    {selectedProject.subtitle && (
+                      <p className="text-gray-600 font-mono italic text-sm leading-relaxed">
+                        {stripHtml(selectedProject.subtitle)}
+                      </p>
+                    )}
                   </div>
 
                   {/* Description */}
-                  <div className="modal-text mb-8">
-                    <h3 className="text-lg font-semibold text-[#1C1917] mb-3">About</h3>
-                    <p className="text-gray-700 leading-relaxed">
-                      {selectedProject.description || selectedProject.subtitle}
+                  <div>
+                    <div className="flex items-center gap-2 mb-3">
+                      <div className="w-0.5 h-4 bg-gradient-to-b from-blue-500 to-purple-500 rounded-full"></div>
+                      <h3 className="text-sm font-semibold text-gray-900 uppercase tracking-wide">About</h3>
+                    </div>
+                    <p className="text-gray-700 leading-relaxed text-sm">
+                      {stripHtml(selectedProject.long_description || selectedProject.description || selectedProject.subtitle) || "No description available."}
                     </p>
                   </div>
 
                   {/* Technologies */}
                   {selectedProject.technologies && selectedProject.technologies.length > 0 && (
-                    <div className="modal-text mb-8">
-                      <h3 className="text-lg font-semibold text-[#1C1917] mb-4">Technologies</h3>
+                    <div>
+                      <div className="flex items-center gap-2 mb-3">
+                        <div className="w-0.5 h-4 bg-gradient-to-b from-green-500 to-blue-500 rounded-full"></div>
+                        <h3 className="text-sm font-semibold text-gray-900 uppercase tracking-wide">Tech Stack</h3>
+                      </div>
                       <div className="flex flex-wrap gap-2">
-                        {selectedProject.technologies.map((tech, index) => (
+                        {selectedProject.technologies.slice(0, 6).map((tech, index) => (
                           <span
                             key={index}
-                            className="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm font-mono"
+                            className="px-3 py-1.5 bg-gradient-to-r from-gray-100 to-gray-200 text-gray-700 rounded-full text-xs font-mono hover:from-gray-200 hover:to-gray-300 transition-all duration-200 border border-gray-200/50"
                           >
                             {tech}
                           </span>
@@ -620,13 +607,16 @@ const ProjectsArchive = () => {
 
                   {/* Features */}
                   {selectedProject.features && selectedProject.features.length > 0 && (
-                    <div className="modal-text mb-8">
-                      <h3 className="text-lg font-semibold text-[#1C1917] mb-4">Key Features</h3>
+                    <div>
+                      <div className="flex items-center gap-2 mb-3">
+                        <div className="w-0.5 h-4 bg-gradient-to-b from-purple-500 to-pink-500 rounded-full"></div>
+                        <h3 className="text-sm font-semibold text-gray-900 uppercase tracking-wide">Features</h3>
+                      </div>
                       <ul className="space-y-2">
-                        {selectedProject.features.map((feature, index) => (
-                          <li key={index} className="flex items-start gap-2 text-gray-700">
-                            <span className="w-1.5 h-1.5 bg-[#1C1917] rounded-full mt-2 flex-shrink-0" />
-                            {feature}
+                        {selectedProject.features.slice(0, 4).map((feature, index) => (
+                          <li key={index} className="flex items-start gap-2 text-sm text-gray-700">
+                            <div className="w-1 h-1 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full mt-2 flex-shrink-0"></div>
+                            <span className="leading-relaxed">{feature}</span>
                           </li>
                         ))}
                       </ul>
@@ -635,15 +625,15 @@ const ProjectsArchive = () => {
                 </div>
 
                 {/* Action Buttons */}
-                <div className="modal-text flex flex-col sm:flex-row gap-4 pt-6 border-t border-gray-200">
+                <div className="flex flex-col sm:flex-row gap-3 pt-6 border-t border-gray-200/50">
                   {selectedProject.link && (
                     <a
                       href={selectedProject.link}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center justify-center gap-2 px-6 py-3 bg-[#1C1917] text-white rounded-full hover:bg-black transition-colors font-medium"
+                      className="flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-gray-900 to-gray-800 text-white rounded-full hover:from-black hover:to-gray-900 transition-all duration-300 font-medium text-sm shadow-lg hover:shadow-xl transform hover:scale-[1.02] group"
                     >
-                      <ExternalLink size={18} />
+                      <ExternalLink size={16} className="group-hover:rotate-12 transition-transform" />
                       View Live
                     </a>
                   )}
@@ -652,15 +642,18 @@ const ProjectsArchive = () => {
                       href={selectedProject.github_url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center justify-center gap-2 px-6 py-3 border border-[#1C1917] text-[#1C1917] rounded-full hover:bg-[#1C1917] hover:text-white transition-colors font-medium"
+                      className="flex items-center justify-center gap-2 px-6 py-3 border border-gray-300 text-gray-700 rounded-full hover:bg-gray-50 hover:border-gray-400 transition-all duration-300 font-medium text-sm transform hover:scale-[1.02] group"
                     >
-                      <Github size={18} />
-                      Source Code
+                      <Github size={16} className="group-hover:rotate-12 transition-transform" />
+                      Code
                     </a>
                   )}
                 </div>
               </div>
             </div>
+
+            {/* Decorative gradient overlay */}
+            <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 via-transparent to-purple-500/5 pointer-events-none"></div>
           </div>
         </div>
       )}
