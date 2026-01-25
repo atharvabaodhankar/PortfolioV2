@@ -1,0 +1,22 @@
+/* Parallax Tilt Hero Image Effect */
+.hero-img {
+  perspective: 1000px;
+  transform-style: preserve-3d;
+}
+
+.hero-img img {
+  will-change: transform;
+  transition: filter 0.3s ease, box-shadow 0.3s ease;
+  border-radius: 8px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+/* Desktop only parallax effect */
+@media (min-width: 768px) {
+  .hero-img:hover img {
+    filter: brightness(1.05) contrast(1.05) saturate(1.1);
+    box-shadow: 
+      0 20px 40px rgba(0, 0, 0, 0.15),
+      0 0 20px rgba(255, 255, 255, 0.1);
+  }
+}

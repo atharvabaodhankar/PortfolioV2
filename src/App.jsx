@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import './App.css';
 import { LoaderProvider, useLoader } from './context/LoaderContext';
 import { usePreloader } from './hooks/usePreloader';
 import Preloader from './components/Preloader';

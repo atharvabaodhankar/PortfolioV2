@@ -88,12 +88,12 @@ const About = () => {
         <div className="absolute bottom-[10%] left-[5%] w-[300px] h-[300px] bg-gray-200 rounded-full blur-[80px] opacity-40"></div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-start relative">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 md:gap-16 items-start relative">
         {/* Title */}
        
 
         {/* Image */}
-        <div className="lg:col-span-4 lg:col-start-2 lg:mt-32 relative reveal-text image-container">
+        <div className="lg:col-span-4 lg:col-start-2 lg:mt-32 relative reveal-text image-container mb-12 lg:mb-0">
           <div className="relative tilt-card group cursor-none" style={{ perspective: '1000px', transformStyle: 'preserve-3d' }}>
             {/* Shadow/background card */}
             <div className="absolute inset-0 bg-gray-200 rounded-lg transform translate-x-3 translate-y-3 -rotate-2 transition-transform duration-700 ease-expo-out group-hover:translate-x-8 group-hover:translate-y-6 group-hover:-rotate-6 z-0"></div>

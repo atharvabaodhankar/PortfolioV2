@@ -3,6 +3,7 @@ import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 // import Shery from 'sheryjs'; // TODO: Fix Shery imports
 import { useLoader } from '../context/LoaderContext';
+import useParallaxTilt from '../hooks/useParallaxTilt';
 import heroImg from '../assets/imgs/hero-img.png';
 
 gsap.registerPlugin(useGSAP);
@@ -11,6 +12,12 @@ const Hero = () => {
   const { isLoaded } = useLoader();
   const heroRef = useRef(null);
   const heroImgRef = useRef(null);
+  const tiltImgRef = useParallaxTilt(heroRef, {
+    tiltStrength: 12,
+    moveStrength: 15,
+    scale: 1.03,
+    speed: 0.5
+  });
 
   useGSAP(() => {
     if (!isLoaded) return;
@@ -56,7 +63,12 @@ const Hero = () => {
           ATHARVA
         </h1>
         <div className="hero-img non-hover w-[60vw] h-[40vw] md:w-[23vw] md:h-[16vw] object-cover -rotate-[5deg]" ref={heroImgRef}>
-          <img src={heroImg} alt="hero" className="w-full h-full object-cover object-center" />
+          <img 
+            ref={tiltImgRef}
+            src={heroImg} 
+            alt="hero" 
+            className="w-full h-full object-cover object-center will-change-transform" 
+          />
         </div>
         <h2 className="hero-hover text-[13vw] md:text-[7vw] font-light -mt-8 md:-mt-20 z-[2] select-none font-arsenica">
           BAODHANKAR
