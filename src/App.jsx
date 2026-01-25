@@ -25,6 +25,9 @@ import SkillsManager from './components/admin/SkillsManager';
 import WorkManager from './components/admin/WorkManager';
 import ProtectedRoute from './components/admin/ProtectedRoute';
 
+// Import images
+import heroImgJpg from './assets/imgs/hero-img.jpg';
+import webPhotoEditor from './assets/imgs/Web_Photo_Editor.jpg';
 
 import gsap from 'gsap';
 import ScrollTrigger from 'gsap/ScrollTrigger';
@@ -39,8 +42,8 @@ function PortfolioPage() {
   useEffect(() => {
     // Collect critical hero images
     const criticalImages = [
-      '/src/assets/imgs/hero-img.jpg',
-      '/src/assets/imgs/Web_Photo_Editor.jpg',
+      heroImgJpg,
+      webPhotoEditor,
     ];
     setHeroImages(criticalImages);
 

@@ -1,8 +1,9 @@
-import React, { useRef } from 'react';
+import { useRef } from 'react';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 // import Shery from 'sheryjs'; // TODO: Fix Shery imports
 import { useLoader } from '../context/LoaderContext';
+import heroImg from '../assets/imgs/hero-img.png';
 
 gsap.registerPlugin(useGSAP);
 
@@ -55,7 +56,7 @@ const Hero = () => {
           ATHARVA
         </h1>
         <div className="hero-img non-hover w-[60vw] h-[40vw] md:w-[23vw] md:h-[16vw] object-cover -rotate-[5deg]" ref={heroImgRef}>
-          <img src="/src/assets/imgs/hero-img.png" alt="hero" className="w-full h-full object-cover object-center" />
+          <img src={heroImg} alt="hero" className="w-full h-full object-cover object-center" />
         </div>
         <h2 className="hero-hover text-[13vw] md:text-[7vw] font-light -mt-8 md:-mt-20 z-[2] select-none font-arsenica">
           BAODHANKAR

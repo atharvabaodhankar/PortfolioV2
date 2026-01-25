@@ -2,6 +2,7 @@ import React, { useRef } from 'react';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import ScrollTrigger from 'gsap/ScrollTrigger';
+import ferroImg from '../assets/imgs/ferro.png';
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
@@ -63,7 +64,7 @@ const Ferro = () => {
           <div className="w-full flex items-center justify-center mb-16">
             <div className="ferro-img w-[40%] h-auto">
               <img 
-                src="/src/assets/imgs/ferro.png" 
+                src={ferroImg} 
                 data-tilt 
                 data-tilt-full-page-listening 
                 alt="Ferro.js Logo" 

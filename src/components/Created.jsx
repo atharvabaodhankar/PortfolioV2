@@ -3,6 +3,8 @@ import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import ScrollTrigger from 'gsap/ScrollTrigger';
 // import Shery from 'sheryjs'; // TODO: Fix Sh ery imports
+import createdImg1 from '../assets/imgs/created-img-1.jpg';
+import createdImg2 from '../assets/imgs/created-img-2.png';
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
@@ -91,11 +93,11 @@ const Created = () => {
         <h1 className="text-[6vw] font-normal">
           I WAS <br /> <span className="font-arsenica">CODED</span>
           <div className="created-img-1 created-img w-[250px] h-[100px] inline-block">
-            <img src="/src/assets/imgs/created-img-1.jpg" alt="" className="w-full h-full object-cover" />
+            <img src={createdImg1} alt="" className="w-full h-full object-cover" />
           </div>
           <br />
           <div className="created-img-2 created-img w-[250px] h-[100px] inline-block">
-            <img src="/src/assets/imgs/created-img-2.png" alt="" className="w-full h-full object-cover" />
+            <img src={createdImg2} alt="" className="w-full h-full object-cover" />
           </div>
           TO <span className="font-arsenica">DESIGN</span>
         </h1>

@@ -2,6 +2,7 @@ import { useRef } from 'react';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import ScrollTrigger from 'gsap/ScrollTrigger';
+import aboutImg from '../assets/imgs/About.png';
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
@@ -103,7 +104,7 @@ const About = () => {
                 <img 
                   alt="Portrait of Atharva Baodhankar" 
                   className="w-full h-full object-cover filter grayscale contrast-[1.05] brightness-105 group-hover:grayscale-0 group-hover:scale-105 transition-all duration-1000 ease-expo-out"
-                  src="/src/assets/imgs/About.png"
+                  src={aboutImg}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
               </div>

@@ -1,6 +1,7 @@
 import React, { useLayoutEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import ScrollTrigger from 'gsap/ScrollTrigger';
+import workImg from '../assets/imgs/work.png';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -370,7 +371,7 @@ const Work = () => {
                 {/* Moving Image Inside Fixed Container - Parallax enabled for all devices */}
                 <div ref={portraitRef} className="work-portrait absolute inset-0 w-full h-[120%] -top-[10%]">
                   <img 
-                    src="/src/assets/imgs/work.png" 
+                    src={workImg} 
                     alt="Atharva Baodhankar" 
                     className="w-full h-full object-cover transition-all duration-700 hover:scale-[1.02]"
                   />
