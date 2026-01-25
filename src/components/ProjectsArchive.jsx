@@ -198,6 +198,27 @@ const ProjectsArchive = () => {
 
   }, { scope: containerRef, dependencies: [loading, filteredProjects] });
 
+  // Modal Animation Logic
+  useGSAP(() => {
+    if (isModalOpen && modalRef.current) {
+      const modal = modalRef.current;
+      const contentElements = modal.querySelectorAll('.modal-animate');
+      
+      const tl = gsap.timeline({ defaults: { ease: 'power4.out' } });
+
+      tl.fromTo(modal,
+        { scale: 0.95, opacity: 0, y: 20 },
+        { scale: 1, opacity: 1, y: 0, duration: 0.8 }
+      );
+
+      tl.fromTo(contentElements,
+        { y: 30, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.8, stagger: 0.1 },
+        '-=0.4'
+      );
+    }
+  }, { dependencies: [isModalOpen], scope: modalRef });
+
   // --- 6. Interaction Handlers ---
   
   // Throttle mouse move for performance
@@ -523,80 +544,88 @@ const ProjectsArchive = () => {
           <ArrowUp size={24} className="group-hover:-translate-y-1 transition-transform" />
       </button>
 
-      {/* Project Modal */}
+      {/* Enhanced Project Modal */}
       {isModalOpen && selectedProject && (
         <div 
-          ref={modalRef}
-          className="fixed inset-0 bg-black/80 backdrop-blur-xl z-[100] flex items-center justify-center p-4 md:p-8"
+          className="fixed inset-0 bg-black/40 backdrop-blur-[20px] z-[100] flex items-center justify-center p-4 md:p-12 overflow-y-auto overflow-x-hidden"
           onClick={(e) => e.target === e.currentTarget && closeModal()}
         >
-          <div className="bg-white rounded-3xl max-w-5xl w-full max-h-[90vh] overflow-hidden shadow-2xl relative">
-            {/* Close Button */}
+          <div 
+            ref={modalRef}
+            className="bg-white rounded-[2rem] max-w-7xl w-full h-auto max-h-none lg:h-[85vh] overflow-hidden shadow-[0_30px_100px_rgba(0,0,0,0.1)] relative flex flex-col lg:flex-row"
+          >
+            {/* Close Button - Sticky/Fixed relative to modal */}
             <button
               onClick={closeModal}
-              className="absolute top-6 right-6 z-20 p-3 bg-black/10 hover:bg-black/20 rounded-full transition-all duration-300 backdrop-blur-sm group hover:scale-110"
+              className="absolute top-8 right-8 z-[110] p-4 bg-black/5 hover:bg-black/10 rounded-full transition-all duration-300 backdrop-blur-md group hover:scale-110 active:scale-95"
             >
-              <X size={20} className="text-gray-700 group-hover:text-black transition-colors" />
+              <X size={24} className="text-gray-900" />
             </button>
 
-            <div className="flex flex-col lg:flex-row">
-              {/* Image Section */}
-              <div className="lg:w-3/5 h-80 lg:h-[600px] relative overflow-hidden bg-gradient-to-br from-gray-50 to-gray-100">
-                <div className="absolute inset-0 bg-gradient-to-t from-black/10 via-transparent to-transparent"></div>
-                <img 
-                  src={selectedProject.image_url} 
-                  alt={selectedProject.title}
-                  className="w-full h-full object-contain p-8"
-                />
-                {/* Decorative Elements */}
-                <div className="absolute top-6 left-6 w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
-                <div className="absolute bottom-6 right-6 w-1 h-1 bg-purple-500 rounded-full"></div>
+            {/* Left: Media/Image Section (Sticky on scroll or fixed height) */}
+            <div className="lg:w-[55%] h-[40vh] lg:h-full relative overflow-hidden bg-[#f9f9f9]">
+              <img 
+                src={selectedProject.image_url} 
+                alt={selectedProject.title}
+                className="w-full h-full object-cover modal-animate"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent pointer-events-none"></div>
+              
+              {/* Project Type Badge */}
+              <div className="absolute bottom-8 left-8 modal-animate">
+                <span className="px-5 py-2.5 bg-white/90 backdrop-blur-md rounded-full text-[10px] font-mono text-gray-900 uppercase tracking-[0.2em] shadow-sm">
+                  {selectedProject.project_type || 'Selected Experience'}
+                </span>
               </div>
+            </div>
 
-              {/* Content Section */}
-              <div className="lg:w-2/5 p-8 lg:p-12 flex flex-col justify-between bg-gradient-to-br from-white via-gray-50/50 to-white">
-                <div className="space-y-8">
-                  {/* Header */}
-                  <div>
-                    <div className="flex items-center gap-2 mb-4">
-                      <div className="w-1.5 h-1.5 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full"></div>
-                      <span className="text-xs font-mono text-gray-500 uppercase tracking-widest">
-                        {selectedProject.project_type || 'Project'}
-                      </span>
-                    </div>
-                    <h2 className="text-3xl lg:text-4xl font-arsenica text-gray-900 leading-tight mb-4">
-                      {selectedProject.title}
-                    </h2>
-                    {selectedProject.subtitle && (
-                      <p className="text-gray-600 font-mono italic text-sm leading-relaxed">
-                        {stripHtml(selectedProject.subtitle)}
-                      </p>
-                    )}
+            {/* Right: Detailed Content Section (Scrollable) */}
+            <div className="lg:w-[45%] h-full flex flex-col bg-white overflow-hidden">
+              <div className="flex-1 overflow-y-auto p-8 md:p-14 lg:p-16 space-y-12 custom-scrollbar" data-lenis-prevent>
+                
+                {/* Header Information */}
+                <div className="space-y-6">
+                  <div className="modal-animate flex items-center gap-3">
+                    <span className="h-[1px] w-8 bg-black/20 text-black"></span>
+                    <span className="text-[10px] font-mono text-gray-400 uppercase tracking-[0.3em]">
+                      Project Overview
+                    </span>
                   </div>
-
-                  {/* Description */}
-                  <div>
-                    <div className="flex items-center gap-2 mb-3">
-                      <div className="w-0.5 h-4 bg-gradient-to-b from-blue-500 to-purple-500 rounded-full"></div>
-                      <h3 className="text-sm font-semibold text-gray-900 uppercase tracking-wide">About</h3>
-                    </div>
-                    <p className="text-gray-700 leading-relaxed text-sm">
-                      {stripHtml(selectedProject.long_description || selectedProject.description || selectedProject.subtitle) || "No description available."}
+                  
+                  <h2 className="modal-animate text-[clamp(2rem,4vw,3.5rem)] font-arsenica text-gray-900 leading-[1.1]">
+                    {selectedProject.title}
+                  </h2>
+                  
+                  {selectedProject.subtitle && (
+                    <p className="modal-animate text-lg font-mono italic text-gray-500 border-l-2 border-black/5 pl-6 leading-relaxed">
+                      {stripHtml(selectedProject.subtitle)}
                     </p>
-                  </div>
+                  )}
+                </div>
 
+                {/* Main Description */}
+                <div className="modal-animate space-y-6">
+                  <h3 className="text-[11px] font-mono text-gray-900 uppercase tracking-[0.2em] opacity-40">
+                    Background
+                  </h3>
+                  <div className="prose prose-sm lg:prose-base text-gray-600 leading-[1.8] font-sans">
+                    {stripHtml(selectedProject.long_description || selectedProject.description || selectedProject.subtitle) || "This is a archived project showcasing modern web development practices and innovative design solutions."}
+                  </div>
+                </div>
+
+                {/* Tech & Features Grid */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
                   {/* Technologies */}
                   {selectedProject.technologies && selectedProject.technologies.length > 0 && (
-                    <div>
-                      <div className="flex items-center gap-2 mb-3">
-                        <div className="w-0.5 h-4 bg-gradient-to-b from-green-500 to-blue-500 rounded-full"></div>
-                        <h3 className="text-sm font-semibold text-gray-900 uppercase tracking-wide">Tech Stack</h3>
-                      </div>
+                    <div className="modal-animate space-y-6">
+                      <h3 className="text-[11px] font-mono text-gray-900 uppercase tracking-[0.2em] opacity-40">
+                        Capabilities
+                      </h3>
                       <div className="flex flex-wrap gap-2">
-                        {selectedProject.technologies.slice(0, 6).map((tech, index) => (
+                        {selectedProject.technologies.map((tech, index) => (
                           <span
                             key={index}
-                            className="px-3 py-1.5 bg-gradient-to-r from-gray-100 to-gray-200 text-gray-700 rounded-full text-xs font-mono hover:from-gray-200 hover:to-gray-300 transition-all duration-200 border border-gray-200/50"
+                            className="px-4 py-2 bg-gray-50 text-[11px] font-mono text-gray-600 rounded-full border border-gray-100 hover:bg-black hover:text-white transition-all duration-300 cursor-default"
                           >
                             {tech}
                           </span>
@@ -605,17 +634,16 @@ const ProjectsArchive = () => {
                     </div>
                   )}
 
-                  {/* Features */}
+                  {/* Highlights/Features */}
                   {selectedProject.features && selectedProject.features.length > 0 && (
-                    <div>
-                      <div className="flex items-center gap-2 mb-3">
-                        <div className="w-0.5 h-4 bg-gradient-to-b from-purple-500 to-pink-500 rounded-full"></div>
-                        <h3 className="text-sm font-semibold text-gray-900 uppercase tracking-wide">Features</h3>
-                      </div>
-                      <ul className="space-y-2">
-                        {selectedProject.features.slice(0, 4).map((feature, index) => (
-                          <li key={index} className="flex items-start gap-2 text-sm text-gray-700">
-                            <div className="w-1 h-1 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full mt-2 flex-shrink-0"></div>
+                    <div className="modal-animate space-y-6">
+                      <h3 className="text-[11px] font-mono text-gray-900 uppercase tracking-[0.2em] opacity-40">
+                        Highlights
+                      </h3>
+                      <ul className="space-y-3">
+                        {selectedProject.features.slice(0, 5).map((feature, index) => (
+                          <li key={index} className="flex items-start gap-3 text-sm text-gray-600 group">
+                            <div className="w-1 h-1 bg-black/20 rounded-full mt-2 group-hover:bg-black transition-colors"></div>
                             <span className="leading-relaxed">{feature}</span>
                           </li>
                         ))}
@@ -624,17 +652,17 @@ const ProjectsArchive = () => {
                   )}
                 </div>
 
-                {/* Action Buttons */}
-                <div className="flex flex-col sm:flex-row gap-3 pt-6 border-t border-gray-200/50">
+                {/* Project Links / Actions */}
+                <div className="modal-animate pt-8 space-y-4">
                   {selectedProject.link && (
                     <a
                       href={selectedProject.link}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-gray-900 to-gray-800 text-white rounded-full hover:from-black hover:to-gray-900 transition-all duration-300 font-medium text-sm shadow-lg hover:shadow-xl transform hover:scale-[1.02] group"
+                      className="flex items-center justify-between w-full px-8 py-5 bg-black text-white hover:bg-gray-900 transition-all duration-500 rounded-full group"
                     >
-                      <ExternalLink size={16} className="group-hover:rotate-12 transition-transform" />
-                      View Live
+                      <span className="font-medium">Visit Live Experience</span>
+                      <ExternalLink size={18} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
                     </a>
                   )}
                   {selectedProject.github_url && (
@@ -642,18 +670,21 @@ const ProjectsArchive = () => {
                       href={selectedProject.github_url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center justify-center gap-2 px-6 py-3 border border-gray-300 text-gray-700 rounded-full hover:bg-gray-50 hover:border-gray-400 transition-all duration-300 font-medium text-sm transform hover:scale-[1.02] group"
+                      className="flex items-center justify-between w-full px-8 py-5 border border-black/10 text-gray-900 hover:bg-gray-50 transition-all duration-500 rounded-full group"
                     >
-                      <Github size={16} className="group-hover:rotate-12 transition-transform" />
-                      Code
+                      <span className="font-medium">Repository Details</span>
+                      <Github size={18} className="opacity-40 group-hover:opacity-100 transition-opacity" />
                     </a>
                   )}
                 </div>
               </div>
-            </div>
 
-            {/* Decorative gradient overlay */}
-            <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 via-transparent to-purple-500/5 pointer-events-none"></div>
+              {/* Footer info (Static in content column) */}
+              <div className="px-8 py-6 border-t border-gray-50 flex items-center justify-between bg-gray-50/50">
+                <span className="text-[10px] font-mono text-gray-400">© 2026 Atharva</span>
+                <span className="text-[10px] font-mono text-gray-400">Case Study v1.0</span>
+              </div>
+            </div>
           </div>
         </div>
       )}
