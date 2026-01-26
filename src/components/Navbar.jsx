@@ -3,6 +3,8 @@ import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { X } from 'lucide-react';
 import TransitionLink from './TransitionLink';
+import useImagePreloader from '../hooks/useImagePreloader';
+import PreloadedImage from './PreloadedImage';
 
 // Import assets
 import heroImg from '../assets/imgs/hero.png';
@@ -51,6 +53,34 @@ const Navbar = () => {
   const navLinksRef = useRef([]);
   const rightContentRef = useRef(null);
   const closeBtnRef = useRef(null);
+
+  // Extract all image URLs for preloading
+  const imageUrls = Object.values(contentMap).map(content => content.image);
+  const { allLoaded: imagesPreloaded, isImageLoaded } = useImagePreloader(imageUrls);
+
+  // Add link preload tags to document head for critical images
+  useEffect(() => {
+    const preloadLinks = imageUrls.map(url => {
+      const link = document.createElement('link');
+      link.rel = 'preload';
+      link.as = 'image';
+      link.href = url;
+      link.crossOrigin = 'anonymous';
+      return link;
+    });
+
+    // Add to head
+    preloadLinks.forEach(link => document.head.appendChild(link));
+
+    // Cleanup
+    return () => {
+      preloadLinks.forEach(link => {
+        if (document.head.contains(link)) {
+          document.head.removeChild(link);
+        }
+      });
+    };
+  }, [imageUrls]);
 
   const toggleNav = () => {
     setNavActive((prev) => !prev);
@@ -232,26 +262,22 @@ const Navbar = () => {
       const tl = gsap.timeline();
       
       tl.to(rightContentRef.current, {
-          scale: 1.08,
-          opacity: 0,
-          filter: 'blur(8px)',
-          rotationY: -5,
+          scale: 1.02,
+          opacity: 0.6,
+          filter: 'blur(2px)',
           duration: 0.4,
           ease: 'power2.in',
-          onComplete: () => setActiveLink(key)
-      })
-      .set(rightContentRef.current, {
-          scale: 0.92,
-          rotationY: 5,
-          filter: 'blur(8px)'
+          onComplete: () => {
+            setActiveLink(key);
+          }
       })
       .to(rightContentRef.current, {
           scale: 1,
           opacity: 1,
           filter: 'blur(0px)',
-          rotationY: 0,
           duration: 0.6,
-          ease: 'power3.out'
+          ease: 'power3.out',
+          delay: 0.1
       });
   };
 
@@ -393,14 +419,16 @@ const Navbar = () => {
                 ref={rightContentRef}
                 className="w-full h-full flex flex-col items-center justify-center p-12 relative"
             >
-                <div className="relative w-[80%] aspect-video shadow-2xl overflow-hidden rounded-lg">
-                    <img 
-                        src={contentMap[activeLink]?.image} 
-                        alt={activeLink} 
+                <div className="relative w-[80%] aspect-video shadow-2xl overflow-hidden rounded-lg bg-gray-200">
+                    <PreloadedImage
+                        key={activeLink}
+                        src={contentMap[activeLink]?.image}
+                        alt={activeLink}
+                        fallbackSrc={navImg}
                         className="w-full h-full object-cover"
                     />
                 </div>
-                <h3 className="mt-8 text-4xl font-arsenica text-gray-800 text-center">
+                <h3 className="mt-8 text-4xl font-arsenica text-gray-800 text-center transition-opacity duration-300">
                     {contentMap[activeLink]?.text}
                 </h3>
             </div>
