@@ -4,6 +4,7 @@ import { useGSAP } from '@gsap/react';
 import ScrollTrigger from 'gsap/ScrollTrigger';
 import { ArrowRight, ExternalLink } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import TransitionLink from './TransitionLink';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -206,6 +207,9 @@ const Projects = () => {
                         src={project.image_url} 
                         alt={project.title}
                         className="w-full h-full object-cover transition-transform duration-[1.5s] ease-[cubic-bezier(0.25,0.46,0.45,0.94)] group-hover:scale-105"
+                        width="960"
+                        height="640"
+                        loading="lazy"
                     />
                 </div>
 
@@ -231,15 +235,13 @@ const Projects = () => {
                         ))}
                     </div>
 
-                    <a 
-                        href={project.link} 
-                        target="_blank"
-                        rel="noreferrer"
+                    <TransitionLink 
+                        to={`/projects/${project.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')}`}
                         className="group relative inline-flex items-center gap-4 px-8 py-4 bg-[#1a1a1a] text-white hover:bg-black transition-colors duration-500 rounded-full font-medium shadow-lg shadow-black/10 hover:shadow-xl"
                     >
                         View Project
                         <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
-                    </a>
+                    </TransitionLink>
                 </div>
 
                 </div>

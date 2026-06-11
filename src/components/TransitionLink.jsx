@@ -2,12 +2,17 @@ import React from 'react';
 import { useTransition } from '../context/TransitionContext';
 
 const TransitionLink = ({ to, children, className, onClick, ...props }) => {
-  const { startTransition } = useTransition();
+  const transitionContext = useTransition();
+  const startTransition = transitionContext ? transitionContext.startTransition : null;
 
   const handleClick = (e) => {
-    e.preventDefault();
-    if (onClick) onClick(e);
-    startTransition(to);
+    if (startTransition) {
+      e.preventDefault();
+      if (onClick) onClick(e);
+      startTransition(to);
+    } else {
+      if (onClick) onClick(e);
+    }
   };
 
   return (

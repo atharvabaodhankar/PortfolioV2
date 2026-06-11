@@ -6,6 +6,7 @@ import ScrollTrigger from 'gsap/ScrollTrigger';
 import { throttle } from 'lodash';
 import Footer from './Footer';
 import Navbar from './Navbar';
+import { useTransition } from '../context/TransitionContext';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -18,6 +19,7 @@ const ProjectsArchive = () => {
   const [displayCount, setDisplayCount] = useState(0);
   const [selectedProject, setSelectedProject] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const { startTransition } = useTransition();
   
   const containerRef = useRef(null);
   const heroRef = useRef(null);
@@ -478,7 +480,10 @@ const ProjectsArchive = () => {
                   return (
                       <article 
                         key={project.id}
-                        onClick={() => openModal(project)}
+                        onClick={() => {
+                          const slug = project.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+                          startTransition(`/projects/${slug}`);
+                        }}
                         onMouseEnter={handleMouseEnter}
                         onMouseMove={handleMouseMove}
                         onMouseLeave={handleMouseLeave}
@@ -493,6 +498,8 @@ const ProjectsArchive = () => {
                                 src={project.image_url} 
                                 alt={project.title}
                                 className="project-img w-full h-auto min-h-[300px] object-cover md:filter md:grayscale scale-100 transition-transform duration-700 ease-out"
+                                width="600"
+                                height="400"
                               />
                               
                               {/* Content Overlay - Always visible on mobile */}

@@ -13,8 +13,11 @@ import About from './components/About';
 import Skills from './components/Skills';
 import Education from './components/Education';
 import Projects from './components/Projects';
-import ProjectsArchive from './components/ProjectsArchive';
 import Work from './components/Work';
+
+// Lazy load sub-routes for performance/Core Web Vitals
+const ProjectsArchive = React.lazy(() => import('./components/ProjectsArchive'));
+const ProjectDetail = React.lazy(() => import('./components/projects/ProjectDetail'));
 import Footer from './components/Footer';
 
 // Admin components
@@ -135,7 +138,7 @@ function PortfolioPage() {
       {isLoaded && (
         <>
           <Navbar />
-          <section id="main">
+          <main id="main">
             <Hero />
             <About />
             <Skills />
@@ -144,7 +147,7 @@ function PortfolioPage() {
             <Projects />
             <Work />
             <Footer />
-          </section>
+          </main>
         </>
       )}
     </>
@@ -160,29 +163,36 @@ function AppContent() {
         <TransitionOverlay />
         <div id="app-content">
           <SmoothScroll>
-            <Routes>
-              {/* Main Portfolio Route */}
-              <Route path="/" element={<PortfolioPage />} />
-              <Route path="/projects" element={<ProjectsArchive />} />
-              
-              {/* Admin Login */}
-              <Route path="/admin/login" element={<Login />} />
-              
-              {/* Protected Admin Routes */}
-              <Route
-                path="/admin/*"
-                element={
-                  <ProtectedRoute>
-                    <AdminLayout />
-                  </ProtectedRoute>
-                }
-              >
-                <Route path="dashboard" element={<Dashboard />} />
-                <Route path="projects" element={<ProjectManager />} />
-                <Route path="skills" element={<SkillsManager />} />
-                <Route path="work" element={<WorkManager />} />
-              </Route>
-            </Routes>
+            <React.Suspense fallback={
+              <div className="min-h-screen bg-[#0A0A0B] flex items-center justify-center text-[#E4E4E7] font-mono">
+                <span className="animate-pulse tracking-widest uppercase text-sm">Loading Page...</span>
+              </div>
+            }>
+              <Routes>
+                {/* Main Portfolio Route */}
+                <Route path="/" element={<PortfolioPage />} />
+                <Route path="/projects" element={<ProjectsArchive />} />
+                <Route path="/projects/:slug" element={<ProjectDetail />} />
+                
+                {/* Admin Login */}
+                <Route path="/admin/login" element={<Login />} />
+                
+                {/* Protected Admin Routes */}
+                <Route
+                  path="/admin/*"
+                  element={
+                    <ProtectedRoute>
+                      <AdminLayout />
+                    </ProtectedRoute>
+                  }
+                >
+                  <Route path="dashboard" element={<Dashboard />} />
+                  <Route path="projects" element={<ProjectManager />} />
+                  <Route path="skills" element={<SkillsManager />} />
+                  <Route path="work" element={<WorkManager />} />
+                </Route>
+              </Routes>
+            </React.Suspense>
           </SmoothScroll>
         </div>
       </TransitionProvider>

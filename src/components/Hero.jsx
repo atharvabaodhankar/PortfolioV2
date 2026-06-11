@@ -38,13 +38,13 @@ const Hero = () => {
         duration: 3,
       }, 'HeroH1H2');
 
-      tl.from('.hero h1', {
+      tl.from('.visual-h1', {
         skewY: -10,
         delay: 1,
         opacity: 0,
       }, 'HeroH1H2');
 
-      tl.from('.hero h2', {
+      tl.from('.visual-h2', {
         skewY: -10,
         delay: 1.3,
         opacity: 0,
@@ -57,25 +57,32 @@ const Hero = () => {
   }, { scope: heroRef, dependencies: [isLoaded] });
 
   return (
-    <section id="hero" ref={heroRef} className="h-screen flex items-center justify-center relative bg-white">
+    <header id="hero" ref={heroRef} className="h-screen flex items-center justify-center relative bg-white">
       <div className="hero flex items-center justify-center flex-col">
-        <h1 className="hero-hover text-[13vw] md:text-[7vw] font-light -mb-8 md:-mb-20 z-[2] select-none font-arsenica">
+        {/* Semantic H1 for screen readers and SEO crawlers */}
+        <h1 className="sr-only">Atharva Baodhankar</h1>
+        
+        {/* Visual elements for layout and GSAP animation */}
+        <div aria-hidden="true" className="visual-h1 hero-hover text-[13vw] md:text-[7vw] font-light -mb-8 md:-mb-20 z-[2] select-none font-arsenica text-[#1a1a1a]">
           ATHARVA
-        </h1>
+        </div>
         <div className="hero-img non-hover w-[60vw] h-[40vw] md:w-[23vw] md:h-[16vw] object-cover -rotate-[5deg]" ref={heroImgRef}>
           <img 
             ref={tiltImgRef}
             src={heroImg} 
-            alt="hero" 
+            alt="Atharva Baodhankar Portrait" 
             className="w-full h-full object-cover object-center will-change-transform" 
+            width="400"
+            height="270"
+            loading="eager"
           />
         </div>
-        <h2 className="hero-hover text-[13vw] md:text-[7vw] font-light -mt-8 md:-mt-20 z-[2] select-none font-arsenica">
+        <div aria-hidden="true" className="visual-h2 hero-hover text-[13vw] md:text-[7vw] font-light -mt-8 md:-mt-20 z-[2] select-none font-arsenica text-[#1a1a1a]">
           BAODHANKAR
-        </h2>
+        </div>
         <p className="text-xl md:text-[3rem] mt-8 md:mt-16 font-light text-center px-4 md:px-0">MERN • Systems • Blockchain • AI Tooling</p>
       </div>
-    </section>
+    </header>
   );
 };
 
