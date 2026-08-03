@@ -8,83 +8,141 @@ gsap.registerPlugin(ScrollTrigger, useGSAP);
 const Skills = () => {
   const containerRef = useRef(null);
   
- const skillGroups = [
-  {
-    title: "01 / Web Engineering",
-    description:
-      "Designing and engineering modern web applications with a strong focus on performance, maintainability, and real-world usability.",
-    skills: [
-      "JavaScript (ES6+)",
-      "React",
-      "Node.js",
-      "Express.js",
-      "REST APIs",
-      "MERN Stack"
-    ]
-  },
-  {
-    title: "02 / Blockchain & Web3 Systems",
-    description:
-      "Building decentralized applications and smart contract systems that prioritize security, clarity, and long-term protocol design.",
-    skills: [
-      "Solidity",
-      "Smart Contracts",
-      "ERC-4337 (Account Abstraction)",
-      "Ethers.js",
-      "Polygon & Testnets",
-      "Proof-of-Existence Systems"
-    ]
-  },
-  {
-    title: "03 / Backend & Distributed Systems",
-    description:
-      "Engineering backend and distributed systems with an emphasis on scalability, data flow, and real-time communication.",
-    skills: [
-      "ScyllaDB",
-      "Distributed Systems",
-      "WebRTC",
-      "WebSockets",
-      "Socket.io",
-      "Backend Architecture"
-    ]
-  },
-  {
-    title: "04 / System Design & Architecture",
-    description:
-      "Approaching problems with a system-first mindset — focusing on structure, data flow, and long-term scalability.",
-    skills: [
-      "Application Architecture",
-      "Database Design",
-      "Auth & Role-Based Systems",
-      "API Structuring",
-      "Performance Thinking"
-    ]
-  },
-  {
-    title: "05 / Motion & Interaction",
-    description:
-      "Using motion as a functional layer — guiding attention, improving clarity, and enhancing the feel of the interface.",
-    skills: [
-      "GSAP",
-      "ScrollTrigger",
-      "Micro-interactions",
-      "Interaction Design"
-    ]
-  },
-  {
-    title: "06 / Tooling & Infrastructure",
-    description:
-      "The tools and infrastructure that support modern, scalable, and developer-friendly systems.",
-    skills: [
-      "Docker",
-      "Supabase",
-      "Firebase",
-      "MongoDB",
-      "SQL / MySQL",
-      "Git & GitHub"
-    ]
-  }
-];
+  const skillGroups = [
+    {
+      title: "01 / Web Engineering",
+      description:
+        "Designing and engineering modern web applications with a strong focus on performance, maintainability, and real-world usability.",
+      skills: [
+        "JavaScript (ESNext)",
+        "TypeScript",
+        "React",
+        "Next.js",
+        "Node.js",
+        "Express.js",
+        "REST APIs",
+        "Performance Optimization"
+      ]
+    },
+    {
+      title: "02 / Blockchain & Web3 Systems",
+      description:
+        "Building decentralized applications and smart contract systems that prioritize security, clarity, and long-term protocol design.",
+      skills: [
+        "Solidity",
+        "ERC-4337",
+        "Account Abstraction",
+        "Ethers.js",
+        "IPFS",
+        "Polygon",
+        "Ethereum",
+        "Smart Wallets"
+      ]
+    },
+    {
+      title: "03 / Backend & Distributed Systems",
+      description:
+        "Engineering backend and distributed systems with an emphasis on scalability, data flow, and real-time communication.",
+      skills: [
+        "Express.js",
+        "Redis",
+        "ScyllaDB",
+        "WebSockets",
+        "Socket.io",
+        "WebRTC",
+        "Event-driven Systems"
+      ]
+    },
+    {
+      title: "04 / System Design & Architecture",
+      description:
+        "Approaching problems with a system-first mindset — focusing on structure, data flow, and long-term scalability.",
+      skills: [
+        "Application Architecture",
+        "Database Design",
+        "Authentication",
+        "Authorization",
+        "Scalability",
+        "API Design"
+      ]
+    },
+    {
+      title: "05 / Motion & Interaction",
+      description:
+        "Using motion as a functional layer — guiding attention, improving clarity, and enhancing the feel of the interface.",
+      skills: [
+        "GSAP",
+        "ScrollTrigger",
+        "Micro-interactions",
+        "Interaction Design"
+      ]
+    },
+    {
+      title: "06 / Tooling & Infrastructure",
+      description:
+        "The tools and infrastructure that support modern, scalable, and developer-friendly systems.",
+      skills: [
+        "Docker",
+        "GitHub Actions",
+        "Supabase",
+        "Firebase",
+        "MongoDB",
+        "PostgreSQL",
+        "ScyllaDB",
+        "Git"
+      ]
+    },
+    {
+      title: "07 / AI Engineering",
+      description:
+        "Building AI-powered applications by combining LLMs with modern web systems, retrieval, workflows, and developer tooling.",
+      skills: [
+        "OpenAI API",
+        "Prompt Engineering",
+        "RAG",
+        "AI Agents",
+        "Embeddings",
+        "LLM Integrations"
+      ]
+    },
+    {
+      title: "08 / Platform Engineering",
+      description:
+        "Building deployment platforms and infrastructure that automate software delivery and developer workflows.",
+      skills: [
+        "Docker",
+        "CI/CD",
+        "GitHub Actions",
+        "Reverse Proxy",
+        "Redis",
+        "Deployment Automation",
+        "Linux"
+      ]
+    },
+    {
+      title: "09 / Quality Engineering",
+      description:
+        "Improving product reliability through structured testing, UX evaluation, and bug investigation.",
+      skills: [
+        "Manual QA",
+        "Regression Testing",
+        "UX Testing",
+        "Bug Reporting",
+        "Product Thinking"
+      ]
+    },
+    {
+      title: "10 / Research & Exploration",
+      description:
+        "Exploring emerging technologies through prototypes, technical writing, and experimental systems.",
+      skills: [
+        "Blockchain Research",
+        "Technical Writing",
+        "Rapid Prototyping",
+        "Developer Education"
+      ]
+    }
+  ];
 
 
   useGSAP(() => {

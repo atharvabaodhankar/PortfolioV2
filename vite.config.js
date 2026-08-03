@@ -9,7 +9,7 @@ export default defineConfig({
     react(), 
     tailwindcss(), 
     ssgPlugin({
-      pages: ['src/components/projects/ZKredential.jsx']
+      pages: []
     })
   ],
   server: {
