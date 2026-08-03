@@ -106,17 +106,17 @@ const Skills = () => {
       ]
     },
     {
-      title: "08 / Platform Engineering",
+      title: "08 / Cloud & Infrastructure",
       description:
-        "Building deployment platforms and infrastructure that automate software delivery and developer workflows.",
+        "Deploying and operating applications using modern cloud platforms, containers, and managed infrastructure.",
       skills: [
+        "AWS",
+        "DigitalOcean",
         "Docker",
-        "CI/CD",
+        "Linux",
         "GitHub Actions",
-        "Reverse Proxy",
-        "Redis",
-        "Deployment Automation",
-        "Linux"
+        "Managed Databases",
+        "Object Storage"
       ]
     },
     {
