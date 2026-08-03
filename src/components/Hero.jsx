@@ -80,7 +80,7 @@ const Hero = () => {
         <div aria-hidden="true" className="visual-h2 hero-hover text-[13vw] md:text-[7vw] font-light -mt-8 md:-mt-20 z-[2] select-none font-arsenica text-[#1a1a1a]">
           BAODHANKAR
         </div>
-        <p className="text-xl md:text-[3rem] mt-8 md:mt-16 font-light text-center px-4 md:px-0">MERN • Systems • Blockchain • AI Tooling</p>
+        <p className="text-xl md:text-[3rem] mt-8 md:mt-16 font-light text-center px-4 md:px-0">MERN • Systems • Blockchain • AI Tooling  • Cloud</p>
       </div>
     </header>
   );

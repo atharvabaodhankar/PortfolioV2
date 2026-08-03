@@ -35,6 +35,7 @@
 html {
     font-size: 62.5%;
     scroll-behavior: smooth;
+    touch-action: pan-x pan-y;
 }
 
 html.lenis, html.lenis body {
