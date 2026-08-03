@@ -116,12 +116,18 @@ const Ferro = {
         selectors.forEach(selector => {
             const elements = document.querySelectorAll(selector);
             elements.forEach(element => {
-                const enterHandler = () => {
+                const enterHandler = (e) => {
+                    // Ignore scaling over images or explicit non-hover elements
+                    if (e && e.target && (e.target.tagName === 'IMG' || e.target.closest('.non-hover') || e.target.closest('.no-cursor-expand'))) {
+                        gsap.to(FerroMouseBall, { scale: 1, duration: 0.4, ease: "power4.out" });
+                        return;
+                    }
+
                     // Calculate smooth scale based on element font size + enhancer
                     let fontSize = 20;
                     try {
                         fontSize = parseFloat(window.getComputedStyle(element).fontSize);
-                    } catch(e) {}
+                    } catch(err) {}
                     
                     const enhancer = ScaleEnchancer[se] !== undefined ? ScaleEnchancer[se] : 80;
                     const targetSize = fontSize + enhancer;
@@ -131,24 +137,32 @@ const Ferro = {
                     // Ultra smooth scaling animation
                     gsap.to(FerroMouseBall, { 
                         scale: scale, 
-                        duration: 0.8, 
+                        duration: 0.6, 
                         ease: "power4.out"
                     });
+                };
+
+                const overHandler = (e) => {
+                    if (e.target && (e.target.tagName === 'IMG' || e.target.closest('.non-hover') || e.target.closest('.no-cursor-expand'))) {
+                        gsap.to(FerroMouseBall, { scale: 1, duration: 0.4, ease: "power4.out" });
+                    }
                 };
 
                 const leaveHandler = () => {
                     // Ultra smooth return to normal size
                     gsap.to(FerroMouseBall, { 
                         scale: 1, 
-                        duration: 0.6, 
+                        duration: 0.5, 
                         ease: "power4.out" 
                     });
                 };
 
                 element.addEventListener('mouseenter', enterHandler);
+                element.addEventListener('mouseover', overHandler);
                 element.addEventListener('mouseleave', leaveHandler);
 
                 cleanupListeners.push({ element, type: 'mouseenter', handler: enterHandler });
+                cleanupListeners.push({ element, type: 'mouseover', handler: overHandler });
                 cleanupListeners.push({ element, type: 'mouseleave', handler: leaveHandler });
             });
         });
