@@ -63,6 +63,25 @@ p {
     line-height: 2.5rem;
 }
 
+/* Projects Section: Pointer fine vs coarse display */
+.project-inline-media {
+    display: block;
+}
+@media (hover: hover) and (pointer: fine) {
+    .project-inline-media {
+        display: none !important;
+    }
+}
+
+/* Projects Section: CSS-only row dimming on hover & focus */
+.projects-list:hover .project-index-row {
+    opacity: 0.25;
+}
+.projects-list .project-index-row:hover,
+.projects-list .project-index-row:focus-within {
+    opacity: 1 !important;
+}
+
 /* Premium About Section Enhancements */
 .highlight {
     position: relative;

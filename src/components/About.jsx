@@ -13,7 +13,6 @@ const About = () => {
     // Set initial states for reveal animations
     gsap.set('.reveal-text', { opacity: 0, y: 40 });
     gsap.set('.tilt-card', { scale: 0.9, opacity: 0, rotationY: -15 });
-    gsap.set('.skill-pill', { opacity: 0, y: 20, scale: 0.9 });
 
     // Create main timeline with ScrollTrigger
     const tl = gsap.timeline({
@@ -40,15 +39,7 @@ const About = () => {
       rotationY: 0,
       duration: 0.8,
       ease: 'cubic-bezier(0.16, 1, 0.3, 1)',
-    }, '-=0.8')
-    .to('.skill-pill', {
-      opacity: 1,
-      y: 0,
-      scale: 1,
-      duration: 0.6,
-      stagger: 0.05,
-      ease: 'cubic-bezier(0.16, 1, 0.3, 1)',
-    }, '-=0.4');
+    }, '-=0.8');
 
     // Image hover effect
     const imageContainer = aboutRef.current?.querySelector('.image-container');
@@ -94,7 +85,7 @@ const About = () => {
 
         {/* Image */}
         <div className="lg:col-span-4 lg:col-start-2 lg:mt-32 relative reveal-text image-container mb-12 lg:mb-0 non-hover">
-          <div className="relative tilt-card group cursor-none non-hover" style={{ perspective: '1000px', transformStyle: 'preserve-3d' }}>
+          <div className="relative tilt-card group cursor-default non-hover" style={{ perspective: '1000px', transformStyle: 'preserve-3d' }}>
             {/* Shadow/background card */}
             <div className="absolute inset-0 bg-gray-200 rounded-lg transform translate-x-3 translate-y-3 -rotate-2 transition-transform duration-700 ease-expo-out group-hover:translate-x-8 group-hover:translate-y-6 group-hover:-rotate-6 z-0"></div>
             

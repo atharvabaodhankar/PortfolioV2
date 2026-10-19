@@ -1,18 +1,22 @@
-
 import gsap from 'gsap';
 import './ferro.css';
 
+const NATIVE_SIZE = 64; // High-density native geometry to prevent GPU raster blur
+const RESTING_SCALE = 14 / NATIVE_SIZE; // ~0.218 (renders as precise 14px circle)
+const STANDARD_HOVER_SCALE = 38 / NATIVE_SIZE; // ~0.593 (renders as crisp 38px circle)
+const LARGE_HOVER_SCALE = 64 / NATIVE_SIZE; // 1.0 (renders as 64px magnifying lens, never exceeds native size)
+
 const Ferro = {
   /**
-   * Ferro Mouse Follower
+   * Ferro Mouse Follower - Razor Sharp Awwwards Motion
    * @param {number} sp - Speed/smoothness (0-5)
-   * @param {string} size - Size of the cursor (e.g., "50px")
+   * @param {string} size - Target resting size (default 14px)
    * @param {boolean} blendMode - Enable mix-blend-mode difference
    * @param {string[]} selectors - Array of selectors to trigger hover scaling
-   * @param {number} se - Scale enhancer level (0-5)
+   * @param {number} se - Scale enhancer level
    */
-  mouseFollower: function(sp = 0, size = "50px", blendMode = true, selectors = [], se = 0) {
-    // Only run on desktop
+  mouseFollower: function(sp = 2, size = "14px", blendMode = true, selectors = []) {
+    // Only run on desktop with fine pointer
     if (!window.matchMedia('(min-width: 768px)').matches) {
       return { destroy: () => {} };
     }
@@ -26,161 +30,231 @@ const Ferro = {
     const FerroMouseBall = document.createElement("div");
     FerroMouseBall.className = "ferro-mouse-follower-ball";
     
-    // Ultra crisp styling for perfect edges
+    // Explicit inline base styles
     FerroMouseBall.style.cssText = `
-      width: ${size};
-      height: ${size};
+      width: ${NATIVE_SIZE}px;
+      height: ${NATIVE_SIZE}px;
       position: fixed;
       top: 0;
       left: 0;
       background-color: #ffffff;
       border-radius: 50%;
-      z-index: 99999;
+      z-index: 999999;
       pointer-events: none;
-      mix-blend-mode: difference;
+      mix-blend-mode: ${blendMode ? 'difference' : 'normal'};
       transform-origin: center center;
-      image-rendering: -webkit-optimize-contrast;
-      image-rendering: crisp-edges;
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
+      -webkit-backface-visibility: hidden;
+      backface-visibility: hidden;
+      will-change: transform, opacity;
     `;
     
     document.body.appendChild(FerroMouseBall);
     
     const speedMap = {
-      0: 0.05,
-      1: 0.08,
-      2: 0.12,
-      3: 0.15,
-      4: 0.18,
-      5: 0.22,
-    };
-    
-    const ScaleEnchancer = {
-        0: 20,
-        1: 40,
-        2: 60,
-        3: 80,
-        4: 100,
-        5: 120,
+      0: 0.08,
+      1: 0.12,
+      2: 0.16,
+      3: 0.20,
+      4: 0.24,
+      5: 0.30,
     };
 
-    const speed = speedMap[sp] || 0.1;
+    const speed = speedMap[sp] || 0.16;
 
-    // Ultra smooth GSAP setup
+    // Track active state
+    let isHidden = false;
+    let currentInteractiveEl = null;
+    let currentScale = RESTING_SCALE;
+
+    // Initial positioning
     gsap.set(FerroMouseBall, {
-        xPercent: -50,
-        yPercent: -50,
-        scale: 1,
-        x: window.innerWidth / 2,
-        y: window.innerHeight / 2
+      xPercent: -50,
+      yPercent: -50,
+      scale: RESTING_SCALE,
+      opacity: 1,
+      x: window.innerWidth / 2,
+      y: window.innerHeight / 2
     });
 
     const pos = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
     const mouse = { x: pos.x, y: pos.y };
 
-    const mouseMoveHandler = (e) => {
-        mouse.x = e.clientX;
-        mouse.y = e.clientY;
-        // Keep consistent white background for proper invert effect
+    /**
+     * Check if an element or its ancestor is an image or media element
+     */
+    const isMediaOrImage = (el) => {
+      if (!el || !(el instanceof Element)) return false;
+      return !!(
+        el.matches('img, picture, video, canvas, [data-cursor-hide], .no-cursor') ||
+        el.closest('img, picture, video, canvas, [data-cursor-hide], .no-cursor, .work-portrait, .image-container, .tilt-card, [role="img"]')
+      );
     };
-    
-    window.addEventListener("mousemove", mouseMoveHandler);
+
+    /**
+     * Get the interactive target container if hovering one
+     */
+    const getInteractiveElement = (el) => {
+      if (!el || !(el instanceof Element)) return null;
+
+      // Standard interactive elements
+      const standard = el.closest('a, button, input, select, textarea, [role="button"], .ferro-btn, .nav-btn, .hero-hover, .project-card, .menu, .nav-item-wrapper');
+      if (standard) return standard;
+
+      // Check user configured selectors
+      if (selectors && selectors.length > 0) {
+        for (const selector of selectors) {
+          try {
+            const found = el.closest(selector);
+            if (found) return found;
+          } catch (e) {}
+        }
+      }
+      return null;
+    };
+
+    /**
+     * Calculate sharp, non-distorted scale
+     */
+    const calculateScaleForElement = (el) => {
+      if (!el) return RESTING_SCALE;
+
+      // For large menu links (like / Projects, / About in the navbar)
+      if (el.closest('.nav-item-wrapper')) {
+        return LARGE_HOVER_SCALE; // 64px
+      }
+
+      // For regular buttons, links, cards, tabs
+      return STANDARD_HOVER_SCALE; // 38px
+    };
+
+    /**
+     * Mouse movement handler
+     */
+    const mouseMoveHandler = (e) => {
+      mouse.x = e.clientX;
+      mouse.y = e.clientY;
+
+      const target = e.target;
+
+      // Rule 1: Vanish on images and media
+      if (isMediaOrImage(target)) {
+        if (!isHidden) {
+          isHidden = true;
+          currentInteractiveEl = null;
+          gsap.to(FerroMouseBall, {
+            scale: 0,
+            opacity: 0,
+            duration: 0.18,
+            ease: "power2.out",
+            overwrite: "auto"
+          });
+        }
+        return;
+      }
+
+      // Rule 2: If we were hidden over an image, restore visibility
+      if (isHidden) {
+        isHidden = false;
+        gsap.to(FerroMouseBall, {
+          opacity: 1,
+          duration: 0.22,
+          ease: "power2.out"
+        });
+      }
+
+      // Rule 3: Interactive elements scaling
+      const interactiveEl = getInteractiveElement(target);
+
+      if (interactiveEl) {
+        if (currentInteractiveEl !== interactiveEl) {
+          currentInteractiveEl = interactiveEl;
+          const targetScale = calculateScaleForElement(interactiveEl);
+          currentScale = targetScale;
+          gsap.to(FerroMouseBall, {
+            scale: targetScale,
+            opacity: 1,
+            duration: 0.3,
+            ease: "power3.out",
+            overwrite: "auto"
+          });
+        }
+      } else {
+        if (currentInteractiveEl !== null) {
+          currentInteractiveEl = null;
+          currentScale = RESTING_SCALE;
+          gsap.to(FerroMouseBall, {
+            scale: RESTING_SCALE,
+            opacity: 1,
+            duration: 0.3,
+            ease: "power3.out",
+            overwrite: "auto"
+          });
+        }
+      }
+    };
+
+    // When mouse leaves the browser window
+    const mouseLeaveWindowHandler = () => {
+      gsap.to(FerroMouseBall, {
+        scale: 0,
+        opacity: 0,
+        duration: 0.2,
+        ease: "power2.out"
+      });
+    };
+
+    const mouseEnterWindowHandler = () => {
+      if (!isHidden) {
+        gsap.to(FerroMouseBall, {
+          scale: currentScale,
+          opacity: 1,
+          duration: 0.25,
+          ease: "power2.out"
+        });
+      }
+    };
+
+    window.addEventListener("mousemove", mouseMoveHandler, { passive: true });
+    document.documentElement.addEventListener("mouseleave", mouseLeaveWindowHandler);
+    document.documentElement.addEventListener("mouseenter", mouseEnterWindowHandler);
 
     // Smooth trailing animation using GSAP's ticker
     const tickerFunc = () => {
-        // Smooth interpolation for trailing effect
-        const dt = 1.0 - Math.pow(1.0 - speed, gsap.ticker.deltaRatio());
-        
-        // Calculate the distance for smooth easing
-        const dx = mouse.x - pos.x;
-        const dy = mouse.y - pos.y;
-        
-        // Apply smooth easing with distance-based adjustment
-        pos.x += dx * dt;
-        pos.y += dy * dt;
-        
-        // Smooth GSAP animation for trailing effect
-        gsap.set(FerroMouseBall, {
-            x: pos.x,
-            y: pos.y
-        });
+      const dt = 1.0 - Math.pow(1.0 - speed, gsap.ticker.deltaRatio());
+      const dx = mouse.x - pos.x;
+      const dy = mouse.y - pos.y;
+      
+      pos.x += dx * dt;
+      pos.y += dy * dt;
+      
+      gsap.set(FerroMouseBall, {
+        x: pos.x,
+        y: pos.y
+      });
     };
 
     gsap.ticker.add(tickerFunc);
 
-    // Store listeners to remove them later
-    const cleanupListeners = [];
-
-    if (selectors && selectors.length > 0) {
-        selectors.forEach(selector => {
-            const elements = document.querySelectorAll(selector);
-            elements.forEach(element => {
-                const enterHandler = (e) => {
-                    // Ignore scaling over images or explicit non-hover elements
-                    if (e && e.target && (e.target.tagName === 'IMG' || e.target.closest('.non-hover') || e.target.closest('.no-cursor-expand'))) {
-                        gsap.to(FerroMouseBall, { scale: 1, duration: 0.4, ease: "power4.out" });
-                        return;
-                    }
-
-                    // Calculate smooth scale based on element font size + enhancer
-                    let fontSize = 20;
-                    try {
-                        fontSize = parseFloat(window.getComputedStyle(element).fontSize);
-                    } catch(err) {}
-                    
-                    const enhancer = ScaleEnchancer[se] !== undefined ? ScaleEnchancer[se] : 80;
-                    const targetSize = fontSize + enhancer;
-                    const currentSizeVal = parseFloat(size) || 50;
-                    const scale = currentSizeVal > 0 ? targetSize / currentSizeVal : 3;
-
-                    // Ultra smooth scaling animation
-                    gsap.to(FerroMouseBall, { 
-                        scale: scale, 
-                        duration: 0.6, 
-                        ease: "power4.out"
-                    });
-                };
-
-                const overHandler = (e) => {
-                    if (e.target && (e.target.tagName === 'IMG' || e.target.closest('.non-hover') || e.target.closest('.no-cursor-expand'))) {
-                        gsap.to(FerroMouseBall, { scale: 1, duration: 0.4, ease: "power4.out" });
-                    }
-                };
-
-                const leaveHandler = () => {
-                    // Ultra smooth return to normal size
-                    gsap.to(FerroMouseBall, { 
-                        scale: 1, 
-                        duration: 0.5, 
-                        ease: "power4.out" 
-                    });
-                };
-
-                element.addEventListener('mouseenter', enterHandler);
-                element.addEventListener('mouseover', overHandler);
-                element.addEventListener('mouseleave', leaveHandler);
-
-                cleanupListeners.push({ element, type: 'mouseenter', handler: enterHandler });
-                cleanupListeners.push({ element, type: 'mouseover', handler: overHandler });
-                cleanupListeners.push({ element, type: 'mouseleave', handler: leaveHandler });
-            });
-        });
-    }
-
     // Return the cursor instance
     return {
-        destroy: () => {
-            window.removeEventListener("mousemove", mouseMoveHandler);
-            gsap.ticker.remove(tickerFunc);
-            cleanupListeners.forEach(({ element, type, handler }) => {
-                element.removeEventListener(type, handler);
-            });
-            if (FerroMouseBall && FerroMouseBall.parentNode) {
-                FerroMouseBall.parentNode.removeChild(FerroMouseBall);
-            }
-        },
-        el: FerroMouseBall
+      destroy: () => {
+        window.removeEventListener("mousemove", mouseMoveHandler);
+        document.documentElement.removeEventListener("mouseleave", mouseLeaveWindowHandler);
+        document.documentElement.removeEventListener("mouseenter", mouseEnterWindowHandler);
+        gsap.ticker.remove(tickerFunc);
+        if (FerroMouseBall && FerroMouseBall.parentNode) {
+          FerroMouseBall.parentNode.removeChild(FerroMouseBall);
+        }
+      },
+      hide: () => {
+        isHidden = true;
+        gsap.to(FerroMouseBall, { scale: 0, opacity: 0, duration: 0.18 });
+      },
+      show: () => {
+        isHidden = false;
+        gsap.to(FerroMouseBall, { scale: currentScale, opacity: 1, duration: 0.22 });
+      },
+      el: FerroMouseBall
     };
   }
 };

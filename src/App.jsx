@@ -102,10 +102,10 @@ function PortfolioPage() {
       // Small delay to ensure all DOM elements are rendered
       const timer = setTimeout(() => {
         // Smooth trailing Ferro.mouseFollower - Only target important interactive elements
-        const cursor = FerroLib.mouseFollower(2, "15px", true, [
+        const cursor = FerroLib.mouseFollower(2, "14px", true, [
           ".nav-btn", ".hero-hover", ".ferro-btn",
-          ".footer a", ".menu", ".footer-h1",".hover-h1", ".project-h1", "a[href]", "button[onclick]", ".project-card"
-        ], 3);
+          ".footer a", ".menu", ".footer-h1", ".hover-h1", ".project-h1", "a[href]", "button", ".project-card"
+        ], 2);
         
         // Store cursor instance for cleanup
         window.ferroCursor = cursor;

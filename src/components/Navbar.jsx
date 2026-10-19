@@ -239,19 +239,10 @@ const Navbar = () => {
 
   const handleLinkEnter = (key) => {
       handleLinkHover(key);
-      gsap.to('.ferro-mouse-follower-ball', {
-          scale: 3,
-          duration: 0.3,
-          opacity: 1
-      });
   };
 
   const handleLinkLeave = (index) => {
       handleMouseLeave(index);
-      gsap.to('.ferro-mouse-follower-ball', {
-          scale: 1,
-          duration: 0.3
-      });
   };
 
   // Content Transition on Hover
