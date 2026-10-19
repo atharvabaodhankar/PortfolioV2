@@ -12,6 +12,7 @@ import Marquee from './components/Marquee';
 import About from './components/About';
 import Skills from './components/Skills';
 import Education from './components/Education';
+import Certifications from './components/Certifications';
 import Projects from './components/Projects';
 import Work from './components/Work';
 
@@ -144,6 +145,7 @@ function PortfolioPage() {
             <Skills />
             <Marquee />
             <Education />
+            <Certifications />
             <Projects />
             <Work />
             <Footer />
