@@ -9,20 +9,47 @@
 @font-face {
     font-family: ArsenicaDemibold;
     src: url(./assets/fonts/ArsenicaTrial-Demibold.woff2) format('woff2');
-    font-weight: normal;
+    font-weight: 100 900;
     font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: ArsenicaDemibold;
+    src: url(./assets/fonts/ArsenicaTrial-Demibold.woff2) format('woff2');
+    font-weight: 100 900;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: ArsenicaMedium;
+    src: url(./assets/fonts/ArsenicaTrial-Medium.woff2) format('woff2');
+    font-weight: 100 900;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: ArsenicaMedium;
+    src: url(./assets/fonts/ArsenicaTrial-Medium.woff2) format('woff2');
+    font-weight: 100 900;
+    font-style: italic;
     font-display: swap;
 }
 
 @font-face {
     font-family: FontStyleNew;
     src: url(/src/assets/fonts/e9849a0be596192c822daa1765c81db9.woff2);
+    font-weight: 100 900;
+    font-style: normal;
+    font-display: swap;
 }
 
 /* Custom Font Classes */
 .font-arsenica,
 .font-arsenica * {
-    font-family: ArsenicaDemibold, serif !important;
+    font-family: ArsenicaDemibold, ArsenicaMedium, serif !important;
 }
 
 .font-fontstyle,

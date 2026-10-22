@@ -106,13 +106,19 @@ const About = () => {
         <div className="lg:col-span-6 lg:col-start-7 lg:mt-32 flex flex-col gap-10 pl-0 lg:pl-12 reveal-text">
           <div className="space-y-8 relative">
             {/* Main Statement */}
-            <h2 className="text-3xl md:text-4xl lg:text-[2.65rem] leading-[1.2] font-light tracking-tight text-[#1A1A1A]">
+            <h2 className="text-3xl md:text-4xl lg:text-[2.65rem] leading-[1.25] font-light tracking-tight text-[#1A1A1A]">
               I'm{' '}
-              <span className="font-arsenica font-bold text-[#1A1A1A] tracking-normal inline-block text-[1.12em]">
+              <span
+                className="font-arsenica text-[#1A1A1A] tracking-normal inline-block text-[1.15em] font-normal"
+                style={{ fontFamily: 'ArsenicaDemibold, serif' }}
+              >
                 Atharva Baodhankar
               </span>{' '}
               — a{' '}
-              <span className="font-arsenica italic font-semibold text-[#1A1A1A] relative inline-block text-[1.06em]">
+              <span
+                className="font-arsenica italic text-[#1A1A1A] relative inline-block text-[1.08em] font-normal"
+                style={{ fontFamily: 'ArsenicaDemibold, serif' }}
+              >
                 Blockchain & Cloud Engineer
                 <svg
                   className="absolute w-full h-2.5 -bottom-1 left-0 text-[#1A1A1A]/20 -z-10"
