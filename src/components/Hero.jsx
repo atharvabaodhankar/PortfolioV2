@@ -4,7 +4,7 @@ import { useGSAP } from '@gsap/react';
 // import Shery from 'sheryjs'; // TODO: Fix Shery imports
 import { useLoader } from '../context/LoaderContext';
 import useParallaxTilt from '../hooks/useParallaxTilt';
-import heroImg from '../assets/imgs/hero-img.png';
+import heroImg from '../assets/imgs/hero-img-2.jpeg';
 
 gsap.registerPlugin(useGSAP);
 
