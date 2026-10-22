@@ -21,7 +21,7 @@ const About = () => {
         start: 'top 80%',
         end: 'bottom 20%',
         toggleActions: 'play none none reverse',
-        invalidateOnRefresh: true
+        invalidateOnRefresh: true,
       },
     });
 
@@ -32,69 +32,65 @@ const About = () => {
       duration: 1.2,
       stagger: 0.2,
       ease: 'cubic-bezier(0.16, 1, 0.3, 1)',
-    })
-    .to('.tilt-card', {
-      scale: 1,
-      opacity: 1,
-      rotationY: 0,
-      duration: 0.8,
-      ease: 'cubic-bezier(0.16, 1, 0.3, 1)',
-    }, '-=0.8');
+    }).to(
+      '.tilt-card',
+      {
+        scale: 1,
+        opacity: 1,
+        rotationY: 0,
+        duration: 0.8,
+        ease: 'cubic-bezier(0.16, 1, 0.3, 1)',
+      },
+      '-=0.8'
+    );
 
     // Image hover effect
     const imageContainer = aboutRef.current?.querySelector('.image-container');
     const tiltCard = aboutRef.current?.querySelector('.tilt-card');
-    
+
     if (imageContainer && tiltCard) {
       imageContainer.addEventListener('mouseenter', () => {
-        gsap.to(tiltCard, { 
-          rotationY: -5, 
-          rotationX: 2, 
+        gsap.to(tiltCard, {
+          rotationY: -5,
+          rotationX: 2,
           duration: 0.8,
-          ease: 'cubic-bezier(0.16, 1, 0.3, 1)'
+          ease: 'cubic-bezier(0.16, 1, 0.3, 1)',
         });
       });
-      
+
       imageContainer.addEventListener('mouseleave', () => {
-        gsap.to(tiltCard, { 
-          rotationY: 0, 
-          rotationX: 0, 
+        gsap.to(tiltCard, {
+          rotationY: 0,
+          rotationX: 0,
           duration: 0.8,
-          ease: 'cubic-bezier(0.16, 1, 0.3, 1)'
+          ease: 'cubic-bezier(0.16, 1, 0.3, 1)',
         });
       });
     }
-
   }, { scope: aboutRef });
 
   return (
-    <section 
-      id="aboutme" 
-      ref={aboutRef} 
+    <section
+      id="aboutme"
+      ref={aboutRef}
       className="w-full px-6 md:px-12 lg:px-24 pt-32 pb-20 max-w-[1600px] mx-auto relative font-sans"
     >
-      {/* Background elements */}
-      <div className="fixed top-0 left-0 w-full h-full pointer-events-none z-[-1] overflow-hidden">
-        <div className="absolute top-[20%] right-[10%] w-[500px] h-[500px] bg-gray-100 rounded-full blur-[100px] opacity-60"></div>
-        <div className="absolute bottom-[10%] left-[5%] w-[300px] h-[300px] bg-gray-200 rounded-full blur-[80px] opacity-40"></div>
-      </div>
-
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 md:gap-16 items-start relative">
-        {/* Title */}
-       
-
-        {/* Image */}
+        {/* Left Column: Image Card */}
         <div className="lg:col-span-4 lg:col-start-2 lg:mt-32 relative reveal-text image-container mb-12 lg:mb-0 non-hover">
-          <div className="relative tilt-card group cursor-default non-hover" style={{ perspective: '1000px', transformStyle: 'preserve-3d' }}>
-            {/* Shadow/background card */}
-            <div className="absolute inset-0 bg-gray-200 rounded-lg transform translate-x-3 translate-y-3 -rotate-2 transition-transform duration-700 ease-expo-out group-hover:translate-x-8 group-hover:translate-y-6 group-hover:-rotate-6 z-0"></div>
-            
+          <div
+            className="relative tilt-card group cursor-default non-hover"
+            style={{ perspective: '1000px', transformStyle: 'preserve-3d' }}
+          >
+            {/* Background architectural shadow card */}
+            <div className="absolute inset-0 bg-[#E4E4E7] rounded-sm transform translate-x-3 translate-y-3 -rotate-2 transition-transform duration-700 ease-out group-hover:translate-x-6 group-hover:translate-y-5 group-hover:-rotate-4 z-0"></div>
+
             {/* Main image card */}
-            <div className="relative overflow-hidden rounded-sm shadow-2xl bg-white p-1.5 transform rotate-2 transition-transform duration-700 ease-expo-out group-hover:rotate-0 z-10 non-hover">
-              <div className="aspect-[3/4] overflow-hidden rounded-sm relative non-hover">
-                <img 
-                  alt="Portrait of Atharva Baodhankar" 
-                  className="w-full h-full object-cover filter grayscale contrast-[1.05] brightness-105 group-hover:grayscale-0 group-hover:scale-105 transition-all duration-1000 ease-expo-out non-hover"
+            <div className="relative overflow-hidden rounded-sm shadow-xl bg-white p-2 transform rotate-2 transition-transform duration-700 ease-out group-hover:rotate-0 z-10 non-hover border border-[#1A1A1A]/10">
+              <div className="aspect-[3/4] overflow-hidden rounded-sm relative non-hover bg-[#1A1A1A]/5">
+                <img
+                  alt="Atharva Baodhankar"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-all duration-1000 ease-out non-hover"
                   src={aboutImg}
                   width="480"
                   height="640"
@@ -106,81 +102,100 @@ const About = () => {
           </div>
         </div>
 
-        {/* Content */}
-        <div className="lg:col-span-6 lg:col-start-7 lg:mt-32 flex flex-col gap-12 pl-0 lg:pl-12 reveal-text">
+        {/* Right Column: Content */}
+        <div className="lg:col-span-6 lg:col-start-7 lg:mt-32 flex flex-col gap-10 pl-0 lg:pl-12 reveal-text">
           <div className="space-y-8 relative">
-            <h2 
-              className="text-3xl md:text-4xl lg:text-[2.75rem] leading-[1.15] font-light tracking-tight text-primary"
-              style={{ fontFamily: "'Inter', sans-serif" }}
-            >
-              I'm Atharva Baodhankar — a{' '}
-              <span className="font-normal relative inline-block">
-                Web & Blockchain Engineer
-                <svg className="absolute w-full h-3 -bottom-1 left-0 text-gray-200 -z-10" preserveAspectRatio="none" viewBox="0 0 100 20">
-                  <path d="M0 15 Q 50 25 100 15" fill="none" stroke="currentColor" strokeWidth="8"></path>
+            {/* Main Statement */}
+            <h2 className="text-3xl md:text-4xl lg:text-[2.65rem] leading-[1.2] font-light tracking-tight text-[#1A1A1A]">
+              I'm{' '}
+              <span className="font-arsenica font-bold text-[#1A1A1A] tracking-normal inline-block text-[1.12em]">
+                Atharva Baodhankar
+              </span>{' '}
+              — a{' '}
+              <span className="font-arsenica italic font-semibold text-[#1A1A1A] relative inline-block text-[1.06em]">
+                Blockchain & Cloud Engineer
+                <svg
+                  className="absolute w-full h-2.5 -bottom-1 left-0 text-[#1A1A1A]/20 -z-10"
+                  preserveAspectRatio="none"
+                  viewBox="0 0 100 20"
+                >
+                  <path
+                    d="M0 15 Q 50 25 100 15"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="7"
+                  ></path>
                 </svg>
               </span>{' '}
-              focused on building scalable, performance-driven, and animation-rich digital systems.
+              interested in designing scalable systems, exploring distributed architectures, and building real-world technology products.
             </h2>
-            
-            <div className="space-y-6 text-lg md:text-xl text-gray-500 font-light leading-relaxed max-w-2xl" style={{ fontFamily: "'Inter', sans-serif" }}>
+
+            {/* Narrative Paragraphs */}
+            <div className="space-y-6 text-base md:text-lg text-[#52525B] font-light leading-relaxed max-w-2xl">
               <p>
                 From{' '}
-                <span className="text-black font-normal underline-anim">modern MERN-based web platforms</span>{' '}
-                to{' '}
-                <span className="text-black font-normal underline-anim">Web3 & blockchain-backed applications</span>,{' '}
-                I design and engineer products that feel fast, intuitive, and intentionally crafted.
-              </p>
-
-              <p>
-                I work{' '}
-                <span className="italic font-display font-medium text-xl text-black" style={{ fontFamily: "'Bodoni Moda', serif" }}>
-                  close to the system
+                <span className="text-[#1A1A1A] font-normal underline-anim">
+                  full-stack applications
                 </span>{' '}
-                — thinking in terms of architecture, data flow, and long-term scalability — while still obsessing over
-                <span className="text-black font-normal underline-anim"> motion, performance, and user experience</span>.
+                to{' '}
+                <span className="text-[#1A1A1A] font-normal underline-anim">
+                  blockchain infrastructure
+                </span>
+                , I enjoy turning complex technical ideas into working products — with a focus on{' '}
+                <span className="text-[#1A1A1A] font-medium">
+                  how systems are designed, how components communicate, and how they scale
+                </span>
+                .
               </p>
 
               <p>
-                Currently exploring{' '}
-                <span className="text-black font-normal underline-anim">blockchain infrastructure, account abstraction,</span>{' '}
-                and{' '}
-                <span className="text-black font-normal underline-anim">AI-assisted developer workflows</span>{' '}
-                to build smarter, future-ready products.
+                I think beyond individual features — exploring{' '}
+                <span
+                  className="italic font-display font-medium text-lg text-[#1A1A1A]"
+                  style={{ fontFamily: "'Bodoni Moda', serif" }}
+                >
+                  system architecture, data flow, APIs, databases, distributed systems
+                </span>
+                , and the engineering decisions that shape real-world software.
+              </p>
+
+              <p>
+                I'm particularly interested in{' '}
+                <span className="text-[#1A1A1A] font-medium underline-anim">
+                  system design, cloud infrastructure, blockchain protocols, and developer tooling
+                </span>{' '}
+                — constantly experimenting, building projects, and understanding the trade-offs behind the technologies we use.
               </p>
             </div>
           </div>
 
-          {/* Skill tags */}
-          <div className="flex flex-wrap gap-3" style={{ fontFamily: "'Inter', sans-serif" }}>
-            <span className="px-6 py-3 rounded-full bg-gray-100 text-gray-600 hover:bg-white border border-transparent hover:border-gray-300 text-sm font-medium tracking-wide transition-all duration-300 cursor-default">
-              MERN Stack Engineering
-            </span>
-            <span className="px-6 py-3 rounded-full bg-gray-100 text-gray-600 hover:bg-white border border-transparent hover:border-gray-300 text-sm font-medium tracking-wide transition-all duration-300 cursor-default">
-              Web3 & Blockchain Systems
-            </span>
-            <span className="px-6 py-3 rounded-full bg-gray-100 text-gray-600 hover:bg-white border border-transparent hover:border-gray-300 text-sm font-medium tracking-wide transition-all duration-300 cursor-default">
-              System Design & Architecture
-            </span>
-            <span className="px-6 py-3 rounded-full bg-gray-100 text-gray-600 hover:bg-white border border-transparent hover:border-gray-300 text-sm font-medium tracking-wide transition-all duration-300 cursor-default">
-              High-Performance UI & Animations
-            </span>
-            <span className="px-6 py-3 rounded-full bg-gray-100 text-gray-600 hover:bg-white border border-transparent hover:border-gray-300 text-sm font-medium tracking-wide transition-all duration-300 cursor-default">
-              Continuous Learning & Experimentation
-            </span>
+          {/* Architectural Skill / Focus Tags */}
+          <div className="flex flex-wrap gap-2.5 pt-2">
+            {[
+              'Distributed Systems',
+              'Cloud Infrastructure',
+              'Blockchain Protocols',
+              'System Design',
+              'API Architecture',
+              'Developer Tooling',
+            ].map((skill, idx) => (
+              <span
+                key={skill}
+                className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-[#F4F4F5]/80 border border-[#1A1A1A]/10 text-xs font-mono text-[#27272A] hover:border-[#1A1A1A]/30 transition-colors"
+              >
+                <span className="text-[#A1A1AA] text-[10px]">0{idx + 1}</span>
+                <span>{skill}</span>
+              </span>
+            ))}
           </div>
 
-          {/* Location info */}
-          <div className="pt-8 opacity-40 flex items-center gap-4" style={{ fontFamily: "'Inter', sans-serif" }}>
-            <div className="h-px w-16 bg-current"></div>
-            <p className="text-xs uppercase tracking-[0.2em] font-medium">
-              Based in India • Building for the Web, Globally
-            </p>
+          {/* Location & Ethos Ledger */}
+          <div className="pt-6 border-t border-[#1A1A1A]/10 flex items-center gap-4 text-[#71717A] font-mono text-xs uppercase tracking-widest">
+            <div className="h-px w-12 bg-[#1A1A1A]/20"></div>
+            <p>Based in India • Engineering for the Global Web</p>
           </div>
         </div>
       </div>
-
-
     </section>
   );
 };

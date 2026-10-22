@@ -20,12 +20,14 @@
 }
 
 /* Custom Font Classes */
-.font-arsenica {
-    font-family: ArsenicaDemibold, serif;
+.font-arsenica,
+.font-arsenica * {
+    font-family: ArsenicaDemibold, serif !important;
 }
 
-.font-fontstyle {
-    font-family: FontStyleNew, sans-serif;
+.font-fontstyle,
+.font-fontstyle * {
+    font-family: FontStyleNew, sans-serif !important;
 }
 
 * {
