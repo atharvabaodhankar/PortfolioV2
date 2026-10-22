@@ -90,7 +90,7 @@ const About = () => {
               <div className="aspect-[3/4] overflow-hidden rounded-sm relative non-hover bg-[#1A1A1A]/5">
                 <img
                   alt="Atharva Baodhankar"
-                  className="w-full h-full object-cover group-hover:scale-105 transition-all duration-1000 ease-out non-hover"
+                  className="about-portrait-img w-full h-full object-cover group-hover:scale-105 transition-all duration-700 ease-out non-hover"
                   src={aboutImg}
                   width="480"
                   height="640"
@@ -109,15 +109,15 @@ const About = () => {
             <h2 className="text-3xl md:text-4xl lg:text-[2.65rem] leading-[1.25] font-light tracking-tight text-[#1A1A1A]">
               I'm{' '}
               <span
-                className="font-arsenica text-[#1A1A1A] tracking-normal inline-block text-[1.15em] font-normal"
-                style={{ fontFamily: 'ArsenicaDemibold, serif' }}
+                className="font-arsenica text-[#1A1A1A] tracking-normal inline-block text-[1.18em]"
+                style={{ fontFamily: "'ArsenicaDemibold', 'Arsenica Trial', serif" }}
               >
                 Atharva Baodhankar
               </span>{' '}
               — a{' '}
               <span
-                className="font-arsenica italic text-[#1A1A1A] relative inline-block text-[1.08em] font-normal"
-                style={{ fontFamily: 'ArsenicaDemibold, serif' }}
+                className="italic text-[#1A1A1A] relative inline-block text-[1.1em] font-normal"
+                style={{ fontFamily: "'Bodoni Moda', serif" }}
               >
                 Blockchain & Cloud Engineer
                 <svg

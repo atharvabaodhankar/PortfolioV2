@@ -112,6 +112,18 @@ p {
 }
 
 /* Premium About Section Enhancements */
+.about-portrait-img {
+    filter: grayscale(100%);
+    -webkit-filter: grayscale(100%);
+    transition: filter 0.7s cubic-bezier(0.16, 1, 0.3, 1), -webkit-filter 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.tilt-card:hover .about-portrait-img,
+.image-container:hover .about-portrait-img {
+    filter: grayscale(0%);
+    -webkit-filter: grayscale(0%);
+}
+
 .highlight {
     position: relative;
     display: inline-block;
